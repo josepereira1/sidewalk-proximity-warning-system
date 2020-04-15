@@ -1,0 +1,5 @@
+<OperationModule xmlns:gr="http://www.webratio.com/2006/WebML/Graph" gr:x="240" gr:y="285" id="mov1#opm3" name="Delete Crosswalk">
+  <OperationUnits>
+    <InputCollectorUnit id="mov1#opm3#icu3" name="Input Collector" gr:x="30" gr:y="60"/>
+  </OperationUnits>
+</OperationModule>
