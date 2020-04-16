@@ -1,4 +1,4 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="270" gr:y="5" id="sv1#area3#page2" name="Crosswalk Details">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="260" gr:y="10" id="sv1#area3#page2" name="Crosswalk Details">
   <ContentUnits>
     <DataUnit gr:x="0" gr:y="0" id="sv1#area3#page2#dau1" name="Crosswalk Details" entity="ent1" displayAttributes="ent1#att1 ent1#att4 ent1#att5 ent1#att6 ent1#att25 ent1#att27 ent1#att29" gr:showAllParts="true">
       <Selector id="sv1#area3#page2#dau1#su1" defaultPolicy="fill" booleanOperator="and">
@@ -7,12 +7,12 @@
       <Link id="sv1#area3#page2#dau1#ln4" name="Flow4" to="sv1#area3#page2#pwu2" automaticCoupling="true" type="transport" validate="true"/>
       <Link id="sv1#area3#page2#dau1#ln5" name="Flow5" to="sv1#area3#page2#pwu3" automaticCoupling="true" type="transport" validate="true"/>
     </DataUnit>
-    <PowerIndexUnit gr:x="0" gr:y="200" id="sv1#area3#page2#pwu2" name="Pedestrians near crosswalk" sortable="true" checkable="false" useCountQuery="false" entity="ent2" gr:showAllParts="true" displayAttributes="ent2#att2 ent2#att7 ent2#att22 ent2#att23 ent2#att24">
+    <PowerIndexUnit gr:x="20" gr:y="195" id="sv1#area3#page2#pwu2" name="Pedestrians near crosswalk" sortable="true" checkable="false" useCountQuery="false" entity="ent2" gr:showAllParts="true" displayAttributes="ent2#att2 ent2#att7 ent2#att22 ent2#att23 ent2#att24">
       <Selector id="sv1#area3#page2#pwu2#su3" defaultPolicy="fill" booleanOperator="and">
         <RelationshipRoleCondition id="sv1#area3#page2#pwu2#su3#rcond1" name="crosswalk_id" role="rel1#role1" predicate="in" implied="false"/>
       </Selector>
     </PowerIndexUnit>
-    <PowerIndexUnit gr:x="235" gr:y="205" id="sv1#area3#page2#pwu3" name="Vehicles near crosswalk" sortable="true" checkable="false" useCountQuery="false" entity="ent3" gr:showAllParts="true" displayAttributes="ent3#att3 ent3#att8 ent3#att26 ent3#att28 ent3#att30">
+    <PowerIndexUnit gr:x="250" gr:y="195" id="sv1#area3#page2#pwu3" name="Vehicles near crosswalk" sortable="true" checkable="false" useCountQuery="false" entity="ent3" gr:showAllParts="true" displayAttributes="ent3#att3 ent3#att8 ent3#att26 ent3#att28 ent3#att30">
       <Selector id="sv1#area3#page2#pwu3#su4" defaultPolicy="fill" booleanOperator="and">
         <RelationshipRoleCondition id="sv1#area3#page2#pwu3#su4#rcond2" name="crosswalk_id" role="rel6#role11" predicate="in" implied="false"/>
       </Selector>

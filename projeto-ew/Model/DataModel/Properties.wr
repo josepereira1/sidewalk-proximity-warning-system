@@ -69,6 +69,5 @@
       <db:JoinColumn attribute="ent3#att3" name="id"/>
     </RelationshipRole2>
   </Relationship>
-  <db:Database id="db1" name="Database" type="MySQL" url="jdbc:mysql://localhost:3306/ew" cryptedPassword="true" password="cGFzc3dvcmQ=" username="root">
-  </db:Database>
+  <db:Database id="db1" name="Database" type="MySQL" url="jdbc:mysql://localhost:3306/ew" cryptedPassword="true" password="cGFzc3dvcmQ=" username="root"/>
 </DataModel>

@@ -1,48 +1,48 @@
-[15 Apr 2020 17:49:04] Building database metadata model
-[15 Apr 2020 17:49:04] Properties: {partialRefresh=false, processColumnsUsingSelect=, includePrimaryKeys=true, eventSocketClient=com.webratio.commons.net.EventSocketClient@39dd3812, includeTables=true, username=root, outputLogPath=/Users/ricardopetronilho/Desktop/wr_workspace/projeto-ew/.Temp~/DB.xml.log, readIndexes=null, driverClass=com.mysql.jdbc.Driver, includeSynonyms=true, metaDataProviderClass=com.webratio.commons.db.metadata.MySQLMetaDataProvider, outputPath=/Users/ricardopetronilho/Desktop/wr_workspace/projeto-ew/.Temp~/DB.xml, schemaRegex=null, readProcedures=null, includeViews=true, derby.system.home=/Users/ricardopetronilho/Desktop/wr_workspace/.metadata/.plugins/com.webratio.commons.db/derby, url=jdbc:mysql://localhost:3306/ew, tableRegex=null, readSQLDefinitions=true, includeForeignKeys=false, retrieveAllNames=false, tablesToRefresh=, eventSocketPort=58756}
-[15 Apr 2020 17:49:04] URL: jdbc:mysql://localhost:3306/ew
-[15 Apr 2020 17:49:04] Product name: MySQL
-[15 Apr 2020 17:49:04] Product version: 5.7.29
-[15 Apr 2020 17:49:04] Driver name: MySQL Connector Java
-[15 Apr 2020 17:49:04] Driver version: mysql-connector-java-5.1.31 ( Revision: alexander.soklakov@oracle.com-20140520065950-groqzzbvxprqdmnz )
-[15 Apr 2020 17:49:04] Driver major version: 5
-[15 Apr 2020 17:49:04] Driver minor version: 1
-[15 Apr 2020 17:49:04] Identifier quote string: 1
-[15 Apr 2020 17:49:04] Retrieving schemas
-[15 Apr 2020 17:49:04] Retrieving [TABLE, VIEW, SYNONYM] for schema ''
-[15 Apr 2020 17:49:04]   Found 'crosswalk' [type = TABLE]
-[15 Apr 2020 17:49:04]   Found 'pedestrian' [type = TABLE]
-[15 Apr 2020 17:49:04]   Found 'vehicle' [type = TABLE]
-[15 Apr 2020 17:49:04] Retrieving columns for 'crosswalk' [type = TABLE]
-[15 Apr 2020 17:49:05]   Found column: id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: state [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: npedestrian [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: nvehicle [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: latitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: longitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: elevacao [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05] Retrieving primary keys for 'crosswalk' [type = TABLE]
-[15 Apr 2020 17:49:05]   Found primary key column: id
-[15 Apr 2020 17:49:05] Retrieving columns for 'pedestrian' [type = TABLE]
-[15 Apr 2020 17:49:05]   Found column: id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: distancia [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: latitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: longitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: elevacao [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: crosswalk_id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05] Retrieving primary keys for 'pedestrian' [type = TABLE]
-[15 Apr 2020 17:49:05]   Found primary key column: id
-[15 Apr 2020 17:49:05] Retrieving columns for 'vehicle' [type = TABLE]
-[15 Apr 2020 17:49:05]   Found column: id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: distancia [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: latitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: longitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: elevacao [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
-[15 Apr 2020 17:49:05]   Found column: crosswalk_id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
-[15 Apr 2020 17:49:05] Retrieving primary keys for 'vehicle' [type = TABLE]
-[15 Apr 2020 17:49:05]   Found primary key column: id
-[15 Apr 2020 17:49:05] Database metadata retrieved (80 ms)
-[15 Apr 2020 17:49:05] Retrieving auto-increment columns for 'crosswalk' [type = TABLE]
-[15 Apr 2020 17:49:05] Retrieving auto-increment columns for 'pedestrian' [type = TABLE]
-[15 Apr 2020 17:49:05] Retrieving auto-increment columns for 'vehicle' [type = TABLE]
-[15 Apr 2020 17:49:05] Database connection closed
+[16 Abr 2020 11:41:59] Building database metadata model
+[16 Abr 2020 11:41:59] Properties: {partialRefresh=false, processColumnsUsingSelect=, includePrimaryKeys=true, eventSocketClient=com.webratio.commons.net.EventSocketClient@1923e91b, includeTables=true, username=root, outputLogPath=C:\Users\Ricardo Petronilho\Desktop\workspace\projeto-ew\.Temp~\DB.xml.log, readIndexes=null, driverClass=com.mysql.jdbc.Driver, includeSynonyms=true, metaDataProviderClass=com.webratio.commons.db.metadata.MySQLMetaDataProvider, outputPath=C:\Users\Ricardo Petronilho\Desktop\workspace\projeto-ew\.Temp~\DB.xml, schemaRegex=null, readProcedures=null, includeViews=true, derby.system.home=C:\Users\Ricardo Petronilho\Desktop\workspace\.metadata\.plugins\com.webratio.commons.db\derby, url=jdbc:mysql://localhost:3306/ew, tableRegex=null, readSQLDefinitions=true, includeForeignKeys=false, retrieveAllNames=false, tablesToRefresh=, eventSocketPort=51407}
+[16 Abr 2020 11:41:59] URL: jdbc:mysql://localhost:3306/ew
+[16 Abr 2020 11:41:59] Product name: MySQL
+[16 Abr 2020 11:41:59] Product version: 5.7.27-log
+[16 Abr 2020 11:41:59] Driver name: MySQL Connector Java
+[16 Abr 2020 11:41:59] Driver version: mysql-connector-java-5.1.31 ( Revision: alexander.soklakov@oracle.com-20140520065950-groqzzbvxprqdmnz )
+[16 Abr 2020 11:41:59] Driver major version: 5
+[16 Abr 2020 11:41:59] Driver minor version: 1
+[16 Abr 2020 11:41:59] Identifier quote string: 1
+[16 Abr 2020 11:41:59] Retrieving schemas
+[16 Abr 2020 11:41:59] Retrieving [TABLE, VIEW, SYNONYM] for schema ''
+[16 Abr 2020 11:41:59]   Found 'crosswalk' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found 'pedestrian' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found 'vehicle' [type = TABLE]
+[16 Abr 2020 11:41:59] Retrieving columns for 'crosswalk' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found column: id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: state [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: npedestrian [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: nvehicle [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: latitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: longitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: elevacao [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59] Retrieving primary keys for 'crosswalk' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found primary key column: id
+[16 Abr 2020 11:41:59] Retrieving columns for 'pedestrian' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found column: id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: distancia [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: latitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: longitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: elevacao [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: crosswalk_id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59] Retrieving primary keys for 'pedestrian' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found primary key column: id
+[16 Abr 2020 11:41:59] Retrieving columns for 'vehicle' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found column: id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: distancia [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: latitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: longitude [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: elevacao [type = DOUBLE][SQL/XOPEN type = 8][size = 22][dec. digits = 0]
+[16 Abr 2020 11:41:59]   Found column: crosswalk_id [type = INT][SQL/XOPEN type = 4][size = 10][dec. digits = 0]
+[16 Abr 2020 11:41:59] Retrieving primary keys for 'vehicle' [type = TABLE]
+[16 Abr 2020 11:41:59]   Found primary key column: id
+[16 Abr 2020 11:41:59] Database metadata retrieved (34 ms)
+[16 Abr 2020 11:41:59] Retrieving auto-increment columns for 'crosswalk' [type = TABLE]
+[16 Abr 2020 11:41:59] Retrieving auto-increment columns for 'pedestrian' [type = TABLE]
+[16 Abr 2020 11:41:59] Retrieving auto-increment columns for 'vehicle' [type = TABLE]
+[16 Abr 2020 11:41:59] Database connection closed

@@ -1,13 +1,13 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="270" gr:y="1220" id="sv1#area3#page6" name="Internal Error">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="30" gr:y="435" id="sv1#area3#page3" name="Object Already Exists">
   <ContentUnits>
-    <MultiMessageUnit gr:x="0" gr:y="0" id="sv1#area3#page6#mssu3" name="Internal Error">
-      <Message xml:space="preserve">Internal error.</Message>
+    <MultiMessageUnit gr:x="0" gr:y="0" id="sv1#area3#page3#mssu1" name="Object Already Exists">
+      <Message xml:space="preserve">Object you tried to create already exists in database.</Message>
     </MultiMessageUnit>
   </ContentUnits>
   <layout:Grid containerType="grid">
     <layout:Row>
       <layout:Cell colspan="12">
-        <layout:Unit unitId="sv1#area3#page6#mssu3"/>
+        <layout:Unit unitId="sv1#area3#page3#mssu1"/>
       </layout:Cell>
       <layout:Cell/>
       <layout:Cell/>

@@ -1,32 +1,32 @@
-[15 Apr 2020 17:49:02] DEBUG Executing SQL script
-[15 Apr 2020 17:49:02] INFO ================================================================================
-[15 Apr 2020 17:49:02] INFO outputPath= '/Users/ricardopetronilho/Desktop/wr_workspace/projeto-ew/.Temp~/UpdateSQL.xml'
-[15 Apr 2020 17:49:02] INFO onError= 'stop'
-[15 Apr 2020 17:49:02] INFO statementSeparator= ';'
-[15 Apr 2020 17:49:02] INFO derby.system.home= '/Users/ricardopetronilho/Desktop/wr_workspace/.metadata/.plugins/com.webratio.commons.db/derby'
-[15 Apr 2020 17:49:02] INFO password= 'password'
-[15 Apr 2020 17:49:02] INFO url= 'jdbc:mysql://localhost:3306/ew'
-[15 Apr 2020 17:49:02] INFO username= 'root'
-[15 Apr 2020 17:49:02] INFO autoCommit= 'false'
-[15 Apr 2020 17:49:02] INFO outputLogPath= '/Users/ricardopetronilho/Desktop/wr_workspace/projeto-ew/.Temp~/UpdateSQL.xml.log'
-[15 Apr 2020 17:49:02] INFO driverClass= 'com.mysql.jdbc.Driver'
-[15 Apr 2020 17:49:02] INFO encoding= ''
-[15 Apr 2020 17:49:02] INFO eventSocketPort= '58751'
-[15 Apr 2020 17:49:02] INFO sqlScript= '/Users/ricardopetronilho/Desktop/wr_workspace/projeto-ew/.Temp~/UpdateSQL.sql'
-[15 Apr 2020 17:49:02] INFO ================================================================================
-[15 Apr 2020 17:49:02] INFO Connecting to the Database...
-[15 Apr 2020 17:49:03] INFO Database connection estabilished
-[15 Apr 2020 17:49:03] INFO transaction isolation: 4
-[15 Apr 2020 17:49:03] DEBUG ================================================================================
-[15 Apr 2020 17:49:03] DEBUG Executing SQL script file: /Users/ricardopetronilho/Desktop/wr_workspace/projeto-ew/.Temp~/UpdateSQL.sql
-[15 Apr 2020 17:49:03] DEBUG Executing statement:  create table `crosswalk` ( `id`  integer  not null, `state`  integer, `npedestrian`  integer, `nvehicle`  integer, `latitude`  double precision, `longitude`  double precision, `elevacao`  double precision, primary key (`id`) )
-[15 Apr 2020 17:49:03] DEBUG Executing statement:    create table `pedestrian` ( `id`  integer  not null, `distancia`  integer, `latitude`  double precision, `longitude`  double precision, `elevacao`  double precision, primary key (`id`) )
-[15 Apr 2020 17:49:03] DEBUG Executing statement:    create table `vehicle` ( `id`  integer  not null, `distancia`  integer, `latitude`  double precision, `longitude`  double precision, `elevacao`  double precision, primary key (`id`) )
-[15 Apr 2020 17:49:03] DEBUG Executing statement:    alter table `pedestrian`  add column  `crosswalk_id`  integer
-[15 Apr 2020 17:49:03] DEBUG Executing statement:  alter table `pedestrian`   add index fk_pedestrian_crosswalk (`crosswalk_id`), add constraint fk_pedestrian_crosswalk foreign key (`crosswalk_id`) references `crosswalk` (`id`)
-[15 Apr 2020 17:49:03] DEBUG Executing statement:    alter table `vehicle`  add column  `crosswalk_id`  integer
-[15 Apr 2020 17:49:03] DEBUG Executing statement:  alter table `vehicle`   add index fk_vehicle_crosswalk (`crosswalk_id`), add constraint fk_vehicle_crosswalk foreign key (`crosswalk_id`) references `crosswalk` (`id`)
-[15 Apr 2020 17:49:03] DEBUG ================================================================================
-[15 Apr 2020 17:49:03] DEBUG SQL SCRIPT SUCCESSFULLY EXECUTED
-[15 Apr 2020 17:49:03] INFO Database connection closed
-[15 Apr 2020 17:49:03] DEBUG Total time: 781 milliseconds
+[16 Abr 2020 11:41:58] DEBUG Executing SQL script
+[16 Abr 2020 11:41:58] INFO ================================================================================
+[16 Abr 2020 11:41:58] INFO onError= 'stop'
+[16 Abr 2020 11:41:58] INFO autoCommit= 'false'
+[16 Abr 2020 11:41:58] INFO username= 'root'
+[16 Abr 2020 11:41:58] INFO outputPath= 'C:\Users\Ricardo Petronilho\Desktop\workspace\projeto-ew\.Temp~\UpdateSQL.xml'
+[16 Abr 2020 11:41:58] INFO outputLogPath= 'C:\Users\Ricardo Petronilho\Desktop\workspace\projeto-ew\.Temp~\UpdateSQL.xml.log'
+[16 Abr 2020 11:41:58] INFO encoding= ''
+[16 Abr 2020 11:41:58] INFO driverClass= 'com.mysql.jdbc.Driver'
+[16 Abr 2020 11:41:58] INFO sqlScript= 'C:\Users\Ricardo Petronilho\Desktop\workspace\projeto-ew\.Temp~\UpdateSQL.sql'
+[16 Abr 2020 11:41:58] INFO eventSocketPort= '51404'
+[16 Abr 2020 11:41:58] INFO statementSeparator= ';'
+[16 Abr 2020 11:41:58] INFO derby.system.home= 'C:\Users\Ricardo Petronilho\Desktop\workspace\.metadata\.plugins\com.webratio.commons.db\derby'
+[16 Abr 2020 11:41:58] INFO password= 'password'
+[16 Abr 2020 11:41:58] INFO url= 'jdbc:mysql://localhost:3306/ew'
+[16 Abr 2020 11:41:58] INFO ================================================================================
+[16 Abr 2020 11:41:58] INFO Connecting to the Database...
+[16 Abr 2020 11:41:58] INFO Database connection estabilished
+[16 Abr 2020 11:41:58] INFO transaction isolation: 4
+[16 Abr 2020 11:41:58] DEBUG ================================================================================
+[16 Abr 2020 11:41:58] DEBUG Executing SQL script file: C:\Users\Ricardo Petronilho\Desktop\workspace\projeto-ew\.Temp~\UpdateSQL.sql
+[16 Abr 2020 11:41:58] DEBUG Executing statement:  create table `crosswalk` ( `id`  integer  not null, `state`  integer, `npedestrian`  integer, `nvehicle`  integer, `latitude`  double precision, `longitude`  double precision, `elevacao`  double precision, primary key (`id`) )
+[16 Abr 2020 11:41:58] DEBUG Executing statement:    create table `pedestrian` ( `id`  integer  not null, `distancia`  integer, `latitude`  double precision, `longitude`  double precision, `elevacao`  double precision, primary key (`id`) )
+[16 Abr 2020 11:41:58] DEBUG Executing statement:    create table `vehicle` ( `id`  integer  not null, `distancia`  integer, `latitude`  double precision, `longitude`  double precision, `elevacao`  double precision, primary key (`id`) )
+[16 Abr 2020 11:41:58] DEBUG Executing statement:    alter table `pedestrian`  add column  `crosswalk_id`  integer
+[16 Abr 2020 11:41:59] DEBUG Executing statement:  alter table `pedestrian`   add index fk_pedestrian_crosswalk (`crosswalk_id`), add constraint fk_pedestrian_crosswalk foreign key (`crosswalk_id`) references `crosswalk` (`id`)
+[16 Abr 2020 11:41:59] DEBUG Executing statement:    alter table `vehicle`  add column  `crosswalk_id`  integer
+[16 Abr 2020 11:41:59] DEBUG Executing statement:  alter table `vehicle`   add index fk_vehicle_crosswalk (`crosswalk_id`), add constraint fk_vehicle_crosswalk foreign key (`crosswalk_id`) references `crosswalk` (`id`)
+[16 Abr 2020 11:41:59] DEBUG ================================================================================
+[16 Abr 2020 11:41:59] DEBUG SQL SCRIPT SUCCESSFULLY EXECUTED
+[16 Abr 2020 11:41:59] INFO Database connection closed
+[16 Abr 2020 11:41:59] DEBUG Total time: 434 milliseconds
