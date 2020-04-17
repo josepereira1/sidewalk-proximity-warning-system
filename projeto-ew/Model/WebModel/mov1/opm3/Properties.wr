@@ -1,5 +1,34 @@
 <OperationModule xmlns:gr="http://www.webratio.com/2006/WebML/Graph" gr:x="240" gr:y="285" id="mov1#opm3" name="Delete Crosswalk">
   <OperationUnits>
-    <InputCollectorUnit id="mov1#opm3#icu3" name="Input Collector" gr:x="30" gr:y="60"/>
+    <InputCollectorUnit id="mov1#opm3#icu3" gr:x="10" gr:y="210">
+      <InputCollectorParameter id="mov1#opm3#icu3#icp5" name="Crosswalk id"/>
+      <OKLink id="mov1#opm3#icu3#oln17" name="OKFlow17" to="mov1#opm3#seu5">
+        <LinkParameter id="mov1#opm3#icu3#oln17#par20" name="Crosswalk id_KeyCondition7 [id]" source="mov1#opm3#icu3#icp5" target="mov1#opm3#seu5#su9#kcond7.ent1#att1"/>
+      </OKLink>
+    </InputCollectorUnit>
+    <OKCollectorUnit gr:x="1050" gr:y="30" id="mov1#opm3#okcu3" name="Crosswalk deleted"/>
+    <KOCollectorUnit gr:x="1050" gr:y="190" id="mov1#opm3#kocu5" name="internal error"/>
+    <KOCollectorUnit gr:x="1050" gr:y="395" id="mov1#opm3#kocu6" name="Crosswalk does not exist"/>
+    <IsNotNullUnit gr:x="580" gr:y="220" id="mov1#opm3#inn7" name="Crosswalk exists?">
+      <OKLink id="mov1#opm3#inn7#oln19" name="OKFlow19" to="mov1#opm3#dlu1">
+        <LinkParameter id="mov1#opm3#inn7#oln19#par16" name="Input Value_KeyCondition6 [id]" source="inputValue" target="mov1#opm3#dlu1#su8#kcond6.ent1#att1"/>
+      </OKLink>
+      <KOLink id="mov1#opm3#inn7#kln12" name="KOFlow12" to="mov1#opm3#kocu6" automaticCoupling="true"/>
+    </IsNotNullUnit>
+    <DeleteUnit gr:x="775" gr:y="85" id="mov1#opm3#dlu1" name="Delete Crosswalk" entity="ent1">
+      <Selector id="mov1#opm3#dlu1#su8" defaultPolicy="fill" booleanOperator="and">
+        <KeyCondition id="mov1#opm3#dlu1#su8#kcond6" name="KeyCondition6" predicate="in" implied="false"/>
+      </Selector>
+      <KOLink id="mov1#opm3#dlu1#kln13" name="KOFlow13" to="mov1#opm3#kocu5" automaticCoupling="true"/>
+      <OKLink id="mov1#opm3#dlu1#oln20" name="OKFlow20" to="mov1#opm3#okcu3" automaticCoupling="true"/>
+    </DeleteUnit>
+    <SelectorUnit gr:x="330" gr:y="200" id="mov1#opm3#seu5" name="get Crosswalk with id=?" entity="ent1">
+      <Selector id="mov1#opm3#seu5#su9" defaultPolicy="fill" booleanOperator="and">
+        <KeyCondition id="mov1#opm3#seu5#su9#kcond7" name="KeyCondition7" predicate="in" implied="false"/>
+      </Selector>
+      <OKLink id="mov1#opm3#seu5#oln18" name="OKFlow18" to="mov1#opm3#inn7">
+        <LinkParameter id="mov1#opm3#seu5#oln18#par14" name="id_Input" source="ent1#att1Array" target="mov1#opm3#inn7.isnotnull"/>
+      </OKLink>
+    </SelectorUnit>
   </OperationUnits>
 </OperationModule>

@@ -1,4 +1,4 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="270" gr:y="1220" id="sv1#area3#page6" name="Internal Error">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="315" gr:y="1045" id="sv1#area3#page6" name="Internal Error">
   <ContentUnits>
     <MultiMessageUnit gr:x="0" gr:y="0" id="sv1#area3#page6#mssu3" name="Internal Error">
       <Message xml:space="preserve">Internal error.</Message>

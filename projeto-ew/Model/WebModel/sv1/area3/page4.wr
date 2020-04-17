@@ -1,7 +1,6 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="30" gr:y="585" id="sv1#area3#page4" name="Create Crosswalk" landmark="true">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="40" gr:y="440" id="sv1#area3#page4" name="Create Crosswalk" landmark="true">
   <ContentUnits>
-    <EntryUnit gr:x="0" gr:y="0" id="sv1#area3#page4#enu1" name="Create Crosswalk" gr:showAllParts="true" entity="ent1" fieldOrder="sv1#area3#page4#enu1#fld2 sv1#area3#page4#enu1#fld9 sv1#area3#page4#enu1#fld3 sv1#area3#page4#enu1#fld4 sv1#area3#page4#enu1#fld5 sv1#area3#page4#enu1#fld6 sv1#area3#page4#enu1#fld7" linkOrder="sv1#area3#page4#enu1#ln7">
-      <Field id="sv1#area3#page4#enu1#fld2" name="id" type="integer" modifiable="true" attribute="ent1#att1"/>
+    <EntryUnit gr:x="0" gr:y="0" id="sv1#area3#page4#enu1" name="Create Crosswalk" gr:showAllParts="true" entity="ent1" fieldOrder="sv1#area3#page4#enu1#fld9 sv1#area3#page4#enu1#fld3 sv1#area3#page4#enu1#fld4 sv1#area3#page4#enu1#fld5 sv1#area3#page4#enu1#fld6 sv1#area3#page4#enu1#fld7" linkOrder="sv1#area3#page4#enu1#ln7">
       <Field id="sv1#area3#page4#enu1#fld3" type="integer" modifiable="true" name="number of pedestrians" attribute="ent1#att5"/>
       <Field id="sv1#area3#page4#enu1#fld4" name="number of vehicles" type="integer" modifiable="true" attribute="ent1#att6"/>
       <Field id="sv1#area3#page4#enu1#fld5" name="latitude" type="float" modifiable="true" attribute="ent1#att25"/>
@@ -10,6 +9,7 @@
       <Field id="sv1#area3#page4#enu1#fld9" name="traffic light state" type="integer" modifiable="true" attribute="ent1#att4"/>
       <Link id="sv1#area3#page4#enu1#ln7" name="Create Crosswalk" to="sv1#miu1" type="normal" validate="true">
         <LinkParameter id="sv1#area3#page4#enu1#ln7#par15" name="Crosswalk Object_Crosswalk object" source="entityBean" target="sv1#miu1.mov1#opm1#icu1#icp1"/>
+        <LinkParameter id="sv1#area3#page4#enu1#ln7#par4" name="id_Crosswalk id" source="sv1#area3#page4#enu1#fld2" target="sv1#miu1.mov1#opm1#icu1#icp2"/>
       </Link>
     </EntryUnit>
   </ContentUnits>
@@ -17,15 +17,12 @@
     <layout:Row>
       <layout:Cell colspan="12">
         <layout:Unit unitId="sv1#area3#page4#enu1">
-          <layout:Field field="sv1#area3#page4#enu1#fld2"/>
+          <layout:Link link="sv1#area3#page4#enu1#ln7"/>
           <layout:Field field="sv1#area3#page4#enu1#fld9"/>
           <layout:Field field="sv1#area3#page4#enu1#fld3"/>
           <layout:Field field="sv1#area3#page4#enu1#fld4"/>
           <layout:Field field="sv1#area3#page4#enu1#fld5"/>
           <layout:Field field="sv1#area3#page4#enu1#fld6"/>
-          <layout:Field field="sv1#area3#page4#enu1#fld7"/>
-          <layout:Link link="sv1#area3#page4#enu1#ln7"/>
-          <layout:Field field="sv1#area3#page4#enu1#fld7"/>
           <layout:Field field="sv1#area3#page4#enu1#fld7"/>
         </layout:Unit>
       </layout:Cell>

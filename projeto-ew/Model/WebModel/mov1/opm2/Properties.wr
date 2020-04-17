@@ -1,21 +1,21 @@
 <OperationModule xmlns:gr="http://www.webratio.com/2006/WebML/Graph" gr:x="240" gr:y="215" id="mov1#opm2" name="Update Crosswalk">
   <OperationUnits>
-    <InputCollectorUnit id="mov1#opm2#icu2" gr:x="35" gr:y="245">
+    <InputCollectorUnit id="mov1#opm2#icu2" gr:x="35" gr:y="210">
       <InputCollectorParameter id="mov1#opm2#icu2#icp3" name="Crosswalk object"/>
-      <OKLink id="mov1#opm2#icu2#oln1" name="OKFlow1" to="mov1#opm2#inn2">
-        <LinkParameter id="mov1#opm2#icu2#oln1#par63" name="Crosswalk id_Input" source="mov1#opm2#icu2#icp4" target="mov1#opm2#inn2.isnotnull"/>
-      </OKLink>
-      <Link id="mov1#opm2#icu2#ln9" name="Flow9" to="mov1#opm2#mfu1" type="transport" validate="true">
+      <Link id="mov1#opm2#icu2#ln9" name="Flow9" to="mov1#opm2#mfu1" type="transport" validate="true" gr:bendpoints="242,-100,-258,0">
         <LinkParameter id="mov1#opm2#icu2#ln9#par17" name="Crosswalk object_Crosswalk Object" source="mov1#opm2#icu2#icp3" target="mov1#opm2#mfu1.entityBeans"/>
         <LinkParameter id="mov1#opm2#icu2#ln9#par23" name="Crosswalk id_KeyCondition2 [id]" source="mov1#opm2#icu2#icp4" target="mov1#opm2#mfu1#su2#kcond2.ent1#att1"/>
       </Link>
       <InputCollectorParameter id="mov1#opm2#icu2#icp4" name="Crosswalk id"/>
+      <OKLink id="mov1#opm2#icu2#oln15" name="OKFlow15" to="mov1#opm2#seu4">
+        <LinkParameter id="mov1#opm2#icu2#oln15#par11" name="Crosswalk id_KeyCondition4 [id]" source="mov1#opm2#icu2#icp4" target="mov1#opm2#seu4#su6#kcond4.ent1#att1"/>
+      </OKLink>
     </InputCollectorUnit>
-    <OKCollectorUnit gr:x="855" gr:y="85" id="mov1#opm2#okcu2" name="Crosswalk updated">
+    <OKCollectorUnit gr:x="985" gr:y="55" id="mov1#opm2#okcu2" name="Crosswalk updated">
       <OutputCollectorParameter id="mov1#opm2#okcu2#ocp2" name="Crosswalk id"/>
     </OKCollectorUnit>
-    <KOCollectorUnit gr:x="855" gr:y="225" id="mov1#opm2#kocu3" name="internal error"/>
-    <ModifyUnit gr:x="585" gr:y="135" id="mov1#opm2#mfu1" name="Update Crosswalk" entity="ent1" bulk="false">
+    <KOCollectorUnit gr:x="985" gr:y="190" id="mov1#opm2#kocu3" name="internal error"/>
+    <ModifyUnit gr:x="745" gr:y="95" id="mov1#opm2#mfu1" name="Update Crosswalk" entity="ent1" bulk="false">
       <Selector id="mov1#opm2#mfu1#su2" defaultPolicy="fill" booleanOperator="and">
         <KeyCondition id="mov1#opm2#mfu1#su2#kcond2" name="KeyCondition2" predicate="in" implied="false"/>
       </Selector>
@@ -24,10 +24,18 @@
         <LinkParameter id="mov1#opm2#mfu1#oln7#par18" name="id_Crosswalk id" source="ent1#att1Array" target="mov1#opm2#okcu2#ocp2"/>
       </OKLink>
     </ModifyUnit>
-    <IsNotNullUnit gr:x="410" gr:y="255" id="mov1#opm2#inn2" name="Crosswalk exists?">
+    <IsNotNullUnit gr:x="570" gr:y="220" id="mov1#opm2#inn2" name="Crosswalk exists?">
       <OKLink id="mov1#opm2#inn2#oln6" name="OKFlow6" to="mov1#opm2#mfu1" automaticCoupling="true"/>
       <KOLink id="mov1#opm2#inn2#kln1" name="KOFlow1" to="mov1#opm2#kocu4" automaticCoupling="true"/>
     </IsNotNullUnit>
-    <KOCollectorUnit gr:x="855" gr:y="380" id="mov1#opm2#kocu4" name="Crosswalk does not exist"/>
+    <KOCollectorUnit gr:x="985" gr:y="345" id="mov1#opm2#kocu4" name="Crosswalk does not exist"/>
+    <SelectorUnit gr:x="365" gr:y="200" id="mov1#opm2#seu4" name="get Crosswalk with id=?" entity="ent1">
+      <Selector id="mov1#opm2#seu4#su6" defaultPolicy="fill" booleanOperator="and">
+        <KeyCondition id="mov1#opm2#seu4#su6#kcond4" name="KeyCondition4" predicate="in" implied="false"/>
+      </Selector>
+      <OKLink id="mov1#opm2#seu4#oln16" name="OKFlow16" to="mov1#opm2#inn2">
+        <LinkParameter id="mov1#opm2#seu4#oln16#par12" name="id_Input" source="ent1#att1Array" target="mov1#opm2#inn2.isnotnull"/>
+      </OKLink>
+    </SelectorUnit>
   </OperationUnits>
 </OperationModule>

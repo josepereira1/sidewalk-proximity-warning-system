@@ -1,0 +1,31 @@
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="510" gr:y="445" id="sv1#area3#page5" name="Delete Crosswalk" landmark="true">
+  <ContentUnits>
+    <EntryUnit gr:x="0" gr:y="0" id="sv1#area3#page5#enu2" name="Delete Crosswalk" linkOrder="sv1#area3#page5#enu2#ln2" entity="ent1">
+      <Field id="sv1#area3#page5#enu2#fld1" name="id" type="integer" modifiable="true" attribute="ent1#att1"/>
+      <Link id="sv1#area3#page5#enu2#ln2" name="Delete Crosswalk" to="sv1#miu3" type="normal" validate="true">
+        <LinkParameter id="sv1#area3#page5#enu2#ln2#par19" name="id_Crosswalk id" source="sv1#area3#page5#enu2#fld1" target="sv1#miu3.mov1#opm3#icu3#icp5"/>
+      </Link>
+    </EntryUnit>
+  </ContentUnits>
+  <layout:Grid containerType="grid">
+    <layout:Row>
+      <layout:Cell colspan="12">
+        <layout:Unit unitId="sv1#area3#page5#enu2">
+          <layout:Field field="sv1#area3#page5#enu2#fld1"/>
+          <layout:Link link="sv1#area3#page5#enu2#ln2"/>
+        </layout:Unit>
+      </layout:Cell>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+      <layout:Cell/>
+    </layout:Row>
+  </layout:Grid>
+</Page>
