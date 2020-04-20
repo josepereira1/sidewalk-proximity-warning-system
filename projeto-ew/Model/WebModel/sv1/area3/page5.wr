@@ -1,4 +1,4 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="510" gr:y="445" id="sv1#area3#page5" name="Delete Crosswalk" landmark="true">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="570" gr:y="445" id="sv1#area3#page5" name="Delete Crosswalk" landmark="true">
   <ContentUnits>
     <EntryUnit gr:x="0" gr:y="0" id="sv1#area3#page5#enu2" name="Delete Crosswalk" linkOrder="sv1#area3#page5#enu2#ln2" entity="ent1">
       <Field id="sv1#area3#page5#enu2#fld1" name="id" type="integer" modifiable="true" attribute="ent1#att1"/>

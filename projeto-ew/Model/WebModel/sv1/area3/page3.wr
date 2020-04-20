@@ -1,7 +1,7 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="30" gr:y="435" id="sv1#area3#page3" name="Object Already Exists">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="0" gr:y="840" id="sv1#area3#page3" name="Crosswalk with specified location already exists">
   <ContentUnits>
-    <MultiMessageUnit gr:x="0" gr:y="0" id="sv1#area3#page3#mssu1" name="Object Already Exists">
-      <Message xml:space="preserve">Object you tried to create already exists in database.</Message>
+    <MultiMessageUnit gr:x="0" gr:y="0" id="sv1#area3#page3#mssu1" name="Crosswalk with specified location already exists">
+      <Message xml:space="preserve">Could not create. Crosswalk with specified location already exists.</Message>
     </MultiMessageUnit>
   </ContentUnits>
   <layout:Grid containerType="grid">

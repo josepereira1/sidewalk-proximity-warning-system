@@ -1,4 +1,4 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="0" gr:y="0" id="sv1#area3#page1" name="All Crosswalks" landmark="true">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="60" gr:y="0" id="sv1#area3#page1" name="All Crosswalks" landmark="true">
   <ContentUnits>
     <PowerIndexUnit gr:x="0" gr:y="0" id="sv1#area3#page1#pwu1" name="All Crosswalks" sortable="true" checkable="false" useCountQuery="false" entity="ent1" displayAttributes="ent1#att1" gr:showAllParts="true" linkOrder="sv1#area3#page1#pwu1#ln3">
       <Link id="sv1#area3#page1#pwu1#ln3" name="see more details" to="sv1#area3#page2#dau1" automaticCoupling="true" type="normal" validate="true"/>

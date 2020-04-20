@@ -1,4 +1,4 @@
-<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="260" gr:y="10" id="sv1#area3#page2" name="Crosswalk Details">
+<Page xmlns:gr="http://www.webratio.com/2006/WebML/Graph" xmlns:layout="http://www.webratio.com/2006/WebML/Layout" gr:x="320" gr:y="10" id="sv1#area3#page2" name="Crosswalk Details">
   <ContentUnits>
     <DataUnit gr:x="0" gr:y="0" id="sv1#area3#page2#dau1" name="Crosswalk Details" entity="ent1" displayAttributes="ent1#att1 ent1#att4 ent1#att5 ent1#att6 ent1#att25 ent1#att27 ent1#att29" gr:showAllParts="true">
       <Selector id="sv1#area3#page2#dau1#su1" defaultPolicy="fill" booleanOperator="and">

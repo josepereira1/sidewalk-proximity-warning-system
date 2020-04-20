@@ -1,10 +1,11 @@
-<SiteView xmlns:gr="http://www.webratio.com/2006/WebML/Graph" id="sv1" name="SPWS" landmarks="sv1#area1 sv1#area2 sv1#area3" homePage="sv1#area3#page1">
+<SiteView xmlns:gr="http://www.webratio.com/2006/WebML/Graph" id="sv1" name="SPWS" landmarks="sv1#area3" homePage="sv1#area3#page1">
   <OperationUnits>
     <ModuleInstanceUnit gr:x="25" gr:y="795" id="sv1#miu1" action="true" moduleId="mov1#opm1">
       <OKLink id="sv1#miu1#oln5" name="OKFlow5" to="sv1#area3#page2#dau1">
         <LinkParameter id="sv1#miu1#oln5#par9" name="Crosswalk id_KeyCondition1 [id]" source="mov1#opm1#okcu1#ocp1" target="sv1#area3#page2#dau1#su1#kcond1.ent1#att1"/>
       </OKLink>
-      <KOLink id="sv1#miu1#kln8" name="KOFlow8" to="sv1#area3#page6#mssu3" automaticCoupling="true" codeRef="mov1#opm1#kocu2"/>
+      <KOLink id="sv1#miu1#kln8" name="KOFlow8" to="sv1#area3#page6#mssu3" automaticCoupling="true" codeRef="mov1#opm1#kocu2" gr:bendpoints="-4,-89,-594,-634;-138,-89,-728,-634;-138,543,-728,-2;1,543,-589,-1"/>
+      <KOLink id="sv1#miu1#kln10" name="KOFlow10" to="sv1#area3#page3#mssu1" automaticCoupling="true" codeRef="mov1#opm1#kocu1"/>
     </ModuleInstanceUnit>
     <ModuleInstanceUnit gr:x="1200" gr:y="1080" id="sv1#miu2" action="true" moduleId="mov1#opm2">
       <KOLink id="sv1#miu2#kln6" name="KOFlow6" to="sv1#area3#page9#mssu2" automaticCoupling="true" codeRef="mov1#opm2#kocu4" gr:bendpoints="2,-104,318,0"/>
