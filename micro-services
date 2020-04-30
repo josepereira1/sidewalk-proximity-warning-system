@@ -1,0 +1,24 @@
+Micro serviços:
+    1 - closestCrosswalk{
+        //   Recebe como input, lista de users, com a localização e o username, 
+        verificando se estão perto de uma crosswalk, e em caso afirmativo, associá-lo à mesma.
+        
+        Algoritmos:
+            1 - Dividir as crosswalks por N grupos, N threads vão percorrer cada grupo 
+            e encontra a distância minima, de seguida determina o min das N distâncias
+            calculadas pelas threads
+
+            2 - R-tree https://en.wikipedia.org/wiki/R-tree
+    }
+
+    2 - notifyEntitysInCrosswalks    // notifica todas as entidades das crosswalks
+
+
+
+    for(Passadeira p : passadeiras):
+        if(p.hasCars() and p.hasPedestrians):
+           
+
+    Dúvidas:
+
+    1 - O cliente também vê a localização tempo real dos outros?
