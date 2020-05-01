@@ -12,13 +12,13 @@ Micro serviços:
     }
 
     2 - notifyEntitysInCrosswalks    // notifica todas as entidades das crosswalks
-
-
-
-    for(Passadeira p : passadeiras):
-        if(p.hasCars() and p.hasPedestrians):
            
 
     Dúvidas:
 
     1 - O cliente também vê a localização tempo real dos outros?
+    2 - Como funcionam as condições de notificação?
+    3 - Quando um serviço tem N réplicas a gestão do balanceamento é feita pelo maestro (em caso de ochestration), ou um serviço próprio para isso, como um docker swarm, ...
+    4 - Notificações no caso do nosso microserviço, devem ir diretamente para o servidor?
+    5 - Perguntar opinião de como está a funcionar o nosso CLOSESTCROSSWALK?
+    6 - Estamos a pensar aproveitar o request do cliente ao servidor a enviar a localização para notificar caso seja necessário.
