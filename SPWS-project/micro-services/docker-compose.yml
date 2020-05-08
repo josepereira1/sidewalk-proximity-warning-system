@@ -1,0 +1,17 @@
+version: '3'
+
+# lista de serviços
+services:
+  solver: # apenas para testes, pois já existe um serviço solver
+    image: solver
+    deploy:
+      replicas: 1
+    ports:
+    - "5000:5000"
+
+  gerahorario:
+    image: gerahorario
+    deploy:
+      replicas: 1
+    ports:
+    - "5001:5001"
