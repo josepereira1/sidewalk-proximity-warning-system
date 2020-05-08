@@ -1,2 +1,2 @@
-sudo docker build --tag crudPestrian container-CRUD-pestrian/
-sudo docker build --tag crudVehicle container-CRUD-vehicle/
+sudo docker build --tag crud-pedestrian container-CRUD-pestrian/
+sudo docker build --tag crud-vehicle container-CRUD-vehicle/

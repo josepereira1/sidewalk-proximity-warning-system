@@ -1,11 +1,28 @@
 #!/usr/bin/env python
 import pika
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-channel = connection.channel()
+class Sender:
 
-channel.queue_declare(queue='queue')
+	def __init__(self, ip):
+		self.setHost(ip)
 
-channel.basic_publish(exchange='', routing_key='hello', body='Hello World!')
-print(" [x] Sent 'Hello World!'")
-connection.close()
+
+	def setHost(self, ip):
+		self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=ip))
+		self.channel = self.connection.channel()
+
+	def setQueue(self, queue):
+		self.queue = queue
+		self.channel.queue_declare(queue=self.queue)
+
+	def send(self, msg):
+		self.channel.basic_publish(exchange='', routing_key=self.queue, body=msg)
+
+	def close(self):
+		self.connection.close()
+
+
+sender = Sender('localhost')
+sender.setQueue('queue')
+sender.send('hello')
+sender.close()
