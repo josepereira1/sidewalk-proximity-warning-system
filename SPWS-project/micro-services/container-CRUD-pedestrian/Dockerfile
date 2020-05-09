@@ -1,5 +1,5 @@
 # cria uma nova imagem a partir da imagem oficial do python
-FROM python:3.7
+FROM python:3.7-alpine
 
 # define a WORKDIR no filesystem do docker, isto é, onde se quer instalar o programa dentro do container do docker
 WORKDIR /usr/src/crudPedestrian

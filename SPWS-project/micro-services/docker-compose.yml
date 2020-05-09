@@ -1,21 +1,8 @@
 version: '3'
-
-# lista de serviços
 services:
-  redis-crud-pedestrian:
-    image: redis-crud-pedestrianv
-    deploy:
-      replicas: 1
-    ports:
-    - "6379:6379"
-  
-  crud-pedestrian: # apenas para testes, pois já existe um serviço solver
+  web:
     image: crud-pedestrian
-    deploy:
-      replicas: 1
     ports:
-    - "5000:5000"
-    links:
-      - redis-crud-pedestrian
-    depends_on: 
-      - redis-crud-pedestrian
+      - "5000:5000"
+  redis:
+    image: "redis:alpine"
