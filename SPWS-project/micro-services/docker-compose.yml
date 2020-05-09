@@ -4,9 +4,9 @@ services:
     image: crud-pedestrian
     ports:
       - "5000:5000"
-  redis-crud-pedestrian:  # não é preciso especificar a porta, pois eles usam a mesma, e utilizam o container_name para saber qual o redis que devem ir
+  redis-crud-pedestrian:
     image: "redis:alpine"
-    container_name: redis-crud-pedestrian
+    #container_name: redis-crud-pedestrian
 
   crud-vehicle:
     image: crud-vehicle
@@ -14,4 +14,4 @@ services:
       - "5001:5001"
   redis-crud-vehicle:
     image: "redis:alpine"
-    container_name: redis-crud-vehicle
+    #container_name: redis-crud-vehicle

@@ -30,7 +30,7 @@ def getLocation():
 
 @app.route("/", methods=['GET', 'POST'])
 def root():
-        return "service ready"
+        return "service is ready"
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port="5000", debug=True)
