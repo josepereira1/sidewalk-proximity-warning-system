@@ -2,10 +2,10 @@
 FROM python:3.7-alpine
 
 # define a WORKDIR no filesystem do docker, isto é, onde se quer instalar o programa dentro do container do docker
-WORKDIR /usr/src/crudPedestrian
+WORKDIR /usr/src/crudVehicle
 
 # diz ao docker para aceitar conexões (para dentro ou fora) na porta 5001
-EXPOSE 5000
+EXPOSE 5001
 
 # copia toda a pasta atual para a WORKDIR (definida antes) do docker
 COPY . .
@@ -14,4 +14,4 @@ COPY . .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # corre o programa pretendido
-CMD python3 crudPestrian.py
+CMD python3 crudVehicle.py

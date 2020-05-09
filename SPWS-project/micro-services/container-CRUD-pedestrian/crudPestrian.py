@@ -4,7 +4,7 @@ import redis
 
 app = Flask(__name__)
 
-r = redis.Redis(host='redis', port=6379)
+r = redis.Redis(host='redis-crud-pedestrian', port=6379)
 
 @app.route("/updateLocation", methods=['POST'])
 def updateLocation():
