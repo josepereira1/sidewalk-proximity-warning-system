@@ -3,12 +3,12 @@ Este ficheiro explica detalhadamente como instalar e configurar o cluster 'docke
 1.
 >> vagrant up
 	instala as VMs configuradas no ficheiro Vagrantfile.
-	neste caso cria 2 VMs (Master - VM1; Slaves - VM2). Em todas instala o docker.
+	neste caso cria 3 VMs (Master - VM1; Slaves - VM2 e VM3). Em todas instala o docker.
 
 2. 
 >> make
 	copia o ficheiro que configura a infaestrutura (docker-compose.yml) para o Master (VM1).
-	copia as imagens dos micro-serviços para todas os Slaves (VM2).
+	copia as imagens dos micro-serviços para todas os Slaves (VM2 e VM3).
 	ainda copia os scripts (.sh) para as respetivas VMs. 
 
 3.
@@ -54,3 +54,6 @@ executar um determinado programa no container:
 	>> sudo docker ps
 	>> sudo docker exec -it <container_name> <command_name>
 	ex: sudo docker exec -it <container_name> /bin/bash
+
+
+sudo docker swarm join --token SWMTKN-1-11r7htyx7z5pntof4gh2xo1hd12msa314ywhvq7bojissfqvnt-7jegt25tsfnf070vzf26d2ibh 10.0.0.101:2377
