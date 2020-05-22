@@ -15,9 +15,11 @@ cp_imgs:
 	# VM2
 	scp -r container-CRUD-pedestrian/ vagrant@${VM2_IP}:${docker_imgs_location}
 	scp -r container-CRUD-vehicle/ vagrant@${VM2_IP}:${docker_imgs_location}
+	scp -r container-CRUD-crosswalk-location/ vagrant@${VM2_IP}:${docker_imgs_location}
 	# VM3
 	scp -r container-CRUD-pedestrian/ vagrant@${VM3_IP}:${docker_imgs_location}
 	scp -r container-CRUD-vehicle/ vagrant@${VM3_IP}:${docker_imgs_location}
+	scp -r container-CRUD-crosswalk-location/ vagrant@${VM3_IP}:${docker_imgs_location}
 
 # copia a configuração da infraestrutura (docker-compose.yml) para o MASTER (VM1)
 cp_composer:
