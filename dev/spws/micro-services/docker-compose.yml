@@ -21,7 +21,6 @@ services:
       - redis-crud-vehicle
   redis-crud-vehicle:
     image: "redis:alpine"
-  
 
   crud-crosswalk-location:
     image: crud-crosswalk-location
@@ -35,3 +34,14 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: password
+
+
+  read-traffic-light:
+    image: read-traffic-light
+    build: container-read-traffic-light/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5003:5003"
+    links:
+      - redis-read-traffic-light
+  redis-read-traffic-light:
+    image: "redis:alpine"
