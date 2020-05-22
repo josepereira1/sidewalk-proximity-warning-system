@@ -22,6 +22,7 @@ services:
   redis-crud-vehicle:
     image: "redis:alpine"
 
+
   crud-crosswalk-location:
     image: crud-crosswalk-location
     build: container-CRUD-crosswalk-location/ # caso a imagem não exista, instala a partir desta diretoria
@@ -45,3 +46,16 @@ services:
       - redis-read-traffic-light
   redis-read-traffic-light:
     image: "redis:alpine"
+
+
+  crud-crosswalk-counters:
+    image: crud-crosswalk-counters
+    build: container-CRUD-crosswalk-counters/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5004:5004"
+    links:
+      - redis-crud-crosswalk-counters
+  redis-crud-crosswalk-counters:
+    image: "redis:alpine"
+
+
