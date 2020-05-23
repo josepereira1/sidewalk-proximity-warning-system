@@ -17,6 +17,9 @@ push:
 	sudo docker tag crud-pedestrian bakincode/crud-pedestrian
 	sudo docker push bakincode/crud-pedestrian
 
+	sudo docker tag calculate-distance-in-crosswalk bakincode/calculate-distance-in-crosswalk
+	sudo docker push bakincode/calculate-distance-in-crosswalk
+
 cp_all: cp_composer cp_script
 
 # copia a configuração da infraestrutura (docker-compose.yml) para o MASTER (VM1)

@@ -3,27 +3,13 @@ import psycopg2
 import time
 import sys
 
-hostnameLocal = "localhost"
+#hostnameLocal = "localhost"
 hostnameContainer = "postgres-crud-crosswalk-location"
 tableName = "crosswalk"
-MAX_TRIES = 5
 
-# primeiro tenta estabelecer a conexão
-for i in range(MAX_TRIES):
-	try:
-		time.sleep(3) # espera 3 segundos antes de tentar
-		conn = psycopg2.connect(database="postgres", user="postgres", password="password", host=hostnameContainer, port="5432")
-		cursor = conn.cursor()
-		break;
-	except:
-	    print("could not connect to postgres service, retrying...", error)
-
-# Max tries reached
-if (i==MAX_TRIES-1): 
-	print("max tries reached, exiting program...")
-	sys.exit(1)
-
-print("\n\n\ndatabase connection established!\n\n\n")	
+time.sleep(10) # espera 10 segundos antes de tentar estabelecer a conexão
+conn = psycopg2.connect(database="postgres", user="postgres", password="password", host=hostnameContainer, port="5432")
+cursor = conn.cursor()
 
 app = Flask(__name__)	
 

@@ -1,0 +1,72 @@
+version: '3'
+services:
+  
+  crud-pedestrian:
+    image: bakincode/crud-pedestrian
+    build: container-CRUD-pedestrian/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5000:5000"
+    links: 
+      - redis-crud-pedestrian
+  redis-crud-pedestrian:
+    image: "redis:alpine"
+
+
+  crud-vehicle:
+    image: bakincode/crud-vehicle
+    build: container-CRUD-vehicle/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5001:5001"
+    links:
+      - redis-crud-vehicle
+  redis-crud-vehicle:
+    image: "redis:alpine"
+
+
+  crud-crosswalk-location:
+    image: bakincode/crud-crosswalk-location
+    build: container-CRUD-crosswalk-location/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5002:5002"
+    links: 
+        - postgres-crud-crosswalk-location
+  postgres-crud-crosswalk-location:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+
+
+  read-traffic-light:
+    image: bakincode/read-traffic-light
+    build: container-read-traffic-light/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5003:5003"
+    links:
+      - redis-read-traffic-light
+  redis-read-traffic-light:
+    image: "redis:alpine"
+
+
+  crud-crosswalk-counters:
+    image: bakincode/crud-crosswalk-counters
+    build: container-CRUD-crosswalk-counters/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5004:5004"
+    links:
+      - redis-crud-crosswalk-counters
+  redis-crud-crosswalk-counters:
+    image: "redis:alpine"
+
+
+  calculate-distance-in-crosswalk:
+    image: bakincode/calculate-distance-in-crosswalk
+    build: container-calculate-distance-in-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5006:5006"
+    links:
+      - redis-calculate-distance-in-crosswalk
+  redis-calculate-distance-in-crosswalk:
+    image: "redis:alpine"  
+
+

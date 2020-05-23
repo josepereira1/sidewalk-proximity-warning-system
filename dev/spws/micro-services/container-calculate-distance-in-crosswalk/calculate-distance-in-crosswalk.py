@@ -4,6 +4,7 @@ import requests
 import random # usado penas para gerar a população de teste
 import json
 import math
+import time
 
 r = None
 
@@ -26,8 +27,11 @@ def initRedis():
     for crosswalk in crosswalks:
         r.set(crosswalk['id'], json.dumps(crosswalk))
 
+
+time.sleep(20) # espera 20 segundos antes de tentar estabelecer a conexão
 populate() # apenas para testar
 initRedis() # faz a migração da informação das crosswalks para o Redis
+
 
 app = Flask(__name__)
 
@@ -41,8 +45,8 @@ def calculateDistance():
             #print(user)
             distance = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) )
             #print(distance)
-            res += str(distance) + ","
-        res = res[:-1]
+            res += '{"id":' + str(user['id']) + ", " + '"distance":' + str(distance) + "}, "
+        res = res[:-2]
         res += "]"
         return res
     else: return "ko"
