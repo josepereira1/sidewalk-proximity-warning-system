@@ -18,7 +18,7 @@ def incrementPedestrians():
 def incrementVehicles():
 	if 'id' in request.json:
 		id = request.json['id']
-		r.incr("v" + id)
+		r.incr("v" + str(id))
 		return "ok"
 	else:
 		return "ko"

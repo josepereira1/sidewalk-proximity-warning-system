@@ -72,7 +72,9 @@ Vagrant.configure("2") do |config|
     vm1.vm.network "forwarded_port", guest: 5002, host: 5002 # crud-crosswalk-location port
     vm1.vm.network "forwarded_port", guest: 5003, host: 5003 # read-traffic-light port
     vm1.vm.network "forwarded_port", guest: 5004, host: 5004 # crud-crosswalk-counters port
-    vm1.vm.network "forwarded_port", guest: 2377, host: 2377 # docker swarm management port (para poder dar join)
+    vm1.vm.network "forwarded_port", guest: 5005, host: 5005 # closest crosswalk port
+    vm1.vm.network "forwarded_port", guest: 5006, host: 5006 # calculate distance in crosswalk port
+    vm1.vm.network "forwarded_port", guest: 2377, host: 2377 # docker swarm management port (para que as máquinas Slaves possam juntar-se ao cluster)
   end
 
   config.vm.define "vm2" do |vm2|
