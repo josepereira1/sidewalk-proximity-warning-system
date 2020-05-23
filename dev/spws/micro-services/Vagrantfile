@@ -67,12 +67,12 @@ Vagrant.configure("2") do |config|
     vm1.vm.network "private_network", ip: "10.0.0.101"
     vm1.vm.hostname = "vm1"
 
-    # portfoward para todas as VMs (pois qualquer uma pode expor qualquer micro-serviço)
+    vm1.vm.network "forwarded_port", guest: 5000, host: 5000 # crud-pedestrian port
+    vm1.vm.network "forwarded_port", guest: 5001, host: 5001 # crud-vehicle port
+    vm1.vm.network "forwarded_port", guest: 5002, host: 5002 # crud-crosswalk-location port
+    vm1.vm.network "forwarded_port", guest: 5003, host: 5003 # read-traffic-light port
+    vm1.vm.network "forwarded_port", guest: 5004, host: 5004 # crud-crosswalk-counters port
     vm1.vm.network "forwarded_port", guest: 2377, host: 2377 # docker swarm management port (para poder dar join)
-    vm1.vm.network "forwarded_port", guest: 5000, host: 5000 # micro-service CRUD-pedestrian port
-    vm1.vm.network "forwarded_port", guest: 5001, host: 5001 # micro-service CRUD-vehicle port
-    vm1.vm.network "forwarded_port", guest: 5002, host: 5002 # micro-service CRUD-crosswalk-location port
-    vm1.vm.network "forwarded_port", guest: 6379, host: 6379 # redis port
   end
 
   config.vm.define "vm2" do |vm2|
@@ -109,7 +109,6 @@ Vagrant.configure("2") do |config|
 
     rm -r -f ew/
     mkdir ew/
-    mkdir ew/docker_images/
     chmod 777 -R ew/
 
   SHELL
