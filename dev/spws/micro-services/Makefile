@@ -20,6 +20,12 @@ push:
 	sudo docker tag calculate-distance-in-crosswalk bakincode/calculate-distance-in-crosswalk
 	sudo docker push bakincode/calculate-distance-in-crosswalk
 
+	sudo docker tag spws bakincode/spws
+	sudo docker push bakincode/spws
+
+	sudo docker tag closest-crosswalk bakincode/closest-crosswalk
+	sudo docker push bakincode/closest-crosswalk
+
 j1:
 	rm -r -f jmeter-results-1/
 	jmeter -n -t users-1000requests-1.jmx -l jmeter-results-1/results.txt -e -o jmeter-results-1/

@@ -7,6 +7,7 @@ from threading import Thread
 import math
 import random
 import redis
+import time
 
 app = Flask(__name__)
 
@@ -33,43 +34,43 @@ def initRedis():
     for crosswalk in crosswalks:
         r.set(crosswalk['id'], json.dumps(crosswalk))
 
+
+#time.sleep(30) # espera 30 segundos antes de tentar estabelecer a conexão
 populate() # apenas para testar
 initRedis() # faz a migração da informação das crosswalks para o Redis
 
-crosswalks = {}
-keys = r.keys()
-for key in keys:
-    crosswalk = r.get(key).decode()     #   json
-    crosswalk = json.loads(crosswalk)   #   python object
-    crosswalks[key] = crosswalk
-
 
 def closestCrosswalk(ch, method, properties, body):
+    
+    crosswalks = {}
+    keys = r.keys()
+    for key in keys:
+        crosswalk = str(r.get(key).decode())     #   json
+        crosswalk = json.loads(crosswalk)   #   python object
+        crosswalks[crosswalk['id']] = crosswalk
 
-    dic = json.loads(body.decode())
-
+    user = json.loads(body.decode())
     distances = {}
 
     for key, crosswalk in crosswalks.items():
-        distances[key] = math.sqrt( ((dic['latitude']-crosswalk['latitude'])**2)+((dic['longitude']-crosswalk['longitude'])**2)+((dic['elevation']-crosswalk['elevation'])**2) )
-
+        distances[key] = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) )
     id_closest_crosswalk = min(distances, key=distances.get)
 
-    sender = Sender('rabbitmq-closest-crosswalk')
-    sender.setQueue('output')
-    sender.send("{\"user_id\":" + str(dic['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
-    sender.setQueue('output2')
-    sender.send("{\"user_id\":" + str(dic['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
-    sender.close()
+
+
+    # 0.0001 º => 11.132 m
+    if distances[id_closest_crosswalk] < 0.0001: 
+        sender = Sender('rabbitmq-closest-crosswalk')
+        sender.setQueue('output')
+        sender.send("{\"user_id\":" + str(user['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
+        sender.setQueue('output2')
+        sender.send("{\"user_id\":" + str(user['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
+        sender.close()
 
 receiver = Receiver('rabbitmq-closest-crosswalk')
 thread = Thread( target = receiver.setQueue, args = ('input', closestCrosswalk) )   #   QUEUE INPUT
 thread.start()
 
-@app.route("/getCrosswalks", methods=['GET', 'POST'])
-def getCrosswalks():
-    global crosswalks
-    return jsonify(crosswalks)
 
 @app.route("/", methods=['GET', 'POST'])
 def root():

@@ -2,7 +2,7 @@ version: '3'
 services:
   
   crud-pedestrian:
-    image: bakincode/crud-pedestrian
+    image: crud-pedestrian
     deploy:
       replicas: 1
     build: container-CRUD-pedestrian/ # caso a imagem não exista, instala a partir desta diretoria
@@ -15,7 +15,7 @@ services:
 
 
   crud-vehicle:
-    image: bakincode/crud-vehicle
+    image: crud-vehicle
     deploy:
       replicas: 1
     build: container-CRUD-vehicle/ # caso a imagem não exista, instala a partir desta diretoria
@@ -28,7 +28,7 @@ services:
 
 
   crud-crosswalk-location:
-    image: bakincode/crud-crosswalk-location
+    image: crud-crosswalk-location
     deploy:
       replicas: 1
     build: container-CRUD-crosswalk-location/ # caso a imagem não exista, instala a partir desta diretoria
@@ -44,7 +44,7 @@ services:
 
 
   read-traffic-light:
-    image: bakincode/read-traffic-light
+    image: read-traffic-light
     deploy:
       replicas: 1
     build: container-read-traffic-light/ # caso a imagem não exista, instala a partir desta diretoria
@@ -57,7 +57,7 @@ services:
 
 
   crud-crosswalk-counters:
-    image: bakincode/crud-crosswalk-counters
+    image: crud-crosswalk-counters
     deploy:
       replicas: 1
     build: container-CRUD-crosswalk-counters/ # caso a imagem não exista, instala a partir desta diretoria
@@ -70,7 +70,7 @@ services:
 
 
   calculate-distance-in-crosswalk:
-    image: bakincode/calculate-distance-in-crosswalk
+    image: calculate-distance-in-crosswalk
     deploy:
       replicas: 5
     build: container-calculate-distance-in-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
@@ -84,28 +84,23 @@ services:
     
   closest-crosswalk:
     image: closest-crosswalk
-    deploy:
-      replicas: 1
     build: container-closest-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5005:5005"
     links:
       - redis-closest-crosswalk
       - rabbitmq-closest-crosswalk
+  
   redis-closest-crosswalk:
     image: "redis:alpine"
   
-
   rabbitmq-closest-crosswalk:
+    ports:
+      - "5672:5672"
     image: rabbitmq:3.7.5-management
-    # ports:
-    #   - "5672:5672"
-
 
   spws:
     image: spws
-    deploy:
-      replicas: 1
     build: container-spws
     ports: 
       - "5007:5007"
@@ -114,6 +109,5 @@ services:
       - redis-spws
   redis-spws:
     image: "redis:alpine"
-
 
 
