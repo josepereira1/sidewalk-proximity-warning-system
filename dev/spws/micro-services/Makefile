@@ -24,7 +24,7 @@ cp_all: cp_composer cp_script
 
 # copia a configuração da infraestrutura (docker-compose.yml) para o MASTER (VM1)
 cp_composer:
-	scp docker-compose.yml vagrant@${MASTER_IP}:${ew}
+	scp docker-compose-for-swarm.yml vagrant@${MASTER_IP}:${ew}docker-compose.yml
 
 # master.sh - faz o deploy dos swarm
 cp_script:
