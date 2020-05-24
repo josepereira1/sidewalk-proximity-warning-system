@@ -83,7 +83,7 @@ services:
     
     
   closest-crosswalk:
-    image: closest-crosswalk
+    image: bakincode/closest-crosswalk
     deploy:
       replicas: 1
     build: container-closest-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
@@ -103,7 +103,7 @@ services:
 
 
   spws:
-    image: spws
+    image: bakincode/spws
     deploy:
       replicas: 1
     build: container-spws
