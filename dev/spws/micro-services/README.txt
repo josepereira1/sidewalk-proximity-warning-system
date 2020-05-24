@@ -13,9 +13,9 @@ Este ficheiro explica detalhadamente como instalar e configurar o cluster 'docke
 3.
 >> ssh vagrant@10.0.0.101
 	neste momento encontra-se dentro do Master.
->> cd ew/
 >> sudo docker swarm init --advertise-addr 10.0.0.101
 	cria o cluster.
+nota (opcional):
 >> sudo docker swarm join-token worker
 	guardar o comando gerado para, posteriormente, adicionar os Slaves ao cluster.
 	ex: docker swarm join --token <token> <master_ip>:<master_port>

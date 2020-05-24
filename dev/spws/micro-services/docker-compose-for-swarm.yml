@@ -72,7 +72,7 @@ services:
   calculate-distance-in-crosswalk:
     image: bakincode/calculate-distance-in-crosswalk
     deploy:
-      replicas: 4
+      replicas: 5
     build: container-calculate-distance-in-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5006:5006"

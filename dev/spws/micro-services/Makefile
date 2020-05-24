@@ -20,6 +20,14 @@ push:
 	sudo docker tag calculate-distance-in-crosswalk bakincode/calculate-distance-in-crosswalk
 	sudo docker push bakincode/calculate-distance-in-crosswalk
 
+j1:
+	rm -r -f jmeter-results-1/
+	jmeter -n -t users-1000requests-1.jmx -l jmeter-results-1/results.txt -e -o jmeter-results-1/
+
+j2:
+	rm -r -f jmeter-results-2/
+	jmeter -n -t users-10000requests-1.jmx -l jmeter-results-2/results.txt -e -o jmeter-results-2/
+
 cp_all: cp_composer cp_script
 
 # copia a configuração da infraestrutura (docker-compose.yml) para o MASTER (VM1)
