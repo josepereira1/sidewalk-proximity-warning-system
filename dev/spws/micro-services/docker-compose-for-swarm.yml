@@ -79,6 +79,32 @@ services:
     links:
       - redis-calculate-distance-in-crosswalk
   redis-calculate-distance-in-crosswalk:
-    image: "redis:alpine"  
+    image: "redis:alpine" 
+    
+    
+  closest-crosswalk:
+    image: closest-crosswalk
+    build: container-closest-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
+    ports:
+      - "5005:5005"
+    links:
+      - redis-closest-crosswalk
+      - rabbitmq-closest-crosswalk
+  
+  redis-closest-crosswalk:
+    image: "redis:alpine"
+  
+  rabbitmq-closest-crosswalk:
+    ports:
+      - "5672:5672"
+    image: rabbitmq:3.7.5-management
+
+  spws:
+    image: spws
+    build: container-spws
+    ports: 
+      - "5007:5007"
+    links:
+      - rabbitmq-closest-crosswalk
 
 
