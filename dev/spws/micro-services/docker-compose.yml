@@ -72,7 +72,7 @@ services:
   calculate-distance-in-crosswalk:
     image: calculate-distance-in-crosswalk
     deploy:
-      replicas: 5
+      replicas: 1
     build: container-calculate-distance-in-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5006:5006"

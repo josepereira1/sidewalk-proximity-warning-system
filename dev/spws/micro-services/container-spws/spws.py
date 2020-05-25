@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 r = redis.Redis(host='redis-spws', port=6379)
 
-#time.sleep(30) # espera 30 segundos antes de tentar estabelecer a conexão
+time.sleep(30) # espera 30 segundos antes de tentar estabelecer a conexão
 sender = Sender('rabbitmq-closest-crosswalk')
 sender.setQueue('input')   #   QUEUE OUTPUT
 

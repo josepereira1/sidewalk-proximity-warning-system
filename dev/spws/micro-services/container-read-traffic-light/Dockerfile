@@ -11,7 +11,7 @@ EXPOSE 5003
 COPY . .
 
 # instala as dependências definidas no ficheiro requirements.txt e instala os modulos locais
-RUN pip install requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # corre o programa pretendido
 CMD python3 readTrafficLight.py

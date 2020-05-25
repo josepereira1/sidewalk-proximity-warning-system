@@ -1,4 +1,5 @@
 from flask import *
+from flask_cors import CORS
 import json
 import requests 
 from sender import Sender
@@ -10,6 +11,7 @@ import redis
 import time
 
 app = Flask(__name__)
+CORS(app) # enables CORS support on all routes, for all origins and methods
 
 r = None
 
@@ -35,7 +37,7 @@ def initRedis():
         r.set(crosswalk['id'], json.dumps(crosswalk))
 
 
-#time.sleep(30) # espera 30 segundos antes de tentar estabelecer a conexão
+time.sleep(20) # espera 20 segundos antes de tentar estabelecer a conexão
 populate() # apenas para testar
 initRedis() # faz a migração da informação das crosswalks para o Redis
 

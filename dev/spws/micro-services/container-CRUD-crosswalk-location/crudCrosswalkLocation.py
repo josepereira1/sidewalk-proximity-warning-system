@@ -1,4 +1,5 @@
 from flask import *
+from flask_cors import CORS
 import psycopg2
 import time
 import sys
@@ -12,6 +13,7 @@ conn = psycopg2.connect(database="postgres", user="postgres", password="password
 cursor = conn.cursor()
 
 app = Flask(__name__)	
+CORS(app) # enables CORS support on all routes, for all origins and methods
 
 # função auxiliar usada para executar uma query genericamente
 def executeQuery(query):
