@@ -1,8 +1,10 @@
 from flask import *
+from flask_cors import CORS
 import json
 import redis
 
 app = Flask(__name__)
+CORS(app) # enables CORS support on all routes, for all origins and methods
 
 r = redis.Redis(host='redis-crud-pedestrian', port=6379)
 
@@ -27,8 +29,8 @@ def updateLocation():
 def getLocation():
     if('id' in request.json and r.exists(request.json.get('id'))):
         return r.get(request.json.get('id'))
-
-    return "ko"
+    else: 
+        return "ko"
 
 @app.route("/", methods=['GET', 'POST'])
 def root():

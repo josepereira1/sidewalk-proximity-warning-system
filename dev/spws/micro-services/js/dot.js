@@ -1,6 +1,5 @@
 class Dot {
 
-
 	// constructor
 	constructor(id, latitude, longitude, elevation) {
 		this._id = id;
