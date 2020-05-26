@@ -8,32 +8,18 @@ import time
 
 r = None
 
-def populate():
-    response = requests.get("http://crud-crosswalk-location:5002/createSchema")
-    #print(response.text)
-    for i in range(5):
-        response = requests.post("http://crud-crosswalk-location:5002/deleteCrosswalk", json={"id": str(i)})
-        #print(response.text)
-        response = requests.post("http://crud-crosswalk-location:5002/createCrosswalk", json={"id": str(i), "latitude": random.uniform(0, 25), "longitude": random.uniform(0, 25), "elevation": random.uniform(0, 25)})
-        #print(response.text)
+app = Flask(__name__)
 
-def initRedis():    
-    # depois mudar o endereço para 'crud-crosswalk-location'
-    response = requests.get("http://crud-crosswalk-location:5002/readAllCrosswalks")
+@app.route("/initRedis", methods=['GET', 'POST'])
+def initRedis():
+    url = "crud-crosswalk-location"    
+    response = requests.get("http://" + url + ":5002/readAllCrosswalks")
     crosswalks = json.loads(response.text)
-    #print(crosswalks)
     global r
-    r = redis.Redis(host='redis-calculate-distance-in-crosswalk', port=6379)
+    r = redis.Redis(host='redis-closest-crosswalk', port=6379)
     for crosswalk in crosswalks:
         r.set(crosswalk['id'], json.dumps(crosswalk))
-
-
-time.sleep(20) # espera 20 segundos antes de tentar estabelecer a conexão
-populate() # apenas para testar
-initRedis() # faz a migração da informação das crosswalks para o Redis
-
-
-app = Flask(__name__)
+    return "redis loaded"
 
 @app.route("/calculateDistance", methods=['POST'])
 def calculateDistance():

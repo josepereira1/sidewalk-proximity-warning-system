@@ -8,7 +8,7 @@ import sys
 hostnameContainer = "postgres-crud-crosswalk-location"
 tableName = "crosswalk"
 
-time.sleep(10) # espera 10 segundos antes de tentar estabelecer a conexão
+time.sleep(20) # esperar que o postgreSQL inicie
 conn = psycopg2.connect(database="postgres", user="postgres", password="password", host=hostnameContainer, port="5432")
 cursor = conn.cursor()
 

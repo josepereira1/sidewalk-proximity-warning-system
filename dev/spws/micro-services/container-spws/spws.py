@@ -6,20 +6,32 @@ from receiver import Receiver
 from threading import Thread
 import time
 import redis
+import requests
+import random
 
 app = Flask(__name__)
 CORS(app) # enables CORS support on all routes, for all origins and methods
 
 # buffer de notificações
-r = redis.Redis(host='redis-spws', port=6379)
+r = redis.Redis(host='redis-spws', port=6379, charset="utf-8", decode_responses=True)
 
-time.sleep(20) # espera 20 segundos antes de tentar estabelecer a conexão
+time.sleep(30) # esperar que tudo inicie
+
+def populate():
+    url = "crud-crosswalk-location"
+    response = requests.get("http://" + url + ":5002/createSchema")
+    #print(response.text)
+    for i in range(5):
+        response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": str(i)})
+        #print(response.text)
+        response = requests.post("http://" + url + ":5002/createCrosswalk", json={"id": str(i), "latitude": random.uniform(0, 25), "longitude": random.uniform(0, 25), "elevation": random.uniform(0, 25)})
+        #print(response.text)
+
+populate()
 
 # Estabelece conexão ao rabbitMQ e inicializa a escuta na queue "output"
-def callback(ch, method, properties, body):
-    global closestCrosswalks
-    output = str(body.decode()) # json     
-    output = json.loads(output) # python object
+def callback(ch, method, properties, body):     
+    output = json.loads(body) # python object
     r.set(output['user_id'], output['crosswalk_id'])
     # TODO criar Thread para incrementar counter no micro-serviço crosswalk-counters
     # TODO criar Thread para adicionar o vehicle ou pedestre à passadeira no respetivo micro-serviço crud
@@ -48,7 +60,7 @@ def closestCrosswalk():
         sender.close()
 
         if r.exists(id): 
-            notification = str(r.get(id).decode())
+            notification = r.get(id)
             r.delete(id)
             return notification
         else: return "no notifications"

@@ -6,9 +6,7 @@ import json
 app = Flask(__name__)
 CORS(app) # enables CORS support on all routes, for all origins and methods
 
-# 'redis-crud-crosswalk-counters'
-r = redis.Redis(host='localhost', port=6379, charset="utf-8", decode_responses=True)
-
+r = redis.Redis(host='redis-crud-crosswalk-counters', port=6379, charset="utf-8", decode_responses=True)
 
 @app.route("/updateInfo", methods=['POST'])
 def updateInfo():
