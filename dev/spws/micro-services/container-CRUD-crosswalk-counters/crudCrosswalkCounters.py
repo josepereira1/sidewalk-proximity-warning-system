@@ -3,10 +3,21 @@ from flask_cors import CORS
 import redis
 import json
 
+# intervalo de tempo para tentar conectar aos serviços externos
+TIME = 5
+
+# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
+while True:
+    try:
+        time.sleep(TIME) 
+        r = redis.Redis(host='redis-crud-crosswalk-counters', charset="utf-8", decode_responses=True)
+        break
+    except:
+        print("connection to redis failed, trying again...")
+
+# inicia o servidor
 app = Flask(__name__)
 CORS(app) # enables CORS support on all routes, for all origins and methods
-
-r = redis.Redis(host='redis-crud-crosswalk-counters', port=6379, charset="utf-8", decode_responses=True)
 
 @app.route("/updateInfo", methods=['POST'])
 def updateInfo():
@@ -23,7 +34,6 @@ def updateInfo():
 	else:
 		return "ko"
 
-
 @app.route("/getInfo", methods=["POST"])
 def getInfo():
     if 'crosswalk_id' in request.json:
@@ -31,13 +41,13 @@ def getInfo():
         crosswalk_id = str(request.json['crosswalk_id'])
     	# obtém os contadores
         if r.exists("p" + crosswalk_id): 
-            npedestrians = int(r.get("p" + crosswalk_id));
+            npedestrians = int(r.get("p" + crosswalk_id))
             existsPedestrian = True
         else: 
             npedestrians = 0
             existsPedestrian = False
         if r.exists("v" + crosswalk_id): 
-            nvehicles = int(r.get("v" + crosswalk_id));
+            nvehicles = int(r.get("v" + crosswalk_id))
             existsVehicle = True
         else: 
             nvehicles = 0

@@ -8,10 +8,20 @@ import sys
 hostnameContainer = "postgres-crud-crosswalk-location"
 tableName = "crosswalk"
 
-time.sleep(20) # esperar que o postgreSQL inicie
-conn = psycopg2.connect(database="postgres", user="postgres", password="password", host=hostnameContainer, port="5432")
-cursor = conn.cursor()
+# intervalo de tempo para tentar conectar aos serviços externos
+TIME = 5
 
+# espera que o postgreSQL inicie, tenta estabelecer conexão de 5 em 5 segundos
+while True:
+    try:
+        time.sleep(TIME) 
+        conn = psycopg2.connect(database="postgres", user="postgres", password="password", host=hostnameContainer)
+        cursor = conn.cursor()
+        break
+    except:
+        print("connection to postgreSQL failed, trying again...")
+
+# incia o servidor
 app = Flask(__name__)	
 CORS(app) # enables CORS support on all routes, for all origins and methods
 

@@ -10,20 +10,36 @@ import random
 import redis
 import time
 
+# intervalo de tempo para tentar conectar aos serviços externos
+TIME = 5
+
+# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
+while True:
+    try:
+        time.sleep(TIME) 
+        r = redis.Redis(host='redis-closest-crosswalk', charset="utf-8", decode_responses=True)
+        break
+    except:
+        print("connection to redis failed, trying again...")
+
+# espera que o rabbitMQ inicie, tenta estabelecer conexão de 5 em 5 segundos
+while True:
+    try:
+        time.sleep(TIME) 
+        receiver = Receiver('rabbitmq-closest-crosswalk')
+        break
+    except:
+        print("connection to RabbitMQ failed, trying again...")
+
+# inicia o servidor
 app = Flask(__name__)
 CORS(app) # enables CORS support on all routes, for all origins and methods
-
-r = None
-
-time.sleep(20) # esperar que o rabbitMQ inicie
 
 @app.route("/initRedis", methods=['GET', 'POST'])
 def initRedis():
     url = "crud-crosswalk-location"    
     response = requests.get("http://" + url + ":5002/readAllCrosswalks")
     crosswalks = json.loads(response.text)
-    global r
-    r = redis.Redis(host='redis-closest-crosswalk', port=6379)
     for crosswalk in crosswalks:
         r.set(crosswalk['id'], json.dumps(crosswalk))
     return "redis loaded"
@@ -31,33 +47,53 @@ def initRedis():
 
 def closestCrosswalk(ch, method, properties, body):
     
+    
     crosswalks = {}
     keys = r.keys()
     for key in keys:
-        crosswalk = str(r.get(key).decode())     #   json
-        crosswalk = json.loads(crosswalk)   #   python object
+        crosswalk = r.get(key) # json string
+        crosswalk = json.loads(crosswalk) # python object
         crosswalks[crosswalk['id']] = crosswalk
 
-    user = json.loads(body.decode())
+    user = json.loads(body) # python object
+    
+    # debugging
+    f = open("crosswalks.txt", "a")
+    f.write(str(crosswalks))
+    f.close()
+    f = open("user.txt", "a")
+    f.write(str(user))
+    f.close()
+    
     distances = {}
 
     for key, crosswalk in crosswalks.items():
         distances[key] = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) )
     id_closest_crosswalk = min(distances, key=distances.get)
 
+    # debugging
+    f = open("distances.txt", "a")
+    f.write(str(distances))
+    f.close()
+
     # 0.0001 º => 11.132 m
     if distances[id_closest_crosswalk] < 0.0001: 
         sender = Sender('rabbitmq-closest-crosswalk')
         sender.setQueue('output')
-        sender.send("{\"user_id\":" + str(user['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
-        sender.setQueue('output2')
-        sender.send("{\"user_id\":" + str(user['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
+        res = '{"user_id":' + str(user['id']) + ', "crosswalk_id":' + str(id_closest_crosswalk) + '}'
+
+        # debugging
+        f = open("res.txt", "a")
+        f.write(str(res))
+        f.close()
+
+        sender.send(res)
+        # sender.setQueue('output2')
+        # sender.send("{\"user_id\":" + str(user['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
         sender.close()
 
-receiver = Receiver('rabbitmq-closest-crosswalk')
-thread = Thread( target = receiver.setQueue, args = ('input', closestCrosswalk) )   #   QUEUE INPUT
+thread = Thread( target = receiver.setQueue, args = ('input', closestCrosswalk) )
 thread.start()
-
 
 @app.route("/", methods=['GET', 'POST'])
 def root():

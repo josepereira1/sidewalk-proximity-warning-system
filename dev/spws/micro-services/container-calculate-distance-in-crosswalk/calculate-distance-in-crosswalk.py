@@ -1,4 +1,5 @@
 from flask import *
+from flask_cors import CORS
 import redis
 import requests
 import random # usado penas para gerar a população de teste
@@ -6,17 +7,27 @@ import json
 import math
 import time
 
-r = None
+# intervalo de tempo para tentar conectar aos serviços externos
+TIME = 5
 
+# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
+while True:
+    try:
+        time.sleep(TIME) 
+        r = redis.Redis(host='redis-calculate-distance-in-crosswalk')
+        break
+    except:
+        print("connection to redis failed, trying again...")
+
+# inicia o servidor
 app = Flask(__name__)
+CORS(app) # enables CORS support on all routes, for all origins and methods
 
 @app.route("/initRedis", methods=['GET', 'POST'])
 def initRedis():
     url = "crud-crosswalk-location"    
     response = requests.get("http://" + url + ":5002/readAllCrosswalks")
     crosswalks = json.loads(response.text)
-    global r
-    r = redis.Redis(host='redis-closest-crosswalk', port=6379)
     for crosswalk in crosswalks:
         r.set(crosswalk['id'], json.dumps(crosswalk))
     return "redis loaded"

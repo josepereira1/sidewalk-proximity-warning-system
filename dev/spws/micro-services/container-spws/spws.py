@@ -9,38 +9,57 @@ import redis
 import requests
 import random
 
-app = Flask(__name__)
-CORS(app) # enables CORS support on all routes, for all origins and methods
+# intervalo de tempo para tentar conectar aos serviços externos
+TIME = 5
 
-# buffer de notificações
-r = redis.Redis(host='redis-spws', port=6379, charset="utf-8", decode_responses=True)
+# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
+while True:
+    try:
+        time.sleep(TIME) 
+        # buffer de notificações
+        r = redis.Redis(host='redis-spws', charset="utf-8", decode_responses=True)
+        break
+    except:
+        print("connection to redis failed, trying again...")
 
-time.sleep(30) # esperar que tudo inicie
+# espera que o rabbitMQ inicie, tenta estabelecer conexão de 5 em 5 segundos
+while True:
+    try:
+        time.sleep(TIME) 
+        receiver = Receiver('rabbitmq-closest-crosswalk')
+        break
+    except:
+        print("connection to RabbitMQ failed, trying again...")
 
-def populate():
-    url = "crud-crosswalk-location"
-    response = requests.get("http://" + url + ":5002/createSchema")
-    #print(response.text)
-    for i in range(5):
-        response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": str(i)})
-        #print(response.text)
-        response = requests.post("http://" + url + ":5002/createCrosswalk", json={"id": str(i), "latitude": random.uniform(0, 25), "longitude": random.uniform(0, 25), "elevation": random.uniform(0, 25)})
-        #print(response.text)
-
-populate()
-
-# Estabelece conexão ao rabbitMQ e inicializa a escuta na queue "output"
 def callback(ch, method, properties, body):     
     output = json.loads(body) # python object
+    
+    # debugging
+    f = open("output.txt", "a")
+    f.write(str(output))
+    f.close()
+    
     r.set(output['user_id'], output['crosswalk_id'])
     # TODO criar Thread para incrementar counter no micro-serviço crosswalk-counters
     # TODO criar Thread para adicionar o vehicle ou pedestre à passadeira no respetivo micro-serviço crud
     # TODO criar Thread e enviar atualizar a localização do vehicle ou pedestre no respetivo micro-serviço crud
 
-receiver = Receiver('rabbitmq-closest-crosswalk')
-thread = Thread( target = receiver.setQueue, args = ('output', callback) )   #   QUEUE INPUT
+# incia a escuta na fila onde será colocado o output do micro-serviço do closest-crosswalk
+thread = Thread( target = receiver.setQueue, args = ('output', callback) ) 
 thread.start()
 
+# inicia o servidor
+app = Flask(__name__)
+CORS(app) # enables CORS support on all routes, for all origins and methods
+
+@app.route("/populate", methods=['GET','POST'])
+def populate():
+    url = "crud-crosswalk-location"
+    response = requests.get("http://" + url + ":5002/createSchema")
+    for i in range(5):
+        response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": str(i)})
+        response = requests.post("http://" + url + ":5002/createCrosswalk", json={"id": str(i), "latitude": random.uniform(0, 25), "longitude": random.uniform(0, 25), "elevation": random.uniform(0, 25)})
+    return "database populated"
 
 @app.route("/closestCrosswalk", methods=['POST'])
 def closestCrosswalk():
@@ -51,7 +70,7 @@ def closestCrosswalk():
         longitude = request.json.get('longitude')
         elevation = request.json.get('elevation')
 
-        json =  '{ "id":' + str(id) + ', "latitude":' + str(latitude) + ', "longitude":' + str(longitude) + ', "elevation":' + str(elevation) + '}'
+        json =  '{ "id":' + id + ', "latitude":' + str(latitude) + ', "longitude":' + str(longitude) + ', "elevation":' + str(elevation) + '}'
         
         # envia o json para o micro-serviço closest-crosswalk através do rabbitMQ
         sender = Sender('rabbitmq-closest-crosswalk')
@@ -67,20 +86,20 @@ def closestCrosswalk():
     else: return "ko"
 
 
-# # PARA DEBUGGING
-# @app.route("/getClosestCrosswalks", methods=['GET'])
-# def getClosestCrosswalks():
-#     keys = r.keys()
-#     if not keys: 
-#         return "[]"
-#     else:
-#         res = "["
-#         for key in keys:
-#             crosswalk_id = str(r.get(key).decode())
-#             res += '{"user_id":' + str(key.decode()) + ", " + '"closest_crosswalk_id":' + crosswalk_id + "}, "
-#             res = res[:-2]
-#         res += "]"
-#         return res
+# PARA DEBUGGING
+@app.route("/getClosestCrosswalks", methods=['GET'])
+def getClosestCrosswalks():
+    keys = r.keys()
+    if not keys: 
+        return "[]"
+    else:
+        res = "["
+        for key in keys:
+            crosswalk_id = r.get(key)
+            res += '{"user_id":' + key + ", " + '"closest_crosswalk_id":' + crosswalk_id + "}, "
+            res = res[:-2]
+        res += "]"
+        return res
 
 
 @app.route("/", methods=['GET', 'POST'])
