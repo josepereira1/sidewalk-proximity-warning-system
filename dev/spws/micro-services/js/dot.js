@@ -1,26 +1,29 @@
 class Dot {
-	
-	// private fields
-	#id; #latitude; #longitude; #elevation;
+
 
 	// constructor
 	constructor(id, latitude, longitude, elevation) {
-		this.#id = id;
-		this.#latitude = latitude;
-		this.#longitude = longitude;
-		this.#elevation = elevation;
+		this._id = id;
+		this._latitude = latitude;
+		this._longitude = longitude;
+		this._elevation = elevation;
 	}
 
 	// getters
-	get id() { return this.#id; }
-	get latitude() { return this.#latitude; }
-	get longitude() { return this.#longitude; }
-	get elevation() { return this.#elevation; }
+	get id() { return this._id; }
+	get latitude() { return this._latitude; }
+	get longitude() { return this._longitude; }
+	get elevation() { return this._elevation; }
 
 	// setters
-	set id(id) { this.#id = id; }
-	set latitude(latitude) { this.#latitude = latitude; }
-	set longitude(longitude) { this.#longitude = longitude; }
-	set elevation(elevation) { this.#elevation = elevation; }
+	set id(id) { this._id = id; }
+	set latitude(latitude) { this._latitude = latitude; }
+	set longitude(longitude) { this._longitude = longitude; }
+	set elevation(elevation) { this._elevation = elevation; }
+
+
+	toString() {
+        return "Dot{ " + this._id + ", " + this._latitude + ", " + this._longitude + ", " + this._elevation + "}";
+    }
 	
 }

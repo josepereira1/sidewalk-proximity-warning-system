@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Add a default marker</title>
+<title>Monitoring</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
@@ -14,23 +14,113 @@
 <body>
 <div id="map"></div>
  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<!--<script src="js/dot.js"></script>-->  
+<!--<script src="js/js.js"></script>--> 
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoicmljYXJkb3BldHJvbmlsaG8iLCJhIjoiY2thaWJ0cXB3MGdlcjJ6cWdrZDRyZWJrNCJ9.EojnZgrLmLFiYWjNMmpWig';
-var map = new mapboxgl.Map({
-container: 'map',
-style: 'mapbox://styles/mapbox/streets-v11',
-center: [0, 0],
-zoom: 5
-});
 
- 
-var marker1 = new mapboxgl.Marker()
-    .setLngLat([0, 0])
-    .addTo(map);
+    $(document).ready(function(){
 
-var marker2 = new mapboxgl.Marker()
-    .setLngLat([1, 1])
-    .addTo(map);
+        mapboxgl.accessToken = 'pk.eyJ1IjoicmljYXJkb3BldHJvbmlsaG8iLCJhIjoiY2thaWJ0cXB3MGdlcjJ6cWdrZDRyZWJrNCJ9.EojnZgrLmLFiYWjNMmpWig';
+        
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-8.397872, 41.536579],
+            zoom: 18
+        });
+
+        // adiciona o icon da crosswalk
+        map.loadImage(
+            'https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png', 
+            function(error, image) {
+                if (error) throw error;
+                map.addImage('crosswalk', image);
+            }
+        );
+
+        /*
+        // adiciona o icon do vehíclo
+        map.loadImage(
+            'https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png', 
+            function(error, image) {
+                if (error) throw error;
+                map.addImage('crosswalk', image);
+            }
+        );
+
+        // adiciona o icon do pedestre
+        map.loadImage(
+            'https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png', 
+            function(error, image) {
+                if (error) throw error;
+                map.addImage('crosswalk', image);
+            }
+        );
+        */  
+
+        /*
+
+        $.get("http://localhost:5002/readAllCrosswalks")
+            .done(function (data) {
+                json = JSON.parse(data);
+                json.forEach(c => 
+                    {     
+                        map.addSource('crosswalk' + c.id, {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': [
+                                    {
+                                        'type': 'Feature',
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [c.longitude, c.latitude]
+                                        }
+                                    }
+                                ]
+                            }
+                        });
+                        
+                        map.addLayer({
+                            'id': 'crosswalks' + c.id,
+                            'type': 'symbol',
+                            'source': 'crosswalk' + c.id,
+                            'layout': {
+                                'icon-image': 'crosswalk',
+                                'icon-size': 0.25
+                            }
+                        });
+
+                    }                    
+                )
+            });
+
+            */
+
+            /*
+            // 1 em 1 segundo atualiza as coordenadas dos veículos e pedestres
+            setInterval(
+
+                $.get("http://localhost:500X/...")
+                .done(function (data) {
+                    json = JSON.parse(data);
+                    json.forEach(d => 
+                        // TODO
+                })
+
+                $.get("http://localhost:500X/...")
+                .done(function (data) {
+                    json = JSON.parse(data);
+                    json.forEach(d => 
+                        // TODO
+                })
+
+            , 1000);
+
+            */
+    });
+
 </script>
  
 </body>

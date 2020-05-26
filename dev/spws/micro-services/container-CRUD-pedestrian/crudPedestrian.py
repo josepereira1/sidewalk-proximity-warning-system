@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 r = redis.Redis(host='redis-crud-pedestrian', port=6379)
 
+# UPDATE/ CREATE
 @app.route("/updateLocation", methods=['POST'])
 def updateLocation():
     if('id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json):
@@ -21,6 +22,7 @@ def updateLocation():
         return "ok"
     else: return "ko"
 
+# GET
 @app.route("/getLocation", methods=["POST"])
 def getLocation():
     if('id' in request.json and r.exists(request.json.get('id'))):

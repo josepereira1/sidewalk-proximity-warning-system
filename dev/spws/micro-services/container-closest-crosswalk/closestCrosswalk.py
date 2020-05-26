@@ -20,10 +20,10 @@ url = "crud-crosswalk-location"
 def populate():
     response = requests.get("http://" + url + ":5002/createSchema")
     #print(response.text)
-    for i in range(10):
+    for i in range(5):
         response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": str(i)})
         #print(response.text)
-        response = requests.post("http://" + url + ":5002/createCrosswalk", json={"id": str(i), "latitude": random.uniform(0, 100), "longitude": random.uniform(0, 100), "elevation": random.uniform(0, 100)})
+        response = requests.post("http://" + url + ":5002/createCrosswalk", json={"id": str(i), "latitude": random.uniform(0, 25), "longitude": random.uniform(0, 25), "elevation": random.uniform(0, 25)})
         #print(response.text)
 
 def initRedis():    
