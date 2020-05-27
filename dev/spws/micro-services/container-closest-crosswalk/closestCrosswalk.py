@@ -10,17 +10,10 @@ import random
 import redis
 import time
 
-# intervalo de tempo para tentar conectar aos serviços externos
-TIME = 5
+r = redis.Redis(host='redis-closest-crosswalk', port=6379, charset="utf-8", decode_responses=True)
 
-# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
-while True:
-    try:
-        time.sleep(TIME) 
-        r = redis.Redis(host='redis-closest-crosswalk', charset="utf-8", decode_responses=True)
-        break
-    except:
-        print("connection to redis failed, trying again...")
+# intervalo de tempo entre cada conexão
+TIME = 5
 
 # espera que o rabbitMQ inicie, tenta estabelecer conexão de 5 em 5 segundos
 while True:
@@ -80,7 +73,7 @@ def closestCrosswalk(ch, method, properties, body):
     if distances[id_closest_crosswalk] < 0.0001: 
         sender = Sender('rabbitmq-closest-crosswalk')
         sender.setQueue('output')
-        res = '{"user_id":' + str(user['id']) + ', "crosswalk_id":' + str(id_closest_crosswalk) + '}'
+        res = '{"user_id":"' + str(user['id']) + '", "crosswalk_id":"' + str(id_closest_crosswalk) + '"}'
 
         # debugging
         f = open("res.txt", "a")

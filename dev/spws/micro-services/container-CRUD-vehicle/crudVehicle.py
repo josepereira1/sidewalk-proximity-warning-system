@@ -3,17 +3,7 @@ from flask_cors import CORS
 import json
 import redis
 
-# intervalo de tempo para tentar conectar aos serviços externos
-TIME = 5
-
-# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
-while True:
-    try:
-        time.sleep(TIME) 
-        r = redis.Redis(host='redis-crud-vehicle')
-        break
-    except:
-        print("connection to redis failed, trying again...")
+r = redis.Redis(host='redis-crud-vehicle', port=6379, charset="utf-8", decode_responses=True)
 
 # inicia o servidor
 app = Flask(__name__)
@@ -23,11 +13,11 @@ CORS(app) # enables CORS support on all routes, for all origins and methods
 def updateLocation():
 
 	if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
-		id = request.json['id']
+		id = str(request.json['id'])
 		latitude = request.json['latitude']
 		longitude = request.json['longitude']
 		elevation = request.json['elevation']
-		userLocation =  "{\"id\":\"" + str(id) + "\", \"latitude\":" + str(latitude) + ", \"longitude\":" + str(longitude) + ", \"elevation\":" + str(elevation) + "}"
+		userLocation =  "{\"id\":\"" + id + "\", \"latitude\":" + str(latitude) + ", \"longitude\":" + str(longitude) + ", \"elevation\":" + str(elevation) + "}"
 		r.set(id, userLocation)
 		return "ok"
 	else:

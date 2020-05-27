@@ -12,15 +12,7 @@ import random
 # intervalo de tempo para tentar conectar aos serviços externos
 TIME = 5
 
-# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
-while True:
-    try:
-        time.sleep(TIME) 
-        # buffer de notificações
-        r = redis.Redis(host='redis-spws', charset="utf-8", decode_responses=True)
-        break
-    except:
-        print("connection to redis failed, trying again...")
+r = redis.Redis(host='redis-spws', charset="utf-8", decode_responses=True)
 
 # espera que o rabbitMQ inicie, tenta estabelecer conexão de 5 em 5 segundos
 while True:
@@ -70,8 +62,13 @@ def closestCrosswalk():
         longitude = request.json.get('longitude')
         elevation = request.json.get('elevation')
 
-        json =  '{ "id":' + id + ', "latitude":' + str(latitude) + ', "longitude":' + str(longitude) + ', "elevation":' + str(elevation) + '}'
+        json =  '{ "id":"' + id + '", "latitude":' + str(latitude) + ', "longitude":' + str(longitude) + ', "elevation":' + str(elevation) + '}'
         
+        # Debugging
+        f = open("json.txt", "w")
+        f.write(json)
+        f.close()
+
         # envia o json para o micro-serviço closest-crosswalk através do rabbitMQ
         sender = Sender('rabbitmq-closest-crosswalk')
         sender.setQueue('input')  

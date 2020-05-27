@@ -15,7 +15,7 @@ TIME = 5
 while True:
     try:
         time.sleep(TIME) 
-        conn = psycopg2.connect(database="postgres", user="postgres", password="password", host=hostnameContainer)
+        conn = psycopg2.connect(database="postgres", user="postgres", password="password", host=hostnameContainer, port=5432)
         cursor = conn.cursor()
         break
     except:

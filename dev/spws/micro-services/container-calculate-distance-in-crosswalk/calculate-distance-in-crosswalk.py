@@ -7,17 +7,7 @@ import json
 import math
 import time
 
-# intervalo de tempo para tentar conectar aos serviços externos
-TIME = 5
-
-# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
-while True:
-    try:
-        time.sleep(TIME) 
-        r = redis.Redis(host='redis-calculate-distance-in-crosswalk')
-        break
-    except:
-        print("connection to redis failed, trying again...")
+r = redis.Redis(host='redis-calculate-distance-in-crosswalk', port=6379, charset="utf-8", decode_responses=True) 
 
 # inicia o servidor
 app = Flask(__name__)
@@ -35,7 +25,7 @@ def initRedis():
 @app.route("/calculateDistance", methods=['POST'])
 def calculateDistance():
     if 'crosswalkId' in request.json and 'users' in request.json and request.json['users']:
-        crosswalk = json.loads(r.get(request.json['crosswalkId']).decode()) # python object
+        crosswalk = json.loads(r.get(request.json['crosswalkId'])) # python object
         users = request.json['users'] # python object
         res = "["
         for user in users:

@@ -3,17 +3,7 @@ from flask_cors import CORS
 import redis
 import json
 
-# intervalo de tempo para tentar conectar aos serviços externos
-TIME = 5
-
-# espera que o redis inicie, tenta estabelecer conexão de 5 em 5 segundos
-while True:
-    try:
-        time.sleep(TIME) 
-        r = redis.Redis(host='redis-crud-crosswalk-counters', charset="utf-8", decode_responses=True)
-        break
-    except:
-        print("connection to redis failed, trying again...")
+r = redis.Redis(host='redis-crud-crosswalk-counters', port=6379, charset="utf-8", decode_responses=True)
 
 # inicia o servidor
 app = Flask(__name__)
