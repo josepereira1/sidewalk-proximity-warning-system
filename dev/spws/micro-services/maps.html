@@ -48,7 +48,7 @@
 
         <p class="text-primary">Available Crosswalks</p>
 
-        <table class="table text-center table-hover" style="display: block; height: 400px; overflow: auto">
+        <table class="table text-center table-hover" style="display: block; height: 300px; overflow: auto">
             <thead>
                 <tr>
                     <th>id</th>
@@ -60,7 +60,10 @@
             <tbody id="tbody">
             </tbody>
         </table>
-
+        
+        <div class="text-center">
+            <button onclick="resetMap()" type="button" class="btn btn-primary mb-5">Re-Center</button>
+        </div>
 
     </div>
 
@@ -77,6 +80,8 @@
 <!--<script src="js/js.js"></script>--> 
 <script>
 
+    crosswalk_id = "-1";
+
     mapboxgl.accessToken = 'pk.eyJ1IjoicmljYXJkb3BldHJvbmlsaG8iLCJhIjoiY2thaWJ0cXB3MGdlcjJ6cWdrZDRyZWJrNCJ9.EojnZgrLmLFiYWjNMmpWig';
     
     var map = new mapboxgl.Map({
@@ -88,6 +93,19 @@
     });
 
     map.addControl(new mapboxgl.NavigationControl());
+
+    function resetMap() {
+        crosswalk_id = "-1";
+        document.getElementById('crosswalk_id').innerHTML = "";
+        map.flyTo({
+            center: [
+                0,
+                0,
+            ],
+            zoom: 1,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+    }
 
     function flyTo(latitude, longitude) {
         map.flyTo({
@@ -101,59 +119,113 @@
     }
 
     function loadCrosswalks(map) {
-        $.get("http://localhost:5002/readAllCrosswalks")
-                .done(function (data) {
-                    json = JSON.parse(data);
-                    json.forEach(c => 
-                        {
-                            // adiciona o id da crosswalk à tabela lateral
-                            $("#tbody").append('<tr onclick="flyTo(' + c.latitude + ',' + c.longitude + ')"><<td>' + c.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
-                           
-                            map.addSource('crosswalk' + c.id, {
-                                'type': 'geojson',
-                                'data': {
-                                    'type': 'FeatureCollection',
-                                    'features': [
-                                        {
-                                            'type': 'Feature',
-                                            'properties': {
-                                                'description': c.id,
-                                                'icon': 'beer'
-                                            },
-                                            'geometry': {
-                                                'type': 'Point',
-                                                'coordinates': [c.longitude, c.latitude]
-                                            }
+        $.get(
+            "http://localhost:5007/readAllCrosswalks",
+            function (data, status) {
+                json = JSON.parse(data);
+                json.forEach(
+                    c => 
+                    {
+                        // adiciona o id da crosswalk à tabela lateral
+                        $("#tbody").append('<tr onclick="crosswalk_id = \'' + c.id + '\';document.getElementById(\'crosswalk_id\').innerHTML=\'' + c.id + '\';flyTo(' + c.latitude + ',' + c.longitude + ')"><<td>' + c.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
+
+                        map.addSource('crosswalk' + c.id, {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': [
+                                    {
+                                        'type': 'Feature',
+                                        'properties': {
+                                            'description': c.id,
+                                            'icon': 'beer'
+                                        },
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [c.longitude, c.latitude]
                                         }
-                                    ]
-                                }
-                            });
-                            
-                            map.addLayer({
-                                'id': 'crosswalks' + c.id,
-                                'type': 'symbol',
-                                'source': 'crosswalk' + c.id,
-                                'layout': {
-                                    'text-field': ['get', 'description'],
-                                    'text-variable-anchor': ['top'],
-                                    'text-radial-offset': 0.5,
-                                    'text-justify': 'auto',
-                                    'icon-image': ['concat', ['get', 'icon'], '-15'],
-                                    'icon-size': 2
-                                }
-                            });
+                                    }
+                                ]
+                            }
+                        });
+                        
+                        map.addLayer({
+                            'id': 'crosswalks' + c.id,
+                            'type': 'symbol',
+                            'source': 'crosswalk' + c.id,
+                            'layout': {
+                                'text-field': ['get', 'description'],
+                                'text-variable-anchor': ['top'],
+                                'text-radial-offset': 0.5,
+                                'text-justify': 'auto',
+                                'icon-image': ['concat', ['get', 'icon'], '-15'],
+                                'icon-size': 2
+                            }
+                        });
 
-                        }                    
-                    )
+                    } // end lambda                  
+                ) // end forEach()
+            } // end function()
+        ); // end get()
+    }
 
-                } // ende done()
-            ); // end get()
+    function loadDevices(map) {
+        $.post(
+            "http://localhost:5007/monitoringCrosswalk",
+            // data
+            {},
+            function (data, status) {
+                json = JSON.parse(data);
+                json.forEach(
+                    c => 
+                    {
+                        //$("#tbody").append('<tr onclick="flyTo(' + d.latitude + ',' + d.longitude + ')"><<td>' + d.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
+
+                        map.addSource('crosswalk' + d.id, {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': [
+                                    {
+                                        'type': 'Feature',
+                                        'properties': {
+                                            'description': d.id,
+                                            'icon': 'beer'
+                                        },
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [d.longitude, d.latitude]
+                                        }
+                                    }
+                                ]
+                            }
+                        });
+                        
+                        map.addLayer({
+                            'id': 'crosswalks' + d.id,
+                            'type': 'symbol',
+                            'source': 'crosswalk' + d.id,
+                            'layout': {
+                                'text-field': ['get', 'description'],
+                                'text-variable-anchor': ['top'],
+                                'text-radial-offset': 0.5,
+                                'text-justify': 'auto',
+                                'icon-image': ['concat', ['get', 'icon'], '-15'],
+                                'icon-size': 2
+                            }
+                        });
+
+                    } // end lambda                  
+                ) // end forEach()
+            } // end function()
+        ); // end post()
     }
 
     map.on('load', function() {
-
         // AS FUNÇÕES DE LOAD() TÊM DE ESTAR OBRIGATORIAMENTE AQUI!!!
         loadCrosswalks(map);
+        // windows.setInterval(loadVehicles, 1000, map);
+        // windows.setInterval(loadPedestrians, 1000, map);
     });
 
 </script>
