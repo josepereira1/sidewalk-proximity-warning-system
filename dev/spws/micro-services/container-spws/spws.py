@@ -102,6 +102,12 @@ def getClosestCrosswalks():
         res += "]"
         return res
 
+@app.route("/readAllCrosswalks", methods=['GET'])
+def readAllCrosswalks():
+    url = "crud-crosswalk-location"
+    response = requests.get("http://" + url + ":5002/readAllCrosswalks")
+    return response.text
+
 
 @app.route("/", methods=['GET', 'POST'])
 def root():
