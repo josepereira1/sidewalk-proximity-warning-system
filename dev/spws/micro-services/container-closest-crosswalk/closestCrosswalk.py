@@ -73,7 +73,8 @@ def closestCrosswalk(ch, method, properties, body):
     if distances[id_closest_crosswalk] < 0.0001: 
         sender = Sender('rabbitmq-closest-crosswalk')
         sender.setQueue('output')
-        res = '{"user_id":"' + str(user['id']) + '", "crosswalk_id":"' + str(id_closest_crosswalk) + '"}'
+        #res = '{"user_id":"' + str(user['id']) + '", "crosswalk_id":"' + str(id_closest_crosswalk) + '"}'
+        res = '{"user_id":"' + str(user['id']) + '","latitude":' + str(user['latitude']) + ',"longitude":' + str(user['longitude']) + ',"elevation":' + str(user['elevation']) + ',"crosswalk_id":' + str(id_closest_crosswalk) + '}'
 
         # debugging
         f = open("res.txt", "a")

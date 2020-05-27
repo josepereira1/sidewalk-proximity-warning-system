@@ -11,23 +11,25 @@ CORS(app) # enables CORS support on all routes, for all origins and methods
 
 @app.route("/updateInfo", methods=['POST'])
 def updateInfo():
-	if 'user_id' in request.json and 'crosswalk_id' in request.json:
-		user_id = str(request.json['user_id'])
-		crosswalk_id = str(request.json['crosswalk_id'])	
+    if 'user_id' in request.json and 'crosswalk_id' in request.json:
+        user_id = str(request.json['user_id'])
+        crosswalk_id = str(request.json['crosswalk_id'])	
 		# incrementa os contadores dos pedestres ou veículos na passadeira
-		if (user_id[0] == "p"): r.incr("p" + crosswalk_id)
-		elif (user_id[0] == "v"): r.incr("v" + crosswalk_id) 
-		else: return "ko"
+        if (user_id[0] == "p" and not r.exists("p" + crosswalk_id)):
+            r.incr("p" + crosswalk_id)
+            r.lpush("c" + crosswalk_id, user_id)
+        elif (user_id[0] == "v" and not r.exists("v" + crosswalk_id)): 
+            r.incr("v" + crosswalk_id)
+            r.lpush("c" + crosswalk_id, user_id) 
+        else: return "ko"
 		# adiciona o pedestre ou veículo à crosswalk
-		r.lpush("c" + crosswalk_id, user_id)
-		return "ok"
-	else:
-		return "ko"
+        return "ok"
+    else:
+        return "ko"
 
 @app.route("/getInfo", methods=["POST"])
 def getInfo():
     if 'crosswalk_id' in request.json:
-        user_id = str(request.json['user_id'])
         crosswalk_id = str(request.json['crosswalk_id'])
     	# obtém os contadores
         if r.exists("p" + crosswalk_id): 

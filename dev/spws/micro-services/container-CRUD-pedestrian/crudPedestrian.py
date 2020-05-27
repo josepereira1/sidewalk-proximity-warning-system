@@ -12,15 +12,23 @@ CORS(app) # enables CORS support on all routes, for all origins and methods
 # UPDATE/ CREATE
 @app.route("/updateLocation", methods=['POST'])
 def updateLocation():
+    f = open("requestsRecebido", "a")
+    f.write(str(request.json))
+    f.close
+    
     if('id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json):
         id = str(request.json.get('id'))
         latitude = request.json.get('latitude')
         longitude = request.json.get('longitude')
         elevation = request.json.get('elevation')
 
-        json =  '{ "id":' + id + ',"latitude":' + str(latitude) + ',"longitude":' + str(longitude) + ',"elevation":' + str(elevation) + '}'
+        userLocation =  '{ "id":"' + id + '","latitude":' + str(latitude) + ',"longitude":' + str(longitude) + ',"elevation":' + str(elevation) + '}'
 
-        r.set(id, json)
+        f = open("userLocation", "a")
+        f.write(userLocation)
+        f.close
+
+        r.set(id, userLocation)
 
         return "ok"
     else: return "ko"
@@ -32,6 +40,21 @@ def getLocation():
         return r.get(request.json.get('id'))
     else: 
         return "ko"
+
+@app.route("/getPedestrians", methods=['GET'])
+def getClosestCrosswalks():
+    keys = r.keys()
+    if not keys: 
+        return "[]"
+    else:
+        res = "["
+        for key in keys:
+            json = r.get(key)
+            res += json
+            res = res[:-2]
+        res += "]"
+        return res
+
 
 @app.route("/", methods=['GET', 'POST'])
 def root():

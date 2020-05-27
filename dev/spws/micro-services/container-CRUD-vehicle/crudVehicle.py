@@ -17,7 +17,7 @@ def updateLocation():
 		latitude = request.json['latitude']
 		longitude = request.json['longitude']
 		elevation = request.json['elevation']
-		userLocation =  "{\"id\":\"" + id + "\", \"latitude\":" + str(latitude) + ", \"longitude\":" + str(longitude) + ", \"elevation\":" + str(elevation) + "}"
+		userLocation =  '{"id":"' + id + '", "latitude":' + str(latitude) + ',"longitude":' + str(longitude) + ',"elevation":' + str(elevation) + '}'
 		r.set(id, userLocation)
 		return "ok"
 	else:

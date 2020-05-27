@@ -26,12 +26,21 @@ while True:
 def callback(ch, method, properties, body):     
     output = json.loads(body) # python object
     
-    # debugging
-    f = open("output.txt", "a")
-    f.write(str(output))
-    f.close()
-    
     r.set(output['user_id'], output['crosswalk_id'])
+
+    crosswalk = "crud-crosswalk-counters"
+    pedestrian = "crud-pedestrian"
+    vehicle = "crud-vehicle"
+
+    requests.post("http://" + crosswalk + ":5004/updateInfo", json = {"user_id": str(output['user_id']), "crosswalk_id": output['crosswalk_id']})
+
+    if output['user_id'][0] == 'p':
+        requests.post("http://" + pedestrian + ":5000/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
+    if(output['user_id'][0] == 'v'):
+        requests.post("http://" + vehicle +":5001/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
+
+
+
     # TODO criar Thread para incrementar counter no micro-serviço crosswalk-counters
     # TODO criar Thread para adicionar o vehicle ou pedestre à passadeira no respetivo micro-serviço crud
     # TODO criar Thread e enviar atualizar a localização do vehicle ou pedestre no respetivo micro-serviço crud
@@ -63,11 +72,6 @@ def closestCrosswalk():
         elevation = request.json.get('elevation')
 
         json =  '{ "id":"' + id + '", "latitude":' + str(latitude) + ', "longitude":' + str(longitude) + ', "elevation":' + str(elevation) + '}'
-        
-        # Debugging
-        f = open("json.txt", "w")
-        f.write(json)
-        f.close()
 
         # envia o json para o micro-serviço closest-crosswalk através do rabbitMQ
         sender = Sender('rabbitmq-closest-crosswalk')
