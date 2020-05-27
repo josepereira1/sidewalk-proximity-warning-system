@@ -34,6 +34,7 @@ def getLocation():
 def getPedestriansByIds():
     if('users_ids' in request.json):
         users_ids = request.json.get('users_ids')   #   string json
+        if(len(users_ids) == 0): return "[]"             #   caso tenha enviado a lista vazia
         res = "["
         for user_id in users_ids:
             res += r.get(user_id) + ','

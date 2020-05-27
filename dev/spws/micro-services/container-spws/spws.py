@@ -134,8 +134,15 @@ def monitoringCrosswalk():
 
         vehicles = requests.post("http://" + url + ":5001/getVehiclesByIds", json = {'users_ids': vehicles_ids})
         
-        pedestrians = json.loads(pedestrians.text)
-        vehicles = json.loads(vehicles.text)
+        #   garantir que existe, caso não exista dá none
+        if(pedestrians):
+            pedestrians = json.loads(pedestrians.text)
+        else:
+            pedestrians = []
+        if(vehicles):
+            vehicles = json.loads(vehicles.text)
+        else:
+            vehicles = []
 
         users = pedestrians + vehicles
 
