@@ -33,13 +33,24 @@ def updateLocation():
         return "ok"
     else: return "ko"
 
-# GET
 @app.route("/getLocation", methods=["POST"])
 def getLocation():
     if('id' in request.json and r.exists(request.json.get('id'))):
         return r.get(request.json.get('id'))
     else: 
         return "ko"
+
+@app.route("/getPedestriansByIds", methods=["POST"])
+def getPedestriansByIds():
+    if('users_ids' in request.json):
+        users_ids = request.json.get('users_ids')   #   string json
+        res = "["
+        for user_id in users_ids:
+            res += r.get(user_id) + ','
+        res = res[:-1]  #   tirar a última linha
+        res += "]"
+        return res
+    else: return "ko"
 
 @app.route("/getPedestrians", methods=['GET'])
 def getClosestCrosswalks():

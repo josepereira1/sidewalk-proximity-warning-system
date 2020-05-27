@@ -30,6 +30,18 @@ def getLocation():
 
     return "ko"
 
+@app.route("/getVehiclesByIds", methods=["POST"])
+def getPedestriansByIds():
+    if('users_ids' in request.json):
+        users_ids = request.json.get('users_ids')   #   string json
+        res = "["
+        for user_id in users_ids:
+            res += r.get(user_id) + ','
+        res = res[:-1]  #   tirar a última linha
+        res += "]"
+        return res
+    else: return "ko"
+
 @app.route("/", methods=['GET', 'POST'])
 def root():
         return "service ready"

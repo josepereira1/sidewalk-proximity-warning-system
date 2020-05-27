@@ -108,6 +108,45 @@ def readAllCrosswalks():
     response = requests.get("http://" + url + ":5002/readAllCrosswalks")
     return response.text
 
+@app.route("/monitoringCrosswalk", methods=['POST'])
+def monitoringCrosswalk():
+    if('crosswalk_id' in request.json):
+        url = "crud-crosswalk-counters"
+        response = requests.post("http://" + url + ":5004/getInfo", json = request.json)
+
+        dict = json.loads(response.text)
+
+        pedestrians_ids = []
+        vehicles_ids = []
+
+        for user_id in dict['users_ids']:
+            if user_id[0] == 'p':
+                pedestrians_ids.append(user_id)
+            elif user_id[0] == 'v':
+                vehicles_ids.append(user_id)
+            else: return "ko"                
+
+        url = "crud-pedestrian"
+
+        pedestrians = requests.post("http://" + url + ":5000/getPedestriansByIds", json = {'users_ids': pedestrians_ids})
+
+        url = "crud-vehicle"
+
+        vehicles = requests.post("http://" + url + ":5001/getVehiclesByIds", json = {'users_ids': vehicles_ids})
+        
+        pedestrians = json.loads(pedestrians.text)
+        vehicles = json.loads(vehicles.text)
+
+        users = pedestrians + vehicles
+
+        url = "calculate-distance-in-crosswalk"
+
+        response = requests.post("http://" + url + ":5006/calculateDistance", json = {'crosswalkId': request.json['crosswalk_id'], 'users': users})
+
+        res = '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances":' + response.text + ',"users":' + str(users) + '}'
+
+        return res
+    else: return "ko"
 
 @app.route("/", methods=['GET', 'POST'])
 def root():

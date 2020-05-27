@@ -32,7 +32,7 @@ def calculateDistance():
             #print(user)
             distance = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) )
             #print(distance)
-            res += '{"id":' + str(user['id']) + ", " + '"distance":' + str(distance) + "}, "
+            res += '{"id":"' + str(user['id']) + '", ' + '"distance":' + str(distance) + "}, "
         res = res[:-2]
         res += "]"
         return res
