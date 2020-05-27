@@ -84,6 +84,7 @@
 
     mapboxgl.accessToken = 'pk.eyJ1IjoicmljYXJkb3BldHJvbmlsaG8iLCJhIjoiY2thaWJ0cXB3MGdlcjJ6cWdrZDRyZWJrNCJ9.EojnZgrLmLFiYWjNMmpWig';
     
+    // cria e apresenta o mapa
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -92,7 +93,9 @@
         zoom: 1 // 18
     });
 
+    // adicona botões de navegação à direita
     map.addControl(new mapboxgl.NavigationControl());
+
 
     function resetMap() {
         crosswalk_id = "-1";
@@ -172,15 +175,21 @@
     function loadDevices(map) {
         $.post(
             "http://localhost:5007/monitoringCrosswalk",
-            // data
-            {},
+            // post data
+            
+            { "crosswalk_id": crosswalk_id },
+            
             function (data, status) {
                 json = JSON.parse(data);
                 json.forEach(
-                    c => 
+                    d => 
                     {
-                        //$("#tbody").append('<tr onclick="flyTo(' + d.latitude + ',' + d.longitude + ')"><<td>' + d.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
 
+                        // atualiza os contadores
+                        $("#npedestrians").html(d.npedestrians);
+                        $("#vehicles").html(d.nvehicles);
+
+                        /*
                         map.addSource('crosswalk' + d.id, {
                             'type': 'geojson',
                             'data': {
@@ -215,6 +224,8 @@
                             }
                         });
 
+                        */
+
                     } // end lambda                  
                 ) // end forEach()
             } // end function()
@@ -224,8 +235,7 @@
     map.on('load', function() {
         // AS FUNÇÕES DE LOAD() TÊM DE ESTAR OBRIGATORIAMENTE AQUI!!!
         loadCrosswalks(map);
-        // windows.setInterval(loadVehicles, 1000, map);
-        // windows.setInterval(loadPedestrians, 1000, map);
+        window.setInterval(loadDevices, 1000, map);
     });
 
 </script>
