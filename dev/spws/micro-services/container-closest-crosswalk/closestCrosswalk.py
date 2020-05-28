@@ -40,8 +40,6 @@ def initRedis():
 
 
 def closestCrosswalk(ch, method, properties, body):
-    
-    
     crosswalks = {}
     keys = r.keys()
     for key in keys:
@@ -51,43 +49,26 @@ def closestCrosswalk(ch, method, properties, body):
 
     user = json.loads(body) # python object
     
-    # debugging
-    f = open("crosswalks.txt", "a")
-    f.write(str(crosswalks))
-    f.close()
-    f = open("user.txt", "a")
-    f.write(str(user))
-    f.close()
-    
     distances = {}
 
     for key, crosswalk in crosswalks.items():
         distances[key] = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) )
     id_closest_crosswalk = min(distances, key=distances.get)
 
-    # debugging
-    f = open("distances.txt", "a")
-    f.write(str(distances))
-    f.close()
+    sender = Sender('rabbitmq-closest-crosswalk')
+    sender.setQueue('output')
 
     # 0.0001 <=> 11 m
     # 0.0002 <=> 22 m
     # ...
+    #   TODO MUDAR PARA 0.0001
     if distances[id_closest_crosswalk] < 0.0004: 
-        sender = Sender('rabbitmq-closest-crosswalk')
-        sender.setQueue('output')
-        #res = '{"user_id":"' + str(user['id']) + '", "crosswalk_id":"' + str(id_closest_crosswalk) + '"}'
         res = '{"user_id":"' + str(user['id']) + '","latitude":' + str(user['latitude']) + ',"longitude":' + str(user['longitude']) + ',"elevation":' + str(user['elevation']) + ',"crosswalk_id":' + str(id_closest_crosswalk) + '}'
+    else:
+        res = '{"user_id":"' + str(user['id']) + '","crosswalk_id": "-1"}'
 
-        # debugging
-        f = open("res.txt", "a")
-        f.write(str(res))
-        f.close()
-
-        sender.send(res)
-        # sender.setQueue('output2')
-        # sender.send("{\"user_id\":" + str(user['id']) + ",\"crosswalk_id\":" + str(id_closest_crosswalk) + "}")
-        sender.close()
+    sender.send(res)
+    sender.close()
 
 thread = Thread( target = receiver.setQueue, args = ('input', closestCrosswalk) )
 thread.start()
