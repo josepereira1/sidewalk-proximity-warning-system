@@ -33,6 +33,7 @@ def initRedis():
     url = "crud-crosswalk-location"    
     response = requests.get("http://" + url + ":5002/readAllCrosswalks")
     crosswalks = json.loads(response.text)
+    r.flushall() # caso existam dados no redis, apaga-os
     for crosswalk in crosswalks:
         r.set(crosswalk['id'], json.dumps(crosswalk))
     return "redis loaded"
@@ -69,7 +70,7 @@ def closestCrosswalk(ch, method, properties, body):
     f.write(str(distances))
     f.close()
 
-    # 0.0001 º => 11.132 m
+    # 0.0001 º = 11 m
     if distances[id_closest_crosswalk] < 0.0001: 
         sender = Sender('rabbitmq-closest-crosswalk')
         sender.setQueue('output')

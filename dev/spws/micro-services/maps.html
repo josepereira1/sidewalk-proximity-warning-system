@@ -80,6 +80,7 @@
 <!--<script src="js/js.js"></script>--> 
 <script>
 
+    // id da crosswalk selecionada em cada momento
     crosswalk_id = "-1";
 
     mapboxgl.accessToken = 'pk.eyJ1IjoicmljYXJkb3BldHJvbmlsaG8iLCJhIjoiY2thaWJ0cXB3MGdlcjJ6cWdrZDRyZWJrNCJ9.EojnZgrLmLFiYWjNMmpWig';
@@ -96,27 +97,24 @@
     // adicona botões de navegação à direita
     map.addControl(new mapboxgl.NavigationControl());
 
-
     function resetMap() {
+        // reset da crosswalk id apresentada
         crosswalk_id = "-1";
         document.getElementById('crosswalk_id').innerHTML = "";
-        map.flyTo({
-            center: [
-                0,
-                0,
-            ],
-            zoom: 1,
-            essential: true // this animation is considered essential with respect to prefers-reduced-motion
-        });
+        // reset counters apresentados
+        document.getElementById('npedestrians').innerHTML = "-";
+        document.getElementById('nvehicles').innerHTML = "-";
+        // executa a animação para o centro do mapa
+        flyTo(0, 0, 1);
     }
 
-    function flyTo(latitude, longitude) {
+    function flyTo(latitude, longitude, z) {
         map.flyTo({
             center: [
                 longitude,
                 latitude
             ],
-            zoom: 15,
+            zoom: z,
             essential: true // this animation is considered essential with respect to prefers-reduced-motion
         });
     }
@@ -130,7 +128,8 @@
                     c => 
                     {
                         // adiciona o id da crosswalk à tabela lateral
-                        $("#tbody").append('<tr onclick="crosswalk_id = \'' + c.id + '\';document.getElementById(\'crosswalk_id\').innerHTML=\'' + c.id + '\';flyTo(' + c.latitude + ',' + c.longitude + ')"><<td>' + c.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
+                        // cria o evento onclick()
+                        $("#tbody").append('<tr onclick="crosswalk_id = \'' + c.id + '\'; document.getElementById(\'crosswalk_id\').innerHTML=\'' + c.id + '\'; flyTo(' + c.latitude + ', ' + c.longitude + ', 19)"><td>' + c.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
 
                         map.addSource('crosswalk' + c.id, {
                             'type': 'geojson',
@@ -152,6 +151,7 @@
                             }
                         });
                         
+                        // adicona o icon e a label
                         map.addLayer({
                             'id': 'crosswalks' + c.id,
                             'type': 'symbol',
@@ -173,65 +173,73 @@
     }
 
     function loadDevices(map) {
-        $.post(
-            "http://localhost:5007/monitoringCrosswalk",
-            // post data
-            
-            { "crosswalk_id": crosswalk_id },
-            
-            function (data, status) {
-                json = JSON.parse(data);
-                json.forEach(
-                    d => 
-                    {
 
-                        // atualiza os contadores
-                        $("#npedestrians").html(d.npedestrians);
-                        $("#vehicles").html(d.nvehicles);
+        // caso não exista crosswalk selecionada
+        if (crosswalk_id == "-1") return;
 
-                        /*
-                        map.addSource('crosswalk' + d.id, {
-                            'type': 'geojson',
-                            'data': {
-                                'type': 'FeatureCollection',
-                                'features': [
-                                    {
-                                        'type': 'Feature',
-                                        'properties': {
-                                            'description': d.id,
-                                            'icon': 'beer'
-                                        },
-                                        'geometry': {
-                                            'type': 'Point',
-                                            'coordinates': [d.longitude, d.latitude]
-                                        }
+        $.ajax({
+            url:  "http://localhost:5007/monitoringCrosswalk",
+            type: "POST",
+            data: '{"crosswalk_id":"' + crosswalk_id + '"}',
+            contentType: "application/json",
+        }).done(function(data){
+            
+            data = data.replace(/'/g,'\"');
+
+            //alert(data);
+
+            json = JSON.parse(data);
+
+            $("#npedestrians").html(json.npedestrians);
+            $("#nvehicles").html(json.nvehicles);
+            
+            json.users.forEach(
+                d => 
+                {
+
+                    /*                    
+                    map.addSource('user' + d.id, {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [
+                                {
+                                    'type': 'Feature',
+                                    'properties': {
+                                        'description': d.id,
+                                        'icon': 'car'
+                                    },
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [d.longitude, d.latitude]
                                     }
-                                ]
-                            }
-                        });
-                        
-                        map.addLayer({
-                            'id': 'crosswalks' + d.id,
-                            'type': 'symbol',
-                            'source': 'crosswalk' + d.id,
-                            'layout': {
-                                'text-field': ['get', 'description'],
-                                'text-variable-anchor': ['top'],
-                                'text-radial-offset': 0.5,
-                                'text-justify': 'auto',
-                                'icon-image': ['concat', ['get', 'icon'], '-15'],
-                                'icon-size': 2
-                            }
-                        });
+                                }
+                            ]
+                        }
+                    });
+                    
+                    map.addLayer({
+                        'id': 'users' + d.id,
+                        'type': 'symbol',
+                        'source': 'user' + d.id,
+                        'layout': {
+                            'text-field': ['get', 'description'],
+                            'text-variable-anchor': ['top'],
+                            'text-radial-offset': 0.5,
+                            'text-justify': 'auto',
+                            'icon-image': ['concat', ['get', 'icon'], '-15'],
+                            'icon-size': 2
+                        }
+                    });
 
-                        */
+                    */
 
-                    } // end lambda                  
-                ) // end forEach()
-            } // end function()
-        ); // end post()
+                } // end lambda 
+            )
+        });
     }
 
+     
     map.on('load', function() {
         // AS FUNÇÕES DE LOAD() TÊM DE ESTAR OBRIGATORIAMENTE AQUI!!!
         loadCrosswalks(map);

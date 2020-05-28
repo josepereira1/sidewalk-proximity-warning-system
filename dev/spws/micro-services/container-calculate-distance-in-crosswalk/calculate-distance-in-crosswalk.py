@@ -18,6 +18,7 @@ def initRedis():
     url = "crud-crosswalk-location"    
     response = requests.get("http://" + url + ":5002/readAllCrosswalks")
     crosswalks = json.loads(response.text)
+    r.flushall() # caso existam dados no redis, apaga-os
     for crosswalk in crosswalks:
         r.set(crosswalk['id'], json.dumps(crosswalk))
     return "redis loaded"
