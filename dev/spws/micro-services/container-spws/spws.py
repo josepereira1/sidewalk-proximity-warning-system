@@ -134,9 +134,10 @@ def monitoringCrosswalk():
             
         dict = json.loads(response.text)
 
+        # separa a lista de users_ids
         pedestrians_ids = []
         vehicles_ids = []
-
+        
         for user_id in dict['users_ids']:
             if user_id[0] == 'p':
                 pedestrians_ids.append(user_id)
@@ -152,12 +153,15 @@ def monitoringCrosswalk():
         vehicles = requests.post("http://" + url + ":5001/getVehiclesByIds", json = {'users_ids': vehicles_ids})
         vehicles = json.loads(vehicles.text)
 
-        users = pedestrians + vehicles
+        users = pedestrians + vehicles # python object
 
         url = "calculate-distance-in-crosswalk"
         response = requests.post("http://" + url + ":5006/calculateDistance", json = {'crosswalkId': request.json['crosswalk_id'], 'users': users})
 
-        return '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances":' + response.text + ',"users":' + str(users) + '}'
+        # antes de retornar converte a lista de users para uma string json
+        users = json.dumps(users)
+
+        return '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances":' + response.text + ',"users":' + users + '}'
 
     else: return "ko"
 

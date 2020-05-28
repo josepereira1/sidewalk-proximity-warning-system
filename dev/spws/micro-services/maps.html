@@ -82,6 +82,7 @@
 
     // id da crosswalk selecionada em cada momento
     crosswalk_id = "-1";
+    //pedestrians_sources_loaded = false;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoicmljYXJkb3BldHJvbmlsaG8iLCJhIjoiY2thaWJ0cXB3MGdlcjJ6cWdrZDRyZWJrNCJ9.EojnZgrLmLFiYWjNMmpWig';
     
@@ -129,7 +130,7 @@
                     {
                         // adiciona o id da crosswalk à tabela lateral
                         // cria o evento onclick()
-                        $("#tbody").append('<tr onclick="crosswalk_id = \'' + c.id + '\'; document.getElementById(\'crosswalk_id\').innerHTML=\'' + c.id + '\'; flyTo(' + c.latitude + ', ' + c.longitude + ', 19)"><td>' + c.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
+                        $("#tbody").append('<tr onclick="crosswalk_id = \'' + c.id + '\'; document.getElementById(\'crosswalk_id\').innerHTML=\'' + c.id + '\'; flyTo(' + c.latitude + ', ' + c.longitude + ', 20)"><td>' + c.id + '</td><td>' + c.latitude.toFixed(5)  + '</td><td>' + c.longitude.toFixed(5) + '</td><td>' + c.elevation.toFixed(5) + '</td></tr>');
 
                         map.addSource('crosswalk' + c.id, {
                             'type': 'geojson',
@@ -159,7 +160,7 @@
                             'layout': {
                                 'text-field': ['get', 'description'],
                                 'text-variable-anchor': ['top'],
-                                'text-radial-offset': 0.5,
+                                'text-radial-offset': 1,
                                 'text-justify': 'auto',
                                 'icon-image': ['concat', ['get', 'icon'], '-15'],
                                 'icon-size': 2
@@ -183,11 +184,7 @@
             data: '{"crosswalk_id":"' + crosswalk_id + '"}',
             contentType: "application/json",
         }).done(function(data){
-            
-            data = data.replace(/'/g,'\"');
-
-            //alert(data);
-
+   
             json = JSON.parse(data);
 
             $("#npedestrians").html(json.npedestrians);
@@ -195,44 +192,80 @@
             
             json.users.forEach(
                 d => 
-                {
+                {   
+                    if (d.id[0] == 'p') icon = 'bicycle';
+                    else if (d.id[0] == 'v') icon = 'car';
 
-                    /*                    
-                    map.addSource('user' + d.id, {
-                        'type': 'geojson',
-                        'data': {
-                            'type': 'FeatureCollection',
-                            'features': [
-                                {
-                                    'type': 'Feature',
-                                    'properties': {
-                                        'description': d.id,
-                                        'icon': 'car'
-                                    },
-                                    'geometry': {
-                                        'type': 'Point',
-                                        'coordinates': [d.longitude, d.latitude]
+                    distance = json.distances.find(function(obj){
+                        return obj.id == d.id;
+                    }).distance.toFixed(4);
+
+                    // source already loaded, just updates coordinates
+                    if (map.getSource('user' + d.id)) {
+
+                        
+                        map.getSource('user' + d.id).setData(
+                            {
+                                'type': 'FeatureCollection',
+                                'features': [
+                                    {
+                                        'type': 'Feature',
+                                        'properties': {
+                                            'description': d.id + " - " + distance,
+                                            'icon': icon
+                                        },
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [d.longitude, d.latitude]
+                                        }
                                     }
-                                }
-                            ]
-                        }
-                    });
-                    
-                    map.addLayer({
-                        'id': 'users' + d.id,
-                        'type': 'symbol',
-                        'source': 'user' + d.id,
-                        'layout': {
-                            'text-field': ['get', 'description'],
-                            'text-variable-anchor': ['top'],
-                            'text-radial-offset': 0.5,
-                            'text-justify': 'auto',
-                            'icon-image': ['concat', ['get', 'icon'], '-15'],
-                            'icon-size': 2
-                        }
-                    });
+                                ]
+                            }
+                        );
 
-                    */
+                    }
+                    
+                    // first time, load source
+                    else {
+
+                        if (d.id[0] == 'p') icon = 'bicycle';
+                        else if (d.id[0] == 'v') icon = 'car';
+                                     
+                        map.addSource('user' + d.id, {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': [
+                                    {
+                                        'type': 'Feature',
+                                        'properties': {
+                                            'description': d.id + " - " + distance,
+                                            'icon': icon
+                                        },
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [d.longitude, d.latitude]
+                                        }
+                                    }
+                                ]
+                            }
+                        });
+
+                        map.addLayer({
+                            'id': 'users' + d.id,
+                            'type': 'symbol',
+                            'source': 'user' + d.id,
+                            'layout': {
+                                'text-field': ['get', 'description'],
+                                'text-variable-anchor': ['top'],
+                                'text-radial-offset': 0.5,
+                                'text-justify': 'auto',
+                                'icon-image': ['concat', ['get', 'icon'], '-15'],
+                                'icon-size': 2
+                            }
+                        });
+
+                    } 
 
                 } // end lambda 
             )
