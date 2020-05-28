@@ -97,6 +97,25 @@ def readCrosswalk():
         return "ko"
 
 # READ All Crosswalks
+@app.route("/readAllCrosswalksIds", methods=["GET"])
+def readAllCrosswalksIds():
+    select_record_query = "select * from " + tableName + ";"
+    executeQuery(select_record_query)
+    try:
+        crosswalk_records = cursor.fetchall()
+    except:
+        return "schema not created yet"
+    if len(crosswalk_records) == 0: return "[]"
+    json = "["
+    for row in crosswalk_records: 
+        id = row[0]
+        crosswalk =  '{ "id":' + str(id)+  '},'
+        json += crosswalk
+    json = json[:-1] # remove last comma
+    json += "]"
+    return json
+
+# READ All Crosswalks
 @app.route("/readAllCrosswalks", methods=["GET"])
 def readAllCrosswalks():
     select_record_query = "select * from " + tableName + ";"
