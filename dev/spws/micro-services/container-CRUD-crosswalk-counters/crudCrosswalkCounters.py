@@ -31,24 +31,17 @@ def updateInfo():
 def getInfo():
     if 'crosswalk_id' in request.json:
         crosswalk_id = str(request.json['crosswalk_id'])
+
+        # caso não exista lista de users singifica que não existem contadores
+        if not r.exists("c" + crosswalk_id): return "ko"
     	
         # obtém os contadores
-        if r.exists("p" + crosswalk_id): 
-            npedestrians = int(r.get("p" + crosswalk_id))
-            existsPedestrian = True
-        else: 
-            npedestrians = 0
-            existsPedestrian = False
-        if r.exists("v" + crosswalk_id): 
-            nvehicles = int(r.get("v" + crosswalk_id))
-            existsVehicle = True
-        else: 
-            nvehicles = 0
-            existsVehicle = False
-        
-        # nota: ver se posso substituir isso por r.exists("c" + crosswalk_id), não tenho a certeza se dá pq o é uma lista
-        if not existsPedestrian and not existsVehicle: return "ko"
-
+        if r.exists("p" + crosswalk_id): npedestrians = int(r.get("p" + crosswalk_id))
+        else: npedestrians = 0
+      
+        if r.exists("v" + crosswalk_id): nvehicles = int(r.get("v" + crosswalk_id))
+        else: nvehicles = 0
+    
         # obtém a lista de users
         users = r.lrange("c" + crosswalk_id, 0, -1 ) # python object
         users = json.dumps(users) # json string
