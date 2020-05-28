@@ -127,6 +127,11 @@ def monitoringCrosswalk():
         url = "crud-crosswalk-counters"
         response = requests.post("http://" + url + ":5004/getInfo", json = request.json)
 
+        # pode dar "ko" caso ainda ninguem tenha passado na crosswalk
+        # para o micro-serviço crosswalk-counter a crosswalk não existe
+        if (response.text == "ko"):
+            return '{ "npedestrians": 0, "nvehicles": 0, "distances": [], "users": [] }'
+            
         dict = json.loads(response.text)
 
         pedestrians_ids = []
@@ -141,29 +146,19 @@ def monitoringCrosswalk():
 
         url = "crud-pedestrian"
         pedestrians = requests.post("http://" + url + ":5000/getPedestriansByIds", json = {'users_ids': pedestrians_ids})
-       
+        pedestrians = json.loads(pedestrians.text)
+
         url = "crud-vehicle"
         vehicles = requests.post("http://" + url + ":5001/getVehiclesByIds", json = {'users_ids': vehicles_ids})
-        
-        #   garantir que existe, caso não exista dá none
-        if(pedestrians):
-            pedestrians = json.loads(pedestrians.text)
-        else:
-            pedestrians = []
-        if(vehicles):
-            vehicles = json.loads(vehicles.text)
-        else:
-            vehicles = []
+        vehicles = json.loads(vehicles.text)
 
         users = pedestrians + vehicles
 
         url = "calculate-distance-in-crosswalk"
-
         response = requests.post("http://" + url + ":5006/calculateDistance", json = {'crosswalkId': request.json['crosswalk_id'], 'users': users})
 
-        res = '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances":' + response.text + ',"users":' + str(users) + '}'
+        return '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances":' + response.text + ',"users":' + str(users) + '}'
 
-        return res
     else: return "ko"
 
 @app.route("/", methods=['GET', 'POST'])

@@ -15,10 +15,10 @@ def updateInfo():
         user_id = str(request.json['user_id'])
         crosswalk_id = str(request.json['crosswalk_id'])	
 		# incrementa os contadores dos pedestres ou veículos na passadeira
-        if (user_id[0] == "p" and not r.exists("p" + crosswalk_id)):
+        if user_id[0] == "p" and not r.exists("p" + crosswalk_id):
             r.incr("p" + crosswalk_id)
             r.lpush("c" + crosswalk_id, user_id)
-        elif (user_id[0] == "v" and not r.exists("v" + crosswalk_id)): 
+        elif user_id[0] == "v" and not r.exists("v" + crosswalk_id): 
             r.incr("v" + crosswalk_id)
             r.lpush("c" + crosswalk_id, user_id) 
         else: return "ko"
@@ -31,7 +31,8 @@ def updateInfo():
 def getInfo():
     if 'crosswalk_id' in request.json:
         crosswalk_id = str(request.json['crosswalk_id'])
-    	# obtém os contadores
+    	
+        # obtém os contadores
         if r.exists("p" + crosswalk_id): 
             npedestrians = int(r.get("p" + crosswalk_id))
             existsPedestrian = True
@@ -44,7 +45,10 @@ def getInfo():
         else: 
             nvehicles = 0
             existsVehicle = False
+        
+        # nota: ver se posso substituir isso por r.exists("c" + crosswalk_id), não tenho a certeza se dá pq o é uma lista
         if not existsPedestrian and not existsVehicle: return "ko"
+
         # obtém a lista de users
         users = r.lrange("c" + crosswalk_id, 0, -1 ) # python object
         users = json.dumps(users) # json string
