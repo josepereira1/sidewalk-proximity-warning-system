@@ -187,7 +187,7 @@
    
             json = JSON.parse(data);
 
-            console.log(json);
+            // console.log(json);
 
             $("#npedestrians").html(json.npedestrians);
             $("#nvehicles").html(json.nvehicles);
@@ -198,17 +198,10 @@
                     if (d.id[0] == 'p') icon = 'bicycle';
                     else if (d.id[0] == 'v') icon = 'car';
 
-                    // fazer este processamento no back end
-                    distance = json.distances.find(function(obj){
-                        return obj.id == d.id;
-                    }).distance;
-
-                    distance *= 111320;
-                    distance = distance.toFixed(1);
+                    console.log(d)
 
                     // source already loaded, just updates coordinates
                     if (map.getSource('user' + d.id)) {
-
                         
                         map.getSource('user' + d.id).setData(
                             {
@@ -217,7 +210,7 @@
                                     {
                                         'type': 'Feature',
                                         'properties': {
-                                            'description': d.id + " - " + distance + " m",
+                                            'description': d.id + " - " + (d.distance * 111320).toFixed(1)  + " m",
                                             'icon': icon
                                         },
                                         'geometry': {
@@ -246,7 +239,7 @@
                                     {
                                         'type': 'Feature',
                                         'properties': {
-                                            'description': d.id + " - " + distance + " m",
+                                            'description': d.id + " - " +  (d.distance * 111320).toFixed(1) + " m",
                                             'icon': icon
                                         },
                                         'geometry': {
@@ -269,7 +262,9 @@
                                 'text-radial-offset': 0.5,
                                 'text-justify': 'auto',
                                 'icon-image': ['concat', ['get', 'icon'], '-15'],
-                                'icon-size': 2
+                                'icon-size': 2,
+                                'icon-allow-overlap': true,
+                                'text-allow-overlap':true
                             }
                         });
 

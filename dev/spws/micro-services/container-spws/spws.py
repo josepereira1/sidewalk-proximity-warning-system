@@ -31,7 +31,8 @@ def work(output):
     pedestrian_url = "crud-pedestrian"
     vehicle_url = "crud-vehicle"
 
-    r.set(output['user_id'], output['crosswalk_id']) # buffer de notificações
+    # TTL de 5 segundos
+    r.set(output['user_id'], output['crosswalk_id'], ex=5) # buffer de notificações
     
     #   incrementa um dos counters
     #   adiciona o user à passadeira
@@ -43,10 +44,7 @@ def work(output):
     if(output['user_id'][0] == 'v'):
         requests.post("http://" + vehicle_url +":5001/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
 
-    # else:
-        #   limpar o id deste user nas crosswalks
-        # requests.post("http://" + crosswalk_counter_url + ":5004/cleanDirtyIds", json={"user_id": output['user_id']})
-
+        
 def callback(ch, method, properties, body):     
     output = json.loads(body) # python object
     work(output) # a equipa do RabbitMQ recomendar meter isto a correr numa Thread, não sei pq não consegui ainda por a correr na Thread
@@ -127,8 +125,9 @@ def readAllCrosswalks():
 # controller usado no monitoring
 @app.route("/monitoringCrosswalk", methods=['POST'])
 def monitoringCrosswalk():
-    if('crosswalk_id' in request.json):
+    if 'crosswalk_id' in request.json:
         
+        # obtém o nº de pedestres, nº de veículos e users na crosswalk 
         url = "crud-crosswalk-counters"
         response = requests.post("http://" + url + ":5004/getInfo", json = request.json)
             
@@ -138,8 +137,7 @@ def monitoringCrosswalk():
         if (len(dict['users_ids']) == 0):
             return '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances": [] ,"users":[]}'
 
-
-        # separa a lista de users_ids
+        # separa a lista de users_ids para ser usadas individualmente nos micro-serviços
         pedestrians_ids = []
         vehicles_ids = []
         
@@ -158,15 +156,13 @@ def monitoringCrosswalk():
         vehicles = requests.post("http://" + url + ":5001/getVehiclesByIds", json = {'users_ids': vehicles_ids})
         vehicles = json.loads(vehicles.text)
 
-        users = pedestrians + vehicles # python object
-
+        # obtém as distâncias dos users à crosswalk
         url = "calculate-distance-in-crosswalk"
+        users = pedestrians + vehicles
         response = requests.post("http://" + url + ":5006/calculateDistance", json = {'crosswalkId': request.json['crosswalk_id'], 'users': users})
+        users = response.text # json string
 
-        # antes de retornar converte a lista de users para uma string json
-        users = json.dumps(users)
-
-        return '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances":' + response.text + ',"users":' + users + '}'
+        return '{"npedestrians": ' + str(dict['npedestrians']) + ', "nvehicles": ' + str(dict['nvehicles']) + ', "users": ' + users + '}'
 
     else: return "ko"
 

@@ -66,9 +66,7 @@ services:
     links:
       - redis-crud-crosswalk-counters
   redis-crud-crosswalk-counters:
-    image: "redis:latest"
-    ports:
-      - "6379:6379"
+    image: "redis:alpine"
 
 
   calculate-distance-in-crosswalk:
