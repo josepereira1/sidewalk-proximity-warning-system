@@ -34,7 +34,19 @@ def updateInfo():
         # renova o TTL
         r.expire("u" + user_id + crosswalk_id, 5)
 
-        return "ok"
+        # ------------------- VERIFICAR SE HÁ PERIGO -------------------
+
+        crosswalk_id = str(request.json['crosswalk_id'])
+        user_id_input = str(request.json['user_id'])
+
+        crosswalk_users_ids = r.smembers("c" + crosswalk_id) # python object
+
+        for crosswalk_user_id  in crosswalk_users_ids:
+            if r.exists("u" + user_id_input + crosswalk_id) and user_id_input[0] == 'p' and crosswalk_user_id[0] == 'v':
+                return "yes"    #   há perigo
+            if r.exists("u" + user_id_input + crosswalk_id) and user_id_input[0] == 'v' and crosswalk_user_id[0] == 'p':
+                return "yes"    #   há perigo
+        return "no"             #   não há perigo   
     else:
         return "ko"
 
@@ -76,6 +88,23 @@ def getInfo():
         
         return res
     return "ko"
+
+@app.route("/hasDangerous", methods=['POST'])
+def hasDangerous():
+    if 'user_id' in request.json and 'crosswalk_id' in request.json:
+        crosswalk_id = str(request.json['crosswalk_id'])
+        user_id_input = str(request.json['user_id'])
+
+        crosswalk_users_ids = r.smembers("c" + crosswalk_id) # python object
+
+        for crosswalk_user_id  in crosswalk_users_ids:
+            if r.exists("u" + user_id_input + crosswalk_id) and user_id_input[0] == 'p' and crosswalk_user_id[0] == 'v':
+                return "yes"
+            if r.exists("u" + user_id_input + crosswalk_id) and user_id_input[0] == 'v' and crosswalk_user_id[0] == 'p':
+                return "yes"
+        return "no"
+    else:
+        return "ko"
 
 
 @app.route("/", methods=['GET', 'POST'])

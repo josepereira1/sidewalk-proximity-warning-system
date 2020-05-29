@@ -30,14 +30,21 @@ def work(output):
     crosswalk_counter_url = "crud-crosswalk-counters"
     pedestrian_url = "crud-pedestrian"
     vehicle_url = "crud-vehicle"
-
-    # TTL de 5 segundos
-    r.set(output['user_id'], output['crosswalk_id'], ex=5) # buffer de notificações
+    traffic_light = "read-traffic-light"
     
     #   incrementa um dos counters
     #   adiciona o user à passadeira
-    requests.post("http://" + crosswalk_counter_url + ":5004/updateInfo", json = {"user_id": output['user_id'], "crosswalk_id": output['crosswalk_id']})
-    
+    response = requests.post("http://" + crosswalk_counter_url + ":5004/updateInfo", json = {"user_id": output['user_id'], "crosswalk_id": output['crosswalk_id']})
+
+    #   em caso de perigo, o response tem "yes", caso contrário "no"
+    if(response.text == "yes"):
+        # TTL de 5 segundos
+        response = requests.post("http://" + traffic_light + ":5003/getStateLight", json = {"crosswalk_id": output['crosswalk_id']})
+        f = open("traffic_light", "a")
+        f.write(response.text)
+        f.close()
+        r.set(output['user_id'], '{"crosswalk_id":' + str(output['crosswalk_id']) + ',"traffic_light":' + str(response.text) + '}', ex=5) # buffer de notificações
+
     #   atualiza as coordenadas do user
     if output['user_id'][0] == 'p':
         requests.post("http://" + pedestrian_url + ":5000/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
@@ -70,7 +77,9 @@ def populate():
     url = "calculate-distance-in-crosswalk"
     response = requests.get("http://" + url + ":5006/initRedis")
     url = "closest-crosswalk"
-    response = requests.get("http://" + url + ":5005/initRedis") 
+    response = requests.get("http://" + url + ":5005/initRedis")
+    url = "read-traffic-light"
+    response = requests.get("http://" + url + ":5003/initRedis")
     return "database populated and migrated to other micro-services"
 
 
