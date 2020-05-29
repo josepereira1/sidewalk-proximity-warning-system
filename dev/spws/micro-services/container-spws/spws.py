@@ -12,7 +12,7 @@ import random
 # intervalo de tempo para tentar conectar aos serviços externos
 TIME = 5
 
-r = redis.Redis(host='redis-spws', charset="utf-8", decode_responses=True)
+r = redis.StrictRedis(host='redis-spws', charset="utf-8", decode_responses=True)
 
 # espera que o rabbitMQ inicie, tenta estabelecer conexão de 5 em 5 segundos
 while True:
@@ -31,21 +31,21 @@ def work(output):
     pedestrian_url = "crud-pedestrian"
     vehicle_url = "crud-vehicle"
 
-    if str(output['crosswalk_id']) != "-1":
-        r.set(output['user_id'], output['crosswalk_id']) # buffer de notificações
+    r.set(output['user_id'], output['crosswalk_id']) # buffer de notificações
+    
+    #   incrementa um dos counters
+    #   adiciona o user à passadeira
+    requests.post("http://" + crosswalk_counter_url + ":5004/updateInfo", json = {"user_id": output['user_id'], "crosswalk_id": output['crosswalk_id']})
+    
+    #   atualiza as coordenadas do user
+    if output['user_id'][0] == 'p':
+        requests.post("http://" + pedestrian_url + ":5000/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
+    if(output['user_id'][0] == 'v'):
+        requests.post("http://" + vehicle_url +":5001/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
 
-        #   incrementa um dos counters
-        #   adiciona o user à passadeira
-        requests.post("http://" + crosswalk_counter_url + ":5004/updateInfo", json = {"user_id": output['user_id'], "crosswalk_id": output['crosswalk_id']})
-
-        #   atualiza as coordenadas do user
-        if output['user_id'][0] == 'p':
-            requests.post("http://" + pedestrian_url + ":5000/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
-        if(output['user_id'][0] == 'v'):
-            requests.post("http://" + vehicle_url +":5001/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
-    else:
+    # else:
         #   limpar o id deste user nas crosswalks
-        requests.post("http://" + crosswalk_counter_url + ":5004/cleanDirtyIds", json={"user_id": output['user_id']})
+        # requests.post("http://" + crosswalk_counter_url + ":5004/cleanDirtyIds", json={"user_id": output['user_id']})
 
 def callback(ch, method, properties, body):     
     output = json.loads(body) # python object
@@ -128,13 +128,13 @@ def readAllCrosswalks():
 @app.route("/monitoringCrosswalk", methods=['POST'])
 def monitoringCrosswalk():
     if('crosswalk_id' in request.json):
+        
         url = "crud-crosswalk-counters"
         response = requests.post("http://" + url + ":5004/getInfo", json = request.json)
             
         dict = json.loads(response.text)
 
-        # pode dar "ko" caso ainda ninguem tenha passado na crosswalk
-        # para o micro-serviço crosswalk-counter a crosswalk não existe
+        # caso, neste momento, não exista ninguém na crosswalk
         if (len(dict['users_ids']) == 0):
             return '{"npedestrians":' + str(dict['npedestrians']) + ',"nvehicles":' + str(dict['nvehicles']) + ',"distances": [] ,"users":[]}'
 
