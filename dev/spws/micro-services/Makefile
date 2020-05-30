@@ -26,6 +26,9 @@ push:
 	sudo docker tag closest-crosswalk bakincode/closest-crosswalk
 	sudo docker push bakincode/closest-crosswalk
 
+	sudo docker tag monitoring bakincode/monitoring
+	sudo docker push bakincode/monitoring
+
 j1:
 	rm -r -f jmeter-results-1/
 	jmeter -n -t users-1000requests-1.jmx -l jmeter-results-1/results.txt -e -o jmeter-results-1/

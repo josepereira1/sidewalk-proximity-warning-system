@@ -3,8 +3,6 @@ services:
   
   crud-pedestrian:
     image: crud-pedestrian
-    deploy:
-      replicas: 1
     build: container-CRUD-pedestrian/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5000:5000"
@@ -16,8 +14,6 @@ services:
 
   crud-vehicle:
     image: crud-vehicle
-    deploy:
-      replicas: 1
     build: container-CRUD-vehicle/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5001:5001"
@@ -29,8 +25,6 @@ services:
 
   crud-crosswalk-location:
     image: crud-crosswalk-location
-    deploy:
-      replicas: 1
     build: container-CRUD-crosswalk-location/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5002:5002"
@@ -45,8 +39,6 @@ services:
 
   read-traffic-light:
     image: read-traffic-light
-    deploy:
-      replicas: 1
     build: container-read-traffic-light/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5003:5003"
@@ -58,8 +50,6 @@ services:
 
   crud-crosswalk-counters:
     image: crud-crosswalk-counters
-    deploy:
-      replicas: 1
     build: container-CRUD-crosswalk-counters/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5004:5004"
@@ -71,8 +61,6 @@ services:
 
   calculate-distance-in-crosswalk:
     image: calculate-distance-in-crosswalk
-    deploy:
-      replicas: 1
     build: container-calculate-distance-in-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5006:5006"
@@ -109,5 +97,11 @@ services:
       - redis-spws
   redis-spws:
     image: "redis:alpine"
+
+  monitoring:
+    image: monitoring
+    build: ../../monitoring/container-monitoring/
+    ports: 
+      - "80:80" # web service => port 80
 
 
