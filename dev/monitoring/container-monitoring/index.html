@@ -17,13 +17,72 @@
         
         #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100%;}
         
-        #mySideNav {
-            position: absolute; /* começa visível */
-            display: block;
-            height: 93%; 
-            width: 30%; 
-            overflow: auto; 
-            opacity: 0.75;
+        @media only screen and (max-width: 450px) {
+            #mySideNav {
+                position: absolute; /* começa visível */
+                display: block;
+                height: 93%; 
+                width: 100%; 
+                overflow: auto; 
+                opacity: 0.75;
+            }
+        }
+
+        @media only screen and (min-width: 450px) {
+            #mySideNav {
+                position: absolute; /* começa visível */
+                display: block;
+                height: 93%; 
+                width: 75%; 
+                overflow: auto; 
+                opacity: 0.75;
+            }
+        }
+
+        @media only screen and (min-width: 800px) {
+            #mySideNav {
+                position: absolute; /* começa visível */
+                display: block;
+                height: 93%; 
+                width: 45%; 
+                overflow: auto; 
+                opacity: 0.75;
+            }
+        }
+
+        @media only screen and (min-width: 1000px) {
+            #mySideNav {
+                position: absolute; /* começa visível */
+                display: block;
+                height: 93%; 
+                width: 40%; 
+                overflow: auto; 
+                opacity: 0.75;
+            }
+        }
+
+
+        @media only screen and (min-width: 1200px) {
+            #mySideNav {
+                position: absolute; /* começa visível */
+                display: block;
+                height: 93%; 
+                width: 30%; 
+                overflow: auto; 
+                opacity: 0.75;
+            }
+        }
+
+
+         @media only screen and (min-width: 1400px) {
+            #mySideNav {
+                position: absolute; /* começa visível */
+                display: block;
+                height: 93%; 
+                width: 25%; 
+                overflow: auto; 
+                opacity: 0.75;
+            }
         }
 
         .myFooter {
@@ -38,6 +97,9 @@
             position: absolute; 
             display: none; /* começa invisível */
         }
+
+    
+
     </style>
 </head>
 <body>
@@ -46,61 +108,63 @@
 
     <button id="openNavButton" onclick="openNav()" type="button" class="btn btn-primary mt-3 ml-3">Open Nav</button>
   
-    <div id="mySideNav" class="border border-primary rounded pt-3 col-3 bg-light">
+    <div id="mySideNav" class="border border-primary rounded pt-3 bg-light">
 
-        <div>
-            <div class="float-right">
-                <button onclick="closeNav()" type="button" class="close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="float-left">
-                <p class="text-primary">Crosswalk <span id="crosswalk_id"></span></p>
-            </div>
-            <div class="clearfix"></div>
-          </div>
+        <div class="m-3">
 
-        <table class="table text-center">
-            <thead>
-                <tr>
-                    <th>Nº Pedestrians</th>
-                    <th>Nº Vehicles</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id="npedestrians">-</td>
-                    <td id="nvehicles">-</td>
-                </tr>
-            </tbody>
-        </table>
+            <div>
+                <div class="float-right">
+                    <button onclick="closeNav()" type="button" class="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="float-left">
+                    <p class="text-primary">Crosswalk <span id="crosswalk_id"></span></p>
+                </div>
+                <div class="clearfix"></div>
+              </div>
 
-        <div class="page-header">
-            <div class="float-left">
-                <p class="text-primary text-left">Available Crosswalks</p>
-            </div>
-            <div class="float-right">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th>Nº Pedestrians</th>
+                        <th>Nº Vehicles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="npedestrians">-</td>
+                        <td id="nvehicles">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center">
                 <button onclick="resetMap()" type="button" class="btn btn-primary mb-5">Re-Center</button>
             </div>
-            <div class="clearfix"></div>
-          </div>
+  
+               
+            <p class="text-primary text-left">Available Crosswalks</p>
+                        
+ 
+            <table class="table text-center table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>latitude</th>
+                        <th>longitude</th>
+                        <th>elevation</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
 
-        <table class="table text-center table-hover">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>latitude</th>
-                    <th>longitude</th>
-                    <th>elevation</th>
-                </tr>
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-        </table>
+        </div>
 
     </div>
 
-    <footer class="myFooter border border-primary rounded text-center text-primary bg-light py-3 px-1"><b>Sidewalk Monitoring System</b> - José Pereira & Ricardo Petronilho - 2020 ©</footer>
+    <footer id="myFooter" class="myFooter border border-primary rounded text-center text-primary bg-light py-3 px-1"><footer>
 
   
 </body>
@@ -112,8 +176,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <script>
 
-    SPWS_URL = "localhost:5007"
-   // SPWS_URL = "37.189.223.35:5007"
+    //SPWS_URL = "localhost:5007"
+    SPWS_URL = "37.189.223.35:5007"
 
     function openNav() {
         document.getElementById("openNavButton").style.display = "none";
@@ -142,8 +206,6 @@
         zoom: 1 // 18
     });
 
-    // adicona botões de navegação à direita
-    map.addControl(new mapboxgl.NavigationControl());
 
     function resetMap() {
         // reset da crosswalk id apresentada
@@ -152,6 +214,12 @@
         // reset counters apresentados
         document.getElementById('npedestrians').innerHTML = "-";
         document.getElementById('nvehicles').innerHTML = "-";
+        // caso exista um icon no mapa remove-os
+        addedSourcesIds.forEach(sourceId => {
+            map.removeLayer(sourceId);
+            map.removeSource(sourceId);
+        }); 
+        addedSourcesIds = []
         // executa a animação para o centro do mapa
         flyTo(0, 0, 1);
     }
@@ -345,6 +413,13 @@
         }); 
 
         addedSourcesIds = sourceIdsToKeep;
+    }
+
+    if (screen.width >= 600) {
+        document.getElementById("myFooter").innerHTML = "<b>Sidewalk Monitoring System</b> - José Pereira & Ricardo Petronilho - 2020 ©";
+    }
+    else {
+        document.getElementById("myFooter").innerHTML = "<b>Sidewalk Monitoring System</b>";
     }
 
      
