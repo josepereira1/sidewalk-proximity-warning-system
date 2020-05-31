@@ -239,7 +239,7 @@
         $.get(
             "http://" + SPWS_URL + "/readAllCrosswalks",
             function (data, status) {
-                json = JSON.parse(data);
+                json = JSON.parse(data).sort(function(c1, c2){return c1.id-c2.id});
                 json.forEach(
                     c => 
                     {

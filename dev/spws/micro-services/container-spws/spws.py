@@ -40,9 +40,6 @@ def work(output):
     if(response.text == "yes"):
         # TTL de 5 segundos
         response = requests.post("http://" + traffic_light + ":5003/getStateLight", json = {"crosswalk_id": output['crosswalk_id']})
-        f = open("traffic_light", "a")
-        f.write(response.text)
-        f.close()
         r.set(output['user_id'], '{"crosswalk_id":' + str(output['crosswalk_id']) + ',"traffic_light":' + str(response.text) + '}', ex=5) # buffer de notificações
 
     #   atualiza as coordenadas do user
@@ -71,15 +68,35 @@ CORS(app) # enables CORS support on all routes, for all origins and methods
 def populate():
     url = "crud-crosswalk-location"
     response = requests.get("http://" + url + ":5002/createSchema")
-    response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": "0"})
-    response = requests.post("http://" + url + ":5002/createCrosswalk", json={"id": "0", "latitude": 41.537070, "longitude": -8.396851, "elevation": 0})
+
+    # crosswalks near empire state building
+    response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": "1"})
+    response = requests.post("http://" + url + ":5002/createCrosswalk", json={ "id": "1", "latitude":40.74843502260235, "longitude":-73.9845846220851, "elevation":0.0})
+
+    response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": "2"})
+    response = requests.post("http://" + url + ":5002/createCrosswalk", json={ "id": "2", "latitude":40.74843654659892, "longitude":-73.98457422852516, "elevation":0.0})
+
+    response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": "3"})
+    response = requests.post("http://" + url + ":5002/createCrosswalk", json={ "id": "3", "latitude":40.74842562462271, "longitude":-73.98458059877156, "elevation":0.0})
+
+    response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": "4"})
+    response = requests.post("http://" + url + ":5002/createCrosswalk", json={ "id": "4", "latitude":40.74842740261896, "longitude":-73.98457255214453, "elevation":0.0})
+
+    # random crosswalks
+    for i in range(5, 101):
+        response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": str(i)})
+        response = requests.post("http://" + url + ":5002/createCrosswalk", json={ "id": str(i), "latitude": random.uniform(-50, 50), "longitude": random.uniform(-50, 50), "elevation": random.uniform(-50, 50)})
+
     # evoca a migração dos dados para os micro-serviços que os usam
     url = "calculate-distance-in-crosswalk"
     response = requests.get("http://" + url + ":5006/initRedis")
+
     url = "closest-crosswalk"
     response = requests.get("http://" + url + ":5005/initRedis")
+
     url = "read-traffic-light"
     response = requests.get("http://" + url + ":5003/initRedis")
+
     return "database populated and migrated to other micro-services"
 
 
