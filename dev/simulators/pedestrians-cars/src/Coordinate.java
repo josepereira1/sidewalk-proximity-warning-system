@@ -1,4 +1,5 @@
 public class Coordinate {
+
     public double latitude;
     public double longitude;
     public double elevation;
@@ -7,5 +8,14 @@ public class Coordinate {
         this.latitude = latitude;
         this.longitude = longitude;
         this.elevation = elevation;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinate{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", elevation=" + elevation +
+                '}';
     }
 }
