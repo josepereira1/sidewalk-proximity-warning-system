@@ -1,0 +1,11 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1591009418386,29,HTTP Request,200,OK,Thread Group 1-1,text,true,,186,256,1,1,http://localhost:5000/updateLocation,27,0,20
+1591009418428,4,HTTP Request,200,OK,Thread Group 1-2,text,true,,186,256,1,1,http://localhost:5000/updateLocation,4,0,0
+1591009418530,13,HTTP Request,200,OK,Thread Group 1-3,text,true,,186,256,1,1,http://localhost:5000/updateLocation,13,0,1
+1591009418629,12,HTTP Request,200,OK,Thread Group 1-4,text,true,,186,256,1,1,http://localhost:5000/updateLocation,12,0,1
+1591009418729,13,HTTP Request,200,OK,Thread Group 1-5,text,true,,186,256,1,1,http://localhost:5000/updateLocation,13,0,1
+1591009418829,14,HTTP Request,200,OK,Thread Group 1-6,text,true,,186,256,1,1,http://localhost:5000/updateLocation,13,0,2
+1591009418929,12,HTTP Request,200,OK,Thread Group 1-7,text,true,,186,256,1,1,http://localhost:5000/updateLocation,12,0,1
+1591009419029,13,HTTP Request,200,OK,Thread Group 1-8,text,true,,186,256,1,1,http://localhost:5000/updateLocation,13,0,1
+1591009419131,14,HTTP Request,200,OK,Thread Group 1-9,text,true,,186,256,1,1,http://localhost:5000/updateLocation,13,0,1
+1591009419228,6,HTTP Request,200,OK,Thread Group 1-10,text,true,,186,256,1,1,http://localhost:5000/updateLocation,6,0,0

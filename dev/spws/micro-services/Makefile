@@ -29,13 +29,33 @@ push:
 	sudo docker tag monitoring bakincode/monitoring
 	sudo docker push bakincode/monitoring
 
+
+j_all: j1 j2 j3 j4 j5 j6
+
 j1:
 	rm -r -f jmeter-results-1/
-	jmeter -n -t users-1000requests-1.jmx -l jmeter-results-1/results.txt -e -o jmeter-results-1/
+	jmeter -n -t crud-vehicle-users-10.jmx -l jmeter-results-1/results.txt -e -o jmeter-results-1/
 
 j2:
 	rm -r -f jmeter-results-2/
-	jmeter -n -t users-10000requests-1.jmx -l jmeter-results-2/results.txt -e -o jmeter-results-2/
+	jmeter -n -t crud-vehicle-users-100.jmx -l jmeter-results-2/results.txt -e -o jmeter-results-2/
+
+j3:
+	rm -r -f jmeter-results-3/
+	jmeter -n -t crud-vehicle-users-1000.jmx -l jmeter-results-3/results.txt -e -o jmeter-results-3/
+
+j4:
+	rm -r -f jmeter-results-4/
+	jmeter -n -t spws-users-10.jmx -l jmeter-results-4/results.txt -e -o jmeter-results-4/
+
+j5:
+	rm -r -f jmeter-results-5/
+	jmeter -n -t spws-users-100.jmx -l jmeter-results-5/results.txt -e -o jmeter-results-5/
+
+j6:
+	rm -r -f jmeter-results-6/
+	jmeter -n -t spws-users-1000.jmx -l jmeter-results-6/results.txt -e -o jmeter-results-6/
+
 
 cp_all: cp_composer cp_script
 

@@ -1,0 +1,11 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1591010927460,74,HTTP Request,200,OK,Thread Group 1-2,text,true,,201,258,3,3,http://localhost:5007/closestCrosswalk,72,0,30
+1591010927458,84,HTTP Request,200,OK,Thread Group 1-1,text,true,,201,258,2,2,http://localhost:5007/closestCrosswalk,84,0,30
+1591010927510,85,HTTP Request,200,OK,Thread Group 1-3,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,84,0,1
+1591010927604,98,HTTP Request,200,OK,Thread Group 1-4,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,98,0,0
+1591010927705,77,HTTP Request,200,OK,Thread Group 1-5,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,76,0,0
+1591010927802,86,HTTP Request,200,OK,Thread Group 1-6,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,86,0,0
+1591010927910,62,HTTP Request,200,OK,Thread Group 1-7,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,62,0,0
+1591010928001,55,HTTP Request,200,OK,Thread Group 1-8,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,55,0,1
+1591010928109,74,HTTP Request,200,OK,Thread Group 1-9,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,74,0,1
+1591010928209,91,HTTP Request,200,OK,Thread Group 1-10,text,true,,201,258,1,1,http://localhost:5007/closestCrosswalk,91,0,1

@@ -4,7 +4,9 @@ services:
   crud-pedestrian:
     image: bakincode/crud-pedestrian
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm2]
     build: container-CRUD-pedestrian/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5000:5000"
@@ -12,12 +14,17 @@ services:
       - redis-crud-pedestrian
   redis-crud-pedestrian:
     image: "redis:alpine"
+    deploy:
+      placement:
+        constraints: [node.hostname == vm2]
 
 
   crud-vehicle:
     image: bakincode/crud-vehicle
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm2]
     build: container-CRUD-vehicle/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5001:5001"
@@ -25,12 +32,17 @@ services:
       - redis-crud-vehicle
   redis-crud-vehicle:
     image: "redis:alpine"
+    deploy:
+      placement:
+        constraints: [node.hostname == vm2]
 
 
   crud-crosswalk-location:
     image: bakincode/crud-crosswalk-location
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm2]
     build: container-CRUD-crosswalk-location/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5002:5002"
@@ -41,12 +53,17 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: password
+    deploy:
+      placement:
+        constraints: [node.hostname == vm2]
 
 
   read-traffic-light:
     image: bakincode/read-traffic-light
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm2]
     build: container-read-traffic-light/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5003:5003"
@@ -54,12 +71,18 @@ services:
       - redis-read-traffic-light
   redis-read-traffic-light:
     image: "redis:alpine"
+    deploy:
+      placement:
+        constraints: [node.hostname == vm2]
+
 
 
   crud-crosswalk-counters:
     image: bakincode/crud-crosswalk-counters
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm1]
     build: container-CRUD-crosswalk-counters/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5004:5004"
@@ -67,12 +90,17 @@ services:
       - redis-crud-crosswalk-counters
   redis-crud-crosswalk-counters:
     image: "redis:alpine"
+    deploy:
+      placement:
+        constraints: [node.hostname == vm1]
 
 
   calculate-distance-in-crosswalk:
     image: bakincode/calculate-distance-in-crosswalk
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm2]
     build: container-calculate-distance-in-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5006:5006"
@@ -80,12 +108,17 @@ services:
       - redis-calculate-distance-in-crosswalk
   redis-calculate-distance-in-crosswalk:
     image: "redis:alpine" 
+    deploy:
+      placement:
+        constraints: [node.hostname == vm2]
     
     
   closest-crosswalk:
     image: bakincode/closest-crosswalk
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm3]
     build: container-closest-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5005:5005"
@@ -94,18 +127,24 @@ services:
       - rabbitmq-closest-crosswalk
   redis-closest-crosswalk:
     image: "redis:alpine"
+    deploy:
+      placement:
+        constraints: [node.hostname == vm3]
   
 
   rabbitmq-closest-crosswalk:
     image: rabbitmq:3.7.5-management
-    # ports:
-    #   - "5672:5672"
+    deploy:
+      placement:
+        constraints: [node.hostname == vm3]
 
 
   spws:
     image: bakincode/spws
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm1]
     build: container-spws
     ports: 
       - "5007:5007"
@@ -114,14 +153,18 @@ services:
       - redis-spws
   redis-spws:
     image: "redis:alpine"
+    deploy:
+      placement:
+        constraints: [node.hostname == vm1]
 
   monitoring:
     image: bakincode/monitoring
     deploy:
-      replicas: 1
+      replicas: 6
+      placement:
+        constraints: [node.hostname == vm1]
     build: ../../monitoring/container-monitoring/
     ports: 
       - "80:80" # web service => port 80
-
 
 
