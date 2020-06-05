@@ -22,11 +22,13 @@ def updateInfo():
         if user_id[0] == "p": 
             if not r.exists("u" + user_id + crosswalk_id):
                 r.incr("p" + crosswalk_id)
+                r.incr("hp" + crosswalk_id) #   histórico
                 r.set("u" + user_id + crosswalk_id, 'true' )
                 r.sadd("c" + crosswalk_id, user_id) 
         elif user_id[0] == "v":
             if not r.exists("u" + user_id + crosswalk_id):
                 r.incr("v" + crosswalk_id)
+                r.incr("hv" + crosswalk_id) #   histórico
                 r.set("u" + user_id + crosswalk_id, 'true' )
                 r.sadd("c" + crosswalk_id, user_id) 
         else: return "ko"
@@ -64,6 +66,12 @@ def getInfo():
         if r.exists("v" + crosswalk_id): nvehicles = int(r.get("v" + crosswalk_id))
         else: nvehicles = 0
 
+        if r.exists("hp" + crosswalk_id): history_npedestrians = int(r.get("hp" + crosswalk_id))
+        else: history_npedestrians = 0
+
+        if r.exists("hv" + crosswalk_id): history_nvehicles = int(r.get("hv" + crosswalk_id))
+        else: history_nvehicles = 0
+
         # obtém a lista de users
         users_ids = r.smembers("c" + crosswalk_id) # python object
 
@@ -84,7 +92,7 @@ def getInfo():
             res = res[:-2]
             res += "]"
 
-        res = '{"crosswalk_id":' + crosswalk_id + ', "npedestrians":' + str(npedestrians) + ', "nvehicles":' + str(nvehicles) + ', "users_ids":' + res + '}'
+        res = '{"crosswalk_id":' + crosswalk_id + ', "history_npedestrians":' + str(history_npedestrians) + ', "npedestrians":' + str(npedestrians) +  ', "history_nvehicles":' + history_nvehicles + ', "nvehicles":' + str(nvehicles) + ', "users_ids":' + res + '}'
         
         return res
     return "ko"
@@ -106,6 +114,16 @@ def hasDangerous():
     else:
         return "ko"
 
+
+@app.route("/resetDailyCountersCrosswalk", methods=["POST"])
+def resetCountersCrosswalk():
+    if 'crosswalk_id' in request.json:
+        crosswalk_id = str(request.json['crosswalk_id'])
+        if r.exists("v" + crosswalk_id):
+            r.set("v" + crosswalk_id, 0)
+        if r.exists("p" + crosswalk_id):
+            r.set("p" + crosswalk_id, 0)
+    else: return "ko"
 
 @app.route("/", methods=['GET', 'POST'])
 def root():
