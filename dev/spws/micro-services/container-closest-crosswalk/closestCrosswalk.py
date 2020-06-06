@@ -40,34 +40,28 @@ def initRedis():
 
 
 def closestCrosswalk(ch, method, properties, body):
-    crosswalks = {}
+    distances = {}
+
+    user = json.loads(body) # python object
+
     keys = r.keys()
     for key in keys:
         crosswalk = r.get(key) # json string
         crosswalk = json.loads(crosswalk) # python object
-        crosswalks[crosswalk['id']] = crosswalk
-
-    user = json.loads(body) # python object
-    
-    distances = {}
-
-    for key, crosswalk in crosswalks.items():
         distances[key] = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) )
+
     id_closest_crosswalk = min(distances, key=distances.get)
 
     # 0.0001 <=> 11 m
     # 0.0002 <=> 22 m
     # ...
     #   TODO MUDAR PARA 0.0001
-    if distances[id_closest_crosswalk] < 0.0004: 
+    if distances[id_closest_crosswalk] < 0.0001: 
         sender = Sender('rabbitmq-closest-crosswalk')
         sender.setQueue('output')
         res = '{"user_id":"' + str(user['id']) + '","latitude":' + str(user['latitude']) + ',"longitude":' + str(user['longitude']) + ',"elevation":' + str(user['elevation']) + ',"crosswalk_id":' + str(id_closest_crosswalk) + '}'
         sender.send(res)
         sender.close()
-        
-    # else:
-        # res = '{"user_id":"' + str(user['id']) + '","crosswalk_id": "-1"}'
 
 thread = Thread( target = receiver.setQueue, args = ('input', closestCrosswalk) )
 thread.start()
