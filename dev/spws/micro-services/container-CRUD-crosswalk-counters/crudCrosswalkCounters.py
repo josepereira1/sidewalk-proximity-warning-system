@@ -92,7 +92,7 @@ def getInfo():
             res = res[:-2]
             res += "]"
 
-        res = '{"crosswalk_id":' + crosswalk_id + ', "history_npedestrians":' + str(history_npedestrians) + ', "npedestrians":' + str(npedestrians) +  ', "history_nvehicles":' + history_nvehicles + ', "nvehicles":' + str(nvehicles) + ', "users_ids":' + res + '}'
+        res = '{"crosswalk_id":' + crosswalk_id + ', "history_npedestrians":' + str(history_npedestrians) + ', "npedestrians":' + str(npedestrians) +  ', "history_nvehicles":' + str(history_nvehicles) + ', "nvehicles":' + str(nvehicles) + ', "users_ids":' + res + '}'
         
         return res
     return "ko"
@@ -123,6 +123,7 @@ def resetCountersCrosswalk():
             r.set("v" + crosswalk_id, 0)
         if r.exists("p" + crosswalk_id):
             r.set("p" + crosswalk_id, 0)
+        return "ok"
     else: return "ko"
 
 @app.route("/", methods=['GET', 'POST'])

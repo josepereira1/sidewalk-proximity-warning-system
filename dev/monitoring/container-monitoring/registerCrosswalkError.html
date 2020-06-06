@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Monitoring</title>
+
+    <!-- Map Box API -->
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <style>
+        body { margin: 0; padding: 0; }
+
+        .myFooter {
+            position: absolute; 
+            bottom: 0; 
+            width: 100%; 
+            height: 7%; 
+            opacity: 0.75;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h5 class="m-3 pt-3">Registering crosswalk</h5>
+        </div>
+            <form class="center my-5" action="http://localhost:5007/registerCrosswalk" method="POST">
+                <div class="form-group">
+                <label for="crosswalkid">Crosswalk id</label>
+                <input type="number" class="form-control" id="crosswalkid" name="crosswalk_id" aria-describedby="emailHelp" placeholder="Enter crosswalk id">
+                <small id="emailHelp" class="form-text text-muted">If exists, will not be overwrite.</small>
+                </div>
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input type="number" class="form-control" id="latitude" name="latitude" placeholder="Enter latitude">
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input type="number" class="form-control" id="longitude" name="longitude" placeholder="Enter longitude">
+                </div>
+                <div class="form-group">
+                    <label for="elevation">Elevation</label>
+                    <input type="number" class="form-control" id="elevation" name="elevation" placeholder="Enter elevation">
+                </div>
+                <div class="row">
+                    <button type="submit" value="submit" name="action" class="ml-3 btn btn-primary">Register Crosswalk</button>
+                    <button type="submit" value="back" name="action" class="ml-3 btn btn-primary">Back</button>
+                </div>
+            </form>
+            <div class="my-4 alert alert-danger" role="alert">
+                There is an error, verify input data!
+            </div>
+    </div>
+
+<footer id="myFooter" class="myFooter border border-primary rounded text-center text-primary bg-light py-3 px-1"><b>Sidewalk Monitoring System</b> - José Pereira & Ricardo Petronilho - 2020 ©<footer>
+  
+</body>
+
+<!-- JQuerry -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+ 
+</html>
