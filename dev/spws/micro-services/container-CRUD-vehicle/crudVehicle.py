@@ -11,17 +11,18 @@ CORS(app) # enables CORS support on all routes, for all origins and methods
 
 @app.route("/updateLocation", methods=['POST'])
 def updateLocation():
-
-	if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
-		id = str(request.json['id'])
-		latitude = request.json['latitude']
-		longitude = request.json['longitude']
-		elevation = request.json['elevation']
-		userLocation =  '{"id":"' + id + '", "latitude":' + str(latitude) + ',"longitude":' + str(longitude) + ',"elevation":' + str(elevation) + '}'
-		r.set(id, userLocation)
-		return "ok"
-	else:
-		return "ko"
+    if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json and 'distance' in request.json:
+        id = str(request.json['id'])
+        latitude = request.json['latitude']
+        longitude = request.json['longitude']
+        elevation = request.json['elevation']
+        distance = request.json.get('distance')
+        
+        userLocation =  '{"id":"' + id + '", "latitude":' + str(latitude) + ',"longitude":' + str(longitude) + ',"elevation":' + str(elevation) + ',"distance":' + str(distance) +'}'
+        r.set(id, userLocation)
+        return "ok"
+    else:
+	    return "ko"
 
 @app.route("/getLocation", methods=["POST"])
 def getLocation():

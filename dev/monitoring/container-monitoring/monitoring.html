@@ -280,10 +280,8 @@
             data: '{"crosswalk_id":"' + crosswalk_id + '"}',
             contentType: "application/json",
         }).done(function(data){
-   
-            json = JSON.parse(data);
 
-            // console.log(json);
+            json = JSON.parse(data);
 
             $("#npedestrians").html(json.npedestrians);
             $("#nvehicles").html(json.nvehicles);

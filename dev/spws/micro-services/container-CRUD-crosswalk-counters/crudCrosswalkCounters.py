@@ -23,13 +23,13 @@ def updateInfo():
             if not r.exists("u" + user_id + crosswalk_id):
                 r.incr("p" + crosswalk_id)
                 r.incr("hp" + crosswalk_id) #   histórico
-                r.set("u" + user_id + crosswalk_id, 'true' )
+                r.set("u" + user_id + crosswalk_id, "true" )
                 r.sadd("c" + crosswalk_id, user_id) 
         elif user_id[0] == "v":
             if not r.exists("u" + user_id + crosswalk_id):
                 r.incr("v" + crosswalk_id)
                 r.incr("hv" + crosswalk_id) #   histórico
-                r.set("u" + user_id + crosswalk_id, 'true' )
+                r.set("u" + user_id + crosswalk_id, "true" )
                 r.sadd("c" + crosswalk_id, user_id) 
         else: return "ko"
 

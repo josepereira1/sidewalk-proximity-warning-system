@@ -48,9 +48,13 @@ def closestCrosswalk(ch, method, properties, body):
     for key in keys:
         crosswalk = r.get(key) # json string
         crosswalk = json.loads(crosswalk) # python object
-        distances[key] = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) )
+        distances[key] = math.sqrt( ((user['latitude']-crosswalk['latitude'])**2)+((user['longitude']-crosswalk['longitude'])**2)+((user['elevation']-crosswalk['elevation'])**2) ) 
 
     id_closest_crosswalk = min(distances, key=distances.get)
+
+    f = open("log", "a")
+    f.write(str(distances))
+    f.close()
 
     # 0.0001 <=> 11 m
     # 0.0002 <=> 22 m
@@ -59,7 +63,7 @@ def closestCrosswalk(ch, method, properties, body):
     if distances[id_closest_crosswalk] < 0.0001: 
         sender = Sender('rabbitmq-closest-crosswalk')
         sender.setQueue('output')
-        res = '{"user_id":"' + str(user['id']) + '","latitude":' + str(user['latitude']) + ',"longitude":' + str(user['longitude']) + ',"elevation":' + str(user['elevation']) + ',"crosswalk_id":' + str(id_closest_crosswalk) + '}'
+        res = '{"user_id":"' + str(user['id']) + '","latitude":' + str(user['latitude']) + ',"longitude":' + str(user['longitude']) + ',"elevation":' + str(user['elevation']) + ',"crosswalk_id":' + str(id_closest_crosswalk) + ', "distance":' + str(distances[id_closest_crosswalk])+  '}'
         sender.send(res)
         sender.close()
 

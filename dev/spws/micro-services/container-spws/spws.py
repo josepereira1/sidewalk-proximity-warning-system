@@ -27,6 +27,10 @@ while True:
 def work(output):
     global r
 
+    f = open("log", "a")
+    f.write(str(output))
+    f.close()
+
     crosswalk_counter_url = "crud-crosswalk-counters"
     pedestrian_url = "crud-pedestrian"
     vehicle_url = "crud-vehicle"
@@ -44,9 +48,9 @@ def work(output):
 
     #   atualiza as coordenadas do user
     if output['user_id'][0] == 'p':
-        requests.post("http://" + pedestrian_url + ":5000/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
+        requests.post("http://" + pedestrian_url + ":5000/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation'], "distance": output['distance']})
     if(output['user_id'][0] == 'v'):
-        requests.post("http://" + vehicle_url +":5001/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation']})
+        requests.post("http://" + vehicle_url +":5001/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation'], "distance": output['distance']})
 
         
 def callback(ch, method, properties, body):     
@@ -161,7 +165,7 @@ def monitoringCrosswalk():
 
         # caso, neste momento, não exista ninguém na crosswalk
         if (len(dict['users_ids']) == 0):
-            return '{"history_npedestrians":'+ str(dict['history_npedestrians']) + ', "npedestrians": ' + str(dict['npedestrians']) + ', "history_nvehicles":' + str(dict['history_nvehicles']) + ', "nvehicles": ' + str(dict['nvehicles']) + ',"distances": [] ,"users":[]}'
+            return '{"history_npedestrians":'+ str(dict['history_npedestrians']) + ', "npedestrians": ' + str(dict['npedestrians']) + ', "history_nvehicles":' + str(dict['history_nvehicles']) + ', "nvehicles": ' + str(dict['nvehicles']) + ',"users":[]}'
 
         # separa a lista de users_ids para ser usadas individualmente nos micro-serviços
         pedestrians_ids = []
@@ -185,10 +189,10 @@ def monitoringCrosswalk():
         # obtém as distâncias dos users à crosswalk
         url = "calculate-distance-in-crosswalk"
         users = pedestrians + vehicles
-        response = requests.post("http://" + url + ":5006/calculateDistance", json = {'crosswalkId': request.json['crosswalk_id'], 'users': users})
-        users = response.text # json string
+        #response = requests.post("http://" + url + ":5006/calculateDistance", json = {'crosswalkId': request.json['crosswalk_id'], 'users': users})
+        #users = response.text # json string
 
-        return '{"history_npedestrians":'+ str(dict['history_npedestrians']) + ', "npedestrians": ' + str(dict['npedestrians']) + ', "history_nvehicles":' + str(dict['history_nvehicles']) + ', "nvehicles": ' + str(dict['nvehicles']) + ', "users": ' + users + '}'
+        return '{"history_npedestrians":'+ str(dict['history_npedestrians']) + ', "npedestrians": ' + str(dict['npedestrians']) + ', "history_nvehicles":' + str(dict['history_nvehicles']) + ', "nvehicles": ' + str(dict['nvehicles']) + ', "users": ' + str(json.dumps(users)) + '}'
 
     else: return "ko"
 
