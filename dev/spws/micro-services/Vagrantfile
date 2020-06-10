@@ -66,6 +66,18 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
+  config.vm.define "vm2" do |vm2|
+    vm2.vm.network "private_network", ip: "10.0.0.102"
+    vm2.vm.hostname = "vm2"
+
+  end
+
+  config.vm.define "vm3" do |vm2|
+    vm2.vm.network "private_network", ip: "10.0.0.103"
+    vm2.vm.hostname = "vm3"
+
+  end
+
   config.vm.define "vm1" do |vm1|
     vm1.vm.network "private_network", ip: "10.0.0.101"
     vm1.vm.hostname = "vm1"
@@ -78,18 +90,12 @@ Vagrant.configure("2") do |config|
     vm1.vm.network "forwarded_port", guest: 5005, host: 5005 # closest crosswalk port
     vm1.vm.network "forwarded_port", guest: 5006, host: 5006 # calculate distance in crosswalk port
     vm1.vm.network "forwarded_port", guest: 5007, host: 5007 # spws port
-    vm1.vm.network "forwarded_port", guest: 80, host: 4999 # monitoring web service port
+    vm1.vm.network "forwarded_port", guest: 8080, host: 8080 # monitoring web service port
     vm1.vm.network "forwarded_port", guest: 2377, host: 2377 # docker swarm management port (para que as máquinas Slaves possam juntar-se ao cluster)
     vm1.vm.network "forwarded_port", guest: 7946, host: 7946, protocol: "udp" # for container network discovery
     vm1.vm.network "forwarded_port", guest: 7946, host: 7946, protocol: "tcp" # for container network discovery
     vm1.vm.network "forwarded_port", guest: 4789, host: 4789, protocol: "udp" # for the container ingress network
   
-  end
-
-  config.vm.define "vm2" do |vm2|
-    vm2.vm.network "private_network", ip: "10.0.0.102"
-    vm2.vm.hostname = "vm2"
-
   end
 
   # Enable provisioning with a shell script. Additional provisioners such as

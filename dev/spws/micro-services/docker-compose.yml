@@ -102,6 +102,6 @@ services:
     image: monitoring
     build: container-monitoring
     ports: 
-      - "80:80" # web service => port 80
+      - "8080:8080"
 
 

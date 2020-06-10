@@ -5,7 +5,7 @@ FROM python:3.7-alpine
 WORKDIR /usr/src/monitoring
 
 # diz ao docker para aceitar conexões (para dentro ou fora) na porta 5001
-EXPOSE 80
+EXPOSE 8080
 
 # copia toda a pasta atual para a WORKDIR (definida antes) do docker
 COPY . .

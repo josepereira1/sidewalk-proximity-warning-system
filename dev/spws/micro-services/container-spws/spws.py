@@ -190,24 +190,15 @@ def monitoringCrosswalk():
 
 @app.route("/registerCrosswalk", methods=["POST"])
 def registerCrosswalk():
-    if 'action' in request.form and request.form['action'] == 'back':
-        url = "monitoring"
-        return requests.get("http://" + url + ":80/").text
-    else:
-        if 'crosswalk_id' in request.form and 'latitude' in request.form and 'longitude' in request.form and 'elevation' in request.form:
-            crosswalk_id = request.form['crosswalk_id']
-            latitude = request.form['latitude']
-            longitude = request.form['longitude']
-            elevation = request.form['elevation']
-            url = "crud-crosswalk-location"
-            response = requests.post("http://" + url + ":5002/createCrosswalk", json = {"id": crosswalk_id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
-            url = "monitoring"
-            if response.text == "crosswalk already exists":
-                return requests.get("http://" + url + ":80/registerCrosswalkWarning").text
-            if response.text == "schema not created yet":
-                return requests.get("http://" + url + ":80/registerCrosswalkError").text
-            return requests.get("http://" + url + ":80/registerCrosswalkSucess").text
-        else: return "ko"
+    if 'crosswalk_id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
+        crosswalk_id = request.json['crosswalk_id']
+        latitude = request.json['latitude']
+        longitude = request.json['longitude']
+        elevation = request.json['elevation']
+        url = "crud-crosswalk-location"
+        response = requests.post("http://" + url + ":5002/createCrosswalk", json = {"id": crosswalk_id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
+        return response
+    else: return "ko"
 
 @app.route("/", methods=['GET', 'POST'])
 def root():

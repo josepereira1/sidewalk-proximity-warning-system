@@ -29,7 +29,7 @@
         <div class="row">
             <h5 class="m-3 pt-3">Registering crosswalk</h5>
         </div>
-            <form class="center my-5" action="http://localhost:5007/registerCrosswalk" method="POST">
+            <form class="center my-5" action="http://localhost:8080/registerCrosswalk" method="POST">
                 <div class="form-group">
                 <label for="crosswalkid">Crosswalk id</label>
                 <input type="number" class="form-control" id="crosswalkid" name="crosswalk_id" aria-describedby="emailHelp" placeholder="Enter crosswalk id">
@@ -53,7 +53,7 @@
                 </div>
             </form>
             <div class="my-4 alert alert-danger" role="alert">
-                There is an error, verify input data!
+                Internal server error!
             </div>
     </div>
 
