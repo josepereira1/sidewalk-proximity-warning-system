@@ -22,6 +22,10 @@
             height: 7%; 
             opacity: 0.75;
         }
+
+        .specialButton {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -29,7 +33,7 @@
         <div class="row">
             <h5 class="m-3 pt-3">Registering crosswalk</h5>
         </div>
-            <form class="center my-5" action="http://localhost:8080/registerCrosswalk" method="POST">
+            <form class="center mt-1" action="http://localhost:8080/registerCrosswalk" method="POST">
                 <div class="form-group">
                 <label for="crosswalkid">Crosswalk id</label>
                 <input required type="number" min="0" class="form-control" id="crosswalkid" name="crosswalk_id" placeholder="Enter crosswalk id">
@@ -47,12 +51,10 @@
                     <label for="elevation">Elevation</label>
                     <input required type="number" class="form-control" id="elevation" name="elevation" placeholder="Enter elevation">
                 </div>
-                <div class="row">
-                    <button type="submit" value="submit" name="action" class="ml-3 btn btn-primary">Register Crosswalk</button>
-                </div>
+                    <button type="submit" value="submit" name="action" class="specialButton btn btn-primary">Register Crosswalk</button>
             </form>
-            <form class="center my-5" action="http://localhost:8080/" method="GET">
-                <button class="ml-3 btn btn-primary">Back</button>
+            <form class="center mt-3" action="http://localhost:8080/" method="GET">
+                <button class="specialButton btn btn-primary">Back</button>
             </form>
     </div>
 
