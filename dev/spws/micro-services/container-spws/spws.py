@@ -27,10 +27,6 @@ while True:
 def work(output):
     global r
 
-    f = open("log", "a")
-    f.write(str(output))
-    f.close()
-
     crosswalk_counter_url = "crud-crosswalk-counters"
     pedestrian_url = "crud-pedestrian"
     vehicle_url = "crud-vehicle"
@@ -185,12 +181,8 @@ def monitoringCrosswalk():
         url = "crud-vehicle"
         vehicles = requests.post("http://" + url + ":5001/getVehiclesByIds", json = {'users_ids': vehicles_ids})
         vehicles = json.loads(vehicles.text)
-
-        # obtém as distâncias dos users à crosswalk
-        url = "calculate-distance-in-crosswalk"
+        
         users = pedestrians + vehicles
-        #response = requests.post("http://" + url + ":5006/calculateDistance", json = {'crosswalkId': request.json['crosswalk_id'], 'users': users})
-        #users = response.text # json string
 
         return '{"history_npedestrians":'+ str(dict['history_npedestrians']) + ', "npedestrians": ' + str(dict['npedestrians']) + ', "history_nvehicles":' + str(dict['history_nvehicles']) + ', "nvehicles": ' + str(dict['nvehicles']) + ', "users": ' + str(json.dumps(users)) + '}'
 

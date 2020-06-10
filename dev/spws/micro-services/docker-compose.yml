@@ -100,7 +100,7 @@ services:
 
   monitoring:
     image: monitoring
-    build: ../../monitoring/container-monitoring/
+    build: container-monitoring
     ports: 
       - "80:80" # web service => port 80
 

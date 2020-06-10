@@ -52,10 +52,6 @@ def closestCrosswalk(ch, method, properties, body):
 
     id_closest_crosswalk = min(distances, key=distances.get)
 
-    f = open("log", "a")
-    f.write(str(distances))
-    f.close()
-
     # 0.0001 <=> 11 m
     # 0.0002 <=> 22 m
     # ...

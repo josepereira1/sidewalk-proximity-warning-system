@@ -35,9 +35,39 @@ public class Device extends Thread {
         }
         Coordinate c = coordinates.get(currentCoordinate);
         String json = "{ \"id\":\"" + id + "\", \"latitude\":" + c.latitude + ", \"longitude\":" + c.longitude + ", \"elevation\":" + c.elevation + "}";
-        //System.err.println(json);
         HttpResponse<String> response = Http.post(client, Simulator.SPWS_URL, json);
-        System.out.println(id + ": " + response.body());
+
+        String jsonResponse = response.body();
+
+        if(!jsonResponse.equals("no notifications")) {
+            NotificationJson notificationJson = new Gson().fromJson(json, NotificationJson.class);
+
+            String color = "";
+
+            switch (notificationJson.traffic_light) {
+                case '0':
+                    color = "green";
+                    break;
+                case '1':
+                    color = "yellow";
+                    break;
+                case '2':
+                    color = "red";
+                    break;
+                default:
+                    color = "no info";
+                    break;
+
+            }
+
+            if (id.charAt(0) == 'v') {
+                System.err.println("[" + id + "] WARNNING: pedestrians nearby - TRAFFIC LIGHT is " + color + " !");
+            } else if (id.charAt(0) == 'p') {
+                System.err.println("[" + id + "] WARNNING: vehicles nearby - TRAFFIC LIGHT is " + color + " !");
+            }
+        }else{
+            System.err.println("[" + id + "] no notifications");
+        }
         currentCoordinate++;
         return true;
     }
