@@ -191,13 +191,13 @@ def monitoringCrosswalk():
 @app.route("/registerCrosswalk", methods=["POST"])
 def registerCrosswalk():
     if 'crosswalk_id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
-        crosswalk_id = request.json['crosswalk_id']
+        crosswalk_id = str(request.json['crosswalk_id'])
         latitude = request.json['latitude']
         longitude = request.json['longitude']
         elevation = request.json['elevation']
         url = "crud-crosswalk-location"
         response = requests.post("http://" + url + ":5002/createCrosswalk", json = {"id": crosswalk_id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
-        return response
+        return response.text
     else: return "ko"
 
 @app.route("/", methods=['GET', 'POST'])

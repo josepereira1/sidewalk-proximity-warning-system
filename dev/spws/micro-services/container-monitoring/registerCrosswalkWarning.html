@@ -29,29 +29,31 @@
         <div class="row">
             <h5 class="m-3 pt-3">Registering crosswalk</h5>
         </div>
-            <form class="center my-5" action="http://localhost:8080/registerCrosswalk" method="POST">
-                <div class="form-group">
-                <label for="crosswalkid">Crosswalk id</label>
-                <input type="number" class="form-control" id="crosswalkid" name="crosswalk_id" aria-describedby="emailHelp" placeholder="Enter crosswalk id">
-                <small id="emailHelp" class="form-text text-muted">If exists, will not be overwrite.</small>
-                </div>
-                <div class="form-group">
-                    <label for="latitude">Latitude</label>
-                    <input type="number" class="form-control" id="latitude" name="latitude" placeholder="Enter latitude">
-                </div>
-                <div class="form-group">
-                    <label for="longitude">Longitude</label>
-                    <input type="number" class="form-control" id="longitude" name="longitude" placeholder="Enter longitude">
-                </div>
-                <div class="form-group">
-                    <label for="elevation">Elevation</label>
-                    <input type="number" class="form-control" id="elevation" name="elevation" placeholder="Enter elevation">
-                </div>
-                <div class="row">
-                    <button type="submit" value="submit" name="action" class="ml-3 btn btn-primary">Register Crosswalk</button>
-                    <button type="submit" value="back" name="action" class="ml-3 btn btn-primary">Back</button>
-                </div>
-            </form>
+        <form class="center my-5" action="http://localhost:8080/registerCrosswalk" method="POST">
+            <div class="form-group">
+            <label for="crosswalkid">Crosswalk id</label>
+            <input required type="number" min="0" class="form-control" id="crosswalkid" name="crosswalk_id" placeholder="Enter crosswalk id">
+            <small id="emailHelp" class="form-text text-muted">If exists, will not be overwriten.</small>
+            </div>
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input required type="number" class="form-control" id="latitude" name="latitude" placeholder="Enter latitude">
+            </div>
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+                <input required type="number" class="form-control" id="longitude" name="longitude" placeholder="Enter longitude">
+            </div>
+            <div class="form-group">
+                <label for="elevation">Elevation</label>
+                <input required type="number" class="form-control" id="elevation" name="elevation" placeholder="Enter elevation">
+            </div>
+            <div class="row">
+                <button type="submit" value="submit" name="action" class="ml-3 btn btn-primary">Register Crosswalk</button>
+            </div>
+        </form>
+        <form class="center my-5" action="http://localhost:8080/" method="GET">
+            <button class="ml-3 btn btn-primary">Back</button>
+        </form>
             <div class="my-4 alert alert-warning" role="alert">
                 Crosswalk already exists!
             </div>

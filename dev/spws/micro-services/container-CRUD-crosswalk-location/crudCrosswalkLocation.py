@@ -56,7 +56,7 @@ def dropSchema():
 @app.route("/createCrosswalk", methods=["POST"])
 def createCrosswalk():
     if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
-        id = request.json['id']
+        id = str(request.json['id'])
         select_record_query = "select * from " + tableName + " where id=" + id + ";"
         executeQuery(select_record_query)
         try:
@@ -92,7 +92,7 @@ def createCrosswalk():
 @app.route("/readCrosswalk", methods=["POST"])
 def readCrosswalk():
     if('id' in request.json):
-        id = request.json['id']
+        id = str(request.json['id'])
         select_record_query = "select * from " + tableName + " where id=" + id + ";"
         executeQuery(select_record_query)
         try:
@@ -120,8 +120,8 @@ def readAllCrosswalksIds():
     if len(crosswalk_records) == 0: return "[]"
     json = "["
     for row in crosswalk_records: 
-        id = row[0]
-        crosswalk =  '{ "id":' + str(id)+  '},'
+        id = str(row[0])
+        crosswalk =  '{ "id":' + id +  '},'
         json += crosswalk
     json = json[:-1] # remove last comma
     json += "]"
@@ -139,11 +139,11 @@ def readAllCrosswalks():
     if len(crosswalk_records) == 0: return "[]"
     json = "["
     for row in crosswalk_records: 
-        id = row[0]
+        id = str(row[0])
         latitude = row[1]
         longitude = row[2]
         elevation = row[3]
-        crosswalk =  '{ "id":' + str(id)+ ', "latitude":' + str(latitude) + ', "longitude":' + str(longitude) + ', "elevation":' + str(elevation) + '},'
+        crosswalk =  '{ "id":' + id + ', "latitude":' + str(latitude) + ', "longitude":' + str(longitude) + ', "elevation":' + str(elevation) + '},'
         json += crosswalk
     json = json[:-1] # remove last comma
     json += "]"
@@ -153,7 +153,7 @@ def readAllCrosswalks():
 @app.route("/updateCrosswalk", methods=['POST'])
 def updateCrosswalk():
     if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
-        id = request.json['id']
+        id = str(request.json['id'])
         select_record_query = "select * from " + tableName + " where id=" + id + ";"
         executeQuery(select_record_query)
         try:
@@ -177,7 +177,7 @@ def updateCrosswalk():
 @app.route("/deleteCrosswalk", methods=["POST"])
 def deleteCrosswalk():
     if('id' in request.json):
-        id = request.json['id']
+        id = str(request.json['id'])
         select_record_query = "select * from " + tableName + " where id=" + id + ";"
         executeQuery(select_record_query)
         try:
