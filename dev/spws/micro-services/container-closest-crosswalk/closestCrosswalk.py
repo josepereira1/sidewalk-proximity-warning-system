@@ -70,6 +70,25 @@ def closestCrosswalk(ch, method, properties, body):
 thread = Thread( target = receiver.setQueue, args = ('input', closestCrosswalk) )
 thread.start()
 
+@app.route("/updateCrosswalk", methods=['POST'])
+def updateCrosswalk():
+    if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
+        id = str(request.json.get('id'))
+        
+        latitude = request.json.get('latitude')
+        longitude = request.json.get('longitude')
+        elevation = request.json.get('elevation')
+
+        crosswalkLocation =  '{ "id":"' + id + '","latitude":' + str(latitude) + ',"longitude":' + str(longitude) + ',"elevation":' + str(elevation) +'}'
+
+        r.set(id, crosswalkLocation)
+
+        return "ok"
+    else:
+        return "ko"
+
+    
+
 @app.route("/", methods=['GET', 'POST'])
 def root():
         return "service is ready"

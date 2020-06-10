@@ -3,6 +3,7 @@ from flask_cors import CORS
 import psycopg2
 import time
 import sys
+import requests
 
 #hostnameLocal = "localhost"
 hostnameContainer = "postgres-crud-crosswalk-location"
@@ -72,6 +73,17 @@ def createCrosswalk():
         ''' + str(longitude) + ''',
         ''' + str(elevation) + ");"
         print (create_record_query)
+
+        url = "closest-crosswalk"
+
+        requests.post("http://" + url + ":5005/updateCrosswalk", json = {"id": id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
+
+        url = "read-traffic-light"
+
+        #   aqui apenas basta mandar o id, porque o value é o estado da traffic light
+        requests.post("http://" + url + ":5003/updateCrosswalk", json = {"id": id})
+
+
         return executeQuery(create_record_query)
     else:
         return "ko"

@@ -43,6 +43,16 @@ def getLocation():
         return r.get(request.json.get('crosswalk_id'))
     return "ko"
 
+@app.route("/updateCrosswalk", methods=['POST'])
+def updateCrosswalk():
+    if 'id' in request.json:
+        id = str(request.json.get('id'))
+        
+        r.set(id, str(randrange(2)))	#	propagação de uma nova crosswalk, e iniciar um estado random
+
+        return "ok"
+    else:
+        return "ko"
 
 
 @app.route("/", methods=['GET', 'POST'])
