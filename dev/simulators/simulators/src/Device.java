@@ -36,22 +36,25 @@ public class Device extends Thread {
         Coordinate c = coordinates.get(currentCoordinate);
         String json = "{ \"id\":\"" + id + "\", \"latitude\":" + c.latitude + ", \"longitude\":" + c.longitude + ", \"elevation\":" + c.elevation + "}";
         HttpResponse<String> response = Http.post(client, Simulator.SPWS_URL, json);
+        printNotification(response.body());
+        currentCoordinate++;
+        return true;
+    }
 
-        String jsonResponse = response.body();
-
-        if(!jsonResponse.equals("no notifications")) {
-            NotificationJson notificationJson = new Gson().fromJson(json, NotificationJson.class);
+    private void printNotification(String notification) {
+        if(!notification.equals("no notifications")) {
+            NotificationJson notificationJson = new Gson().fromJson(notification, NotificationJson.class);
 
             String color = "";
 
             switch (notificationJson.traffic_light) {
-                case '0':
+                case 0:
                     color = "green";
                     break;
-                case '1':
+                case 1:
                     color = "yellow";
                     break;
-                case '2':
+                case 2:
                     color = "red";
                     break;
                 default:
@@ -68,8 +71,6 @@ public class Device extends Thread {
         }else{
             System.err.println("[" + id + "] no notifications");
         }
-        currentCoordinate++;
-        return true;
     }
 
     @Override
@@ -121,7 +122,9 @@ public class Device extends Thread {
         }
         List<Device> res = new ArrayList<>();
         for(File file : files) {
-            res.add(jsonToDevice(file.getAbsolutePath()));
+            if (file.getName().endsWith(".json")) {
+                res.add(jsonToDevice(file.getAbsolutePath()));
+            }
         }
         return res;
     }
