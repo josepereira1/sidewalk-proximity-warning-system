@@ -57,18 +57,6 @@ services:
       - redis-crud-crosswalk-counters
   redis-crud-crosswalk-counters:
     image: "redis:alpine"
-
-
-  calculate-distance-in-crosswalk:
-    image: calculate-distance-in-crosswalk
-    build: container-calculate-distance-in-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
-    ports:
-      - "5006:5006"
-    links:
-      - redis-calculate-distance-in-crosswalk
-  redis-calculate-distance-in-crosswalk:
-    image: "redis:alpine" 
-    
     
   closest-crosswalk:
     image: closest-crosswalk
