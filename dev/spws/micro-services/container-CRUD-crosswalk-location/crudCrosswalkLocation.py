@@ -74,16 +74,6 @@ def createCrosswalk():
         ''' + str(elevation) + ");"
         print (create_record_query)
 
-        url = "closest-crosswalk"
-
-        requests.post("http://" + url + ":5005/updateCrosswalk", json = {"id": id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
-
-        url = "read-traffic-light"
-
-        #   aqui apenas basta mandar o id, porque o value é o estado da traffic light
-        requests.post("http://" + url + ":5003/updateCrosswalk", json = {"id": id})
-
-
         return executeQuery(create_record_query)
     else:
         return "ko"

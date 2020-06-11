@@ -23,10 +23,12 @@ while True:
     except:
         print("connection to RabbitMQ failed, trying again...")
 
-
+#   esta definição é responsável por receber o output do ClosestCrosswalk e efetuar as atualizações de dados necessárias nos micro serviços
+#   "crud-crosswalk-counters", "crud-pedestrian", "crud-vehicle" e "read-traffic-light"
 def work(output):
     global r
 
+    #   DNS dos micro serviços
     crosswalk_counter_url = "crud-crosswalk-counters"
     pedestrian_url = "crud-pedestrian"
     vehicle_url = "crud-vehicle"
@@ -48,10 +50,10 @@ def work(output):
     if(output['user_id'][0] == 'v'):
         requests.post("http://" + vehicle_url +":5001/updateLocation", json = {"id": output['user_id'], "latitude": output['latitude'], "longitude": output['longitude'], "elevation": output['elevation'], "distance": output['distance']})
 
-        
+
 def callback(ch, method, properties, body):     
     output = json.loads(body) # python object
-    work(output) # a equipa do RabbitMQ recomendar meter isto a correr numa Thread, não sei pq não consegui ainda por a correr na Thread
+    work(output)
 
 # incia a escuta na fila onde será colocado o output do micro-serviço do closest-crosswalk
 thread = Thread( target = receiver.setQueue, args = ('output', callback) ) 
@@ -63,12 +65,14 @@ app = Flask(__name__)
 CORS(app) # enables CORS support on all routes, for all origins and methods
 
 
-# adiciona a passadeira usada para o simulador e faz a migração dos dados para os outros micro-serviços
+# esta definição é responsável por popular a base de dados, com 4 exemplos reais de passadeiras, e depois outros casos random, só para testar a carga
 @app.route("/populate", methods=['GET','POST'])
 def populate():
+    #   DNS dos micro serviços
     url = "crud-crosswalk-location"
     response = requests.get("http://" + url + ":5002/createSchema")
 
+    # população de crosswalks reais para demonstração
     # crosswalks near empire state building
     response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": "1"})
     response = requests.post("http://" + url + ":5002/createCrosswalk", json={ "id": "1", "latitude":40.74843502260235, "longitude":-73.9845846220851, "elevation":0.0})
@@ -99,7 +103,10 @@ def populate():
 
     return "database populated and migrated to other micro-services"
 
-
+#   esta definição é responsável, por receber a localização das entidades pedestrian e vehicle, e enviar a mesma para o micro
+#   serviço ClosestCrosswalk (rabbitmq que existe entre ambos) para verificar se a entidade está na vizinhança de uma crosswalk
+#   sendo que este pedido ao micro serviço ClosestCrosswalk é assíncrono, imediatamente a seguir a enviar para o ClosestCrosswalk
+#   verifica-se a existência de notificações para esta entidade
 @app.route("/closestCrosswalk", methods=['POST'])
 def closestCrosswalk():
     if('id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json):
@@ -123,24 +130,7 @@ def closestCrosswalk():
         else: return "no notifications"
     else: return "ko"
 
-
-# PARA DEBUGGING
-@app.route("/getClosestCrosswalks", methods=['GET'])
-def getClosestCrosswalks():
-    keys = r.keys()
-    if not keys: 
-        return "[]"
-    else:
-        res = "["
-        for key in keys:
-            crosswalk_id = r.get(key)
-            res += '{"user_id":' + key + ", " + '"closest_crosswalk_id":' + crosswalk_id + "}, "
-            res = res[:-2]
-        res += "]"
-        return res
-
-
-# controller usado no monitoring
+#   esta definição é responsável por retornar a id e localização de todas as crosswalks existentes no sistema.
 @app.route("/readAllCrosswalks", methods=['GET'])
 def readAllCrosswalks():
     url = "crud-crosswalk-location"
@@ -148,7 +138,7 @@ def readAllCrosswalks():
     return response.text
 
 
-# controller usado no monitoring
+#   esta definição retorna toda a informação necessária na monitorização de uma crosswalk
 @app.route("/monitoringCrosswalk", methods=['POST'])
 def monitoringCrosswalk():
     if 'crosswalk_id' in request.json:
@@ -188,6 +178,7 @@ def monitoringCrosswalk():
 
     else: return "ko"
 
+#   esta definição é responsável por registar/adicionar uma crosswalk ao sistema e de seguida propagar as escritas para os serviços dependentes desta
 @app.route("/registerCrosswalk", methods=["POST"])
 def registerCrosswalk():
     if 'crosswalk_id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
@@ -197,9 +188,20 @@ def registerCrosswalk():
         elevation = request.json['elevation']
         url = "crud-crosswalk-location"
         response = requests.post("http://" + url + ":5002/createCrosswalk", json = {"id": crosswalk_id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
+        
+        #   apenas quando correu bem a escrita, propaga-se as mesmas para os serviços dependentes desta escrita
+        if response.text == "ok":
+            url = "closest-crosswalk"
+            requests.post("http://" + url + ":5005/updateCrosswalk", json = {"id": id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
+            
+            url = "read-traffic-light"
+            #   aqui apenas basta mandar o id, porque o value é o estado da traffic light
+            requests.post("http://" + url + ":5003/updateCrosswalk", json = {"id": id})
+
         return response.text
     else: return "ko"
 
+#   esta definição é responsável para mostrar que o serviço flask está a correr
 @app.route("/", methods=['GET', 'POST'])
 def root():
         return "service is ready"
