@@ -5,12 +5,7 @@ Este ficheiro explica detalhadamente como instalar e configurar o cluster 'docke
 	instala as VMs configuradas no ficheiro Vagrantfile.
 	neste caso cria 3 VMs (Master - VM1; Slaves - VM2 e VM3). Em todas instala o docker.
 
-2. 
->> make cp_all
-	copia o ficheiro que configura a infaestrutura (docker-compose.yml) para o Master (VM1).
-	ainda copia o script (master.sh) para o MASTER
-
-3.
+2.
 >> ssh vagrant@10.0.0.101
 	neste momento encontra-se dentro do Master.
 >> sudo docker swarm init --advertise-addr 10.0.0.101
@@ -20,16 +15,16 @@ nota (opcional):
 	guardar o comando gerado para, posteriormente, adicionar os Slaves ao cluster.
 	ex: docker swarm join --token <token> <master_ip>:<master_port>
 
-4.
+3.
 >> ssh vagrant@10.0.0.102
 	neste momento encontra-se dentro de um dos Slaves.
 >> sudo docker swarm join --token <token> <master_ip>:<master_port>
 	com o comando guardado anteriormente, adiciona o Slave ao cluster.
 
-5. 
+4. 
 fazer o ponto 4. para todos os Slaves. Ao fazer ssh atenção aos IPs diferentes de cada máquina.
 
-6. 
+5. 
 >> ssh vagrant@10.0.0.101
 	neste momento encontra-se dentro do Master.
 >> cd ew/
