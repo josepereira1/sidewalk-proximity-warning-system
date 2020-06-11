@@ -26,7 +26,8 @@ while True:
 app = Flask(__name__)	
 CORS(app) # enables CORS support on all routes, for all origins and methods
 
-# função auxiliar usada para executar uma query genericamente
+#   esta definição é responsável por executar uma query genérica
+#   query a ser executada
 def executeQuery(query):
     try:
         cursor.execute(query)
@@ -36,7 +37,8 @@ def executeQuery(query):
         conn.rollback()
         return error
 
-# usado apenas no ínicio para criar a tabela
+#   cria o schema, isto é, as tabelas necessárias 
+#   no input
 @app.route("/createSchema", methods=['GET'])
 def createSchema():
 	create_table_query = "CREATE TABLE if not exists " + tableName + '''(
@@ -46,13 +48,15 @@ def createSchema():
 		ELEVATION        FLOAT    NOT NULL);'''
 	return executeQuery(create_table_query)
 
-# pode ser útil (nem que seja para testar)
+#   drop/eliminação do schema/base de dados
+#   no input
 @app.route("/dropSchema", methods=['GET'])
 def dropSchema():	
 	drop_table_query = "drop table if exists " + tableName + ";"
 	return executeQuery(drop_table_query)
 
-# CREATE
+#   cria/adiciona uma crosswalk à base de dados
+#   input (JSON): {"id": 0, "latitude": 1, "longitude": 1, "elevation": 1} 
 @app.route("/createCrosswalk", methods=["POST"])
 def createCrosswalk():
     if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
@@ -78,7 +82,8 @@ def createCrosswalk():
     else:
         return "ko"
 
-# READ 1 Crosswalk
+#   retorna os dados (id, localização) referentes a uma crosswalk
+#   input (JSON): {"id": 1}
 @app.route("/readCrosswalk", methods=["POST"])
 def readCrosswalk():
     if('id' in request.json):
@@ -98,7 +103,8 @@ def readCrosswalk():
     else:
         return "ko"
 
-# READ All Crosswalks
+#   retorna os ids de todas as crosswalks
+#   no input
 @app.route("/readAllCrosswalksIds", methods=["GET"])
 def readAllCrosswalksIds():
     select_record_query = "select * from " + tableName + ";"
@@ -117,7 +123,8 @@ def readAllCrosswalksIds():
     json += "]"
     return json
 
-# READ All Crosswalks
+#   retorna os dados (id, localização) de todas as crosswalks
+#   no input
 @app.route("/readAllCrosswalks", methods=["GET"])
 def readAllCrosswalks():
     select_record_query = "select * from " + tableName + ";"
@@ -139,7 +146,8 @@ def readAllCrosswalks():
     json += "]"
     return json
 
-# UPDATE
+#   atualiza os dados (id, localização) de uma crosswalk
+#   input (JSON): {"id": 0, "latitude": 1, "longitude": 1, "elevation": 1} 
 @app.route("/updateCrosswalk", methods=['POST'])
 def updateCrosswalk():
     if 'id' in request.json and 'latitude' in request.json and 'longitude' in request.json and 'elevation' in request.json:
@@ -163,7 +171,8 @@ def updateCrosswalk():
     else:
         return "ko"
 
-# DELETE
+#   elimina/apaga uma crosswalk dado o id
+#   input (JSON): {"id": 0}
 @app.route("/deleteCrosswalk", methods=["POST"])
 def deleteCrosswalk():
     if('id' in request.json):
