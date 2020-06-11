@@ -91,10 +91,6 @@ def populate():
         response = requests.post("http://" + url + ":5002/deleteCrosswalk", json={"id": str(i)})
         response = requests.post("http://" + url + ":5002/createCrosswalk", json={ "id": str(i), "latitude": random.uniform(-50, 50), "longitude": random.uniform(-50, 50), "elevation": random.uniform(-50, 50)})
 
-    # evoca a migração dos dados para os micro-serviços que os usam
-    url = "calculate-distance-in-crosswalk"
-    response = requests.get("http://" + url + ":5006/initRedis")
-
     url = "closest-crosswalk"
     response = requests.get("http://" + url + ":5005/initRedis")
 
@@ -186,17 +182,18 @@ def registerCrosswalk():
         latitude = request.json['latitude']
         longitude = request.json['longitude']
         elevation = request.json['elevation']
+        
         url = "crud-crosswalk-location"
         response = requests.post("http://" + url + ":5002/createCrosswalk", json = {"id": crosswalk_id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
         
         #   apenas quando correu bem a escrita, propaga-se as mesmas para os serviços dependentes desta escrita
         if response.text == "ok":
             url = "closest-crosswalk"
-            requests.post("http://" + url + ":5005/updateCrosswalk", json = {"id": id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
+            requests.post("http://" + url + ":5005/updateCrosswalk", json = {"id": crosswalk_id, "latitude": latitude, "longitude": longitude, "elevation": elevation})
             
             url = "read-traffic-light"
             #   aqui apenas basta mandar o id, porque o value é o estado da traffic light
-            requests.post("http://" + url + ":5003/updateCrosswalk", json = {"id": id})
+            requests.post("http://" + url + ":5003/updateCrosswalk", json = {"id": crosswalk_id})
 
         return response.text
     else: return "ko"

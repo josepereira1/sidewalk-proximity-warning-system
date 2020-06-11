@@ -58,6 +58,8 @@ def registerCrosswalkPOST():
                     return registerCrosswalkHTMLError
                 elif response.text == "ko":
                     return registerCrosswalkHTMLError
+                else: 
+                    return "internal server error" + response.text
 
             else: 
                 return "internal server error - input error"

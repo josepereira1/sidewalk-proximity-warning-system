@@ -15,6 +15,14 @@ r = redis.Redis(host='redis-crud-crosswalk-counters', port=6379, charset="utf-8"
 app = Flask(__name__)
 CORS(app) # enables CORS support on all routes, for all origins and methods
 
+def cleanExpiredUsers(crosswalk_id):
+    # obtém a lista de users naquela passadeira
+    users_ids = r.smembers("c" + crosswalk_id)
+
+    # remove os users que tenham atingido o TTL
+    for user_id in users_ids:
+        if not r.exists("u" + user_id + crosswalk_id):
+            r.srem("c" + crosswalk_id, user_id) # remove a associação do user à passadeira
 
 # input (JSON): { "user_id": "p0", "crosswalk_id": 0 }
 # ouput (TEXT): yes
@@ -28,6 +36,8 @@ def updateInfo():
         
         user_id = str(request.json['user_id'])
         crosswalk_id = str(request.json['crosswalk_id'])
+
+        cleanExpiredUsers(crosswalk_id)
 
         # incrementa os contadores dos pedestres (tanto o histórico como o atual)
         if user_id[0] == "p": 
@@ -94,13 +104,7 @@ def getInfo():
         if r.exists("hv" + crosswalk_id): history_nvehicles = int(r.get("hv" + crosswalk_id))
         else: history_nvehicles = 0
 
-        # obtém a lista de users naquela passadeira
-        users_ids = r.smembers("c" + crosswalk_id)
-
-        # remove os users que tenham atingido o TTL
-        for user_id in users_ids:
-            if not r.exists("u" + user_id + crosswalk_id):
-                r.srem("c" + crosswalk_id, user_id) # remove a associação do user à passadeira
+        cleanExpiredUsers(crosswalk_id)
 
         # obtém novamente a lista de users já atualizada
         users_ids = r.smembers("c" + crosswalk_id)
