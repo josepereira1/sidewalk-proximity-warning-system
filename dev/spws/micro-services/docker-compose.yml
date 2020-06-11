@@ -3,6 +3,8 @@ services:
   
   crud-pedestrian:
     image: crud-pedestrian
+    deploy:
+      replicas: 1
     build: container-CRUD-pedestrian/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5000:5000"
@@ -14,6 +16,8 @@ services:
 
   crud-vehicle:
     image: crud-vehicle
+    deploy:
+      replicas: 1
     build: container-CRUD-vehicle/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5001:5001"
@@ -25,6 +29,8 @@ services:
 
   crud-crosswalk-location:
     image: crud-crosswalk-location
+    deploy:
+      replicas: 1
     build: container-CRUD-crosswalk-location/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5002:5002"
@@ -39,6 +45,8 @@ services:
 
   read-traffic-light:
     image: read-traffic-light
+    deploy:
+      replicas: 1
     build: container-read-traffic-light/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5003:5003"
@@ -50,6 +58,8 @@ services:
 
   crud-crosswalk-counters:
     image: crud-crosswalk-counters
+    deploy:
+      replicas: 1
     build: container-CRUD-crosswalk-counters/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5004:5004"
@@ -60,6 +70,8 @@ services:
     
   closest-crosswalk:
     image: closest-crosswalk
+    deploy:
+      replicas: 1
     build: container-closest-crosswalk/ # caso a imagem não exista, instala a partir desta diretoria
     ports:
       - "5005:5005"
@@ -77,6 +89,8 @@ services:
 
   spws:
     image: spws
+    deploy:
+      replicas: 1
     build: container-spws
     ports: 
       - "5007:5007"
@@ -88,6 +102,8 @@ services:
 
   monitoring:
     image: monitoring
+    deploy:
+      replicas: 1
     build: container-monitoring
     ports: 
       - "8080:8080"
