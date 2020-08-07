@@ -21,6 +21,8 @@ public class ChangerTrafficLight {
     }
 
     public static void main(String[] args) {
+        String IP = "37.189.223.35";
+        String URL = "http://" + IP + ":5003/updateStateLights";
         int TEMPO = 5 * 1000;
         HttpClient client = HttpClient.newHttpClient();
         while(true){
@@ -30,8 +32,8 @@ public class ChangerTrafficLight {
                 e.printStackTrace();
             }
             try {
-                System.err.println("GET: http://localhost:5003/updateStateLights");
-                ChangerTrafficLight.get(client,  "http://localhost:5003/updateStateLights");
+                System.err.println("GET: " + URL);
+                ChangerTrafficLight.get(client,  URL);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
